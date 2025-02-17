@@ -1,3 +1,4 @@
+<meta name="robots" content="noindex, nofollow, noarchive">
 <!-- General CSS Files -->
 <link href="<?= base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="<?= base_url(); ?>assets/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">

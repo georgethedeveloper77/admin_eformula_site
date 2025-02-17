@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Import Questions | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('import_questions'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Import Questions <small class="text-small">upload using CSV file</small></h1>
+                        <h1><?= lang('import_questions'); ?> <small class="text-small"><?= lang('upload_using_csv_file'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -34,31 +34,31 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-10 offset-2">
-                                                    <label>CSV Questions file</label>
+                                                    <label><?= lang('csv_questions_file'); ?></label>
                                                     <input type="file" name="file" id="questions_file" required class="form-control" accept=".csv" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-3 col-sm-6 offset-2">
-                                                    <input type="submit" name="btnadd" value="Upload CSV file" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('upload_csv_file'); ?>" class="<?= BUTTON_CLASS ?>" />
 
                                                 </div>
                                                 <div class="col-md-4 col-sm-6">
-                                                    <a class="btn btn-primary" href='<?= base_url(); ?>assets/exam-question-data-format.csv' target="_blank"> <em class='fas fa-download'></em> Download Sample File Here</a>
+                                                    <a class="btn btn-primary" href='<?= base_url(); ?>assets/exam-question-data-format.csv' target="_blank"> <em class='fas fa-download'></em><?= lang('download_sample_file_here'); ?></a>
                                                 </div>
                                             </div>
                                         </form>
                                         <div class="mt-4">
-                                            <h5 class="text-danger">How to convert CSV in to Unicode (For Non English)</h5>
-                                            <p>1. Fill the data in excel sheet which formate we given
+                                            <h5 class="text-danger"><?= lang('how_to_convert_csv_in_to_unicode_for_non_english'); ?></h5>
+                                            <p><?= lang('1_fill_the_data_in_excel_sheet_which_formate_we_given'); ?>
                                             <p>
-                                            <p>2. SAVE AS this file <strong>Unicode Text (*.txt)</strong></p>
-                                            <p>3. Open .txt file in Notepad.</p>
-                                            <p>4. Replace Tab space( ) with ( , )comma.</p>
-                                            <p>5. Save as this file with .txt extension and change the encoding : <b>UTF-8</b>.</p>
-                                            <p>6. Change the file extension .txt to .csv.</p>
-                                            <p>7. Now this file use import question.</p>
-                                            <p><a href="https://www.ablebits.com/office-addins-blog/2014/04/24/convert-excel-csv/" target="_blank">For more info</a></p>
+                                            <p><?= lang('2_save_as_the_file'); ?> <strong><?= lang('unicode_text_txt'); ?></strong></p>
+                                            <p><?= lang('3_open_txt_file_in_notepad'); ?></p>
+                                            <p><?= lang('4_replace_the_tab_space_with_comma'); ?></p>
+                                            <p><?= lang('5_save_as_this_file_with_txt_extension_and_change_the_encoding'); ?> <b><?= lang('utf_8'); ?></b>.</p>
+                                            <p><?= lang('6_change_the_file_extension_txt_to_csv'); ?></p>
+                                            <p><?= lang('7_now_this_file_use_import_question'); ?></p>
+                                            <p><a href="https://www.ablebits.com/office-addins-blog/2014/04/24/convert-excel-csv/" target="_blank"><?= lang('for_more_info'); ?></a></p>
                                         </div>
                                     </div>
 

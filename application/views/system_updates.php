@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>System Update | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('system_update'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>System Update <small class="text-danger"> Current Version <?php echo (!empty($system_version['message'])) ? $system_version['message'] : "" ?></small></h1>
+                        <h1><?= lang('system_update'); ?> <small class="text-danger"> <?= lang('current_version'); ?> <?php echo (!empty($system_version['message'])) ? $system_version['message'] : "" ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -36,20 +36,20 @@
                                             <input type="hidden" name="quiz_url" value="<?= $quiz_url; ?>" required />
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label>Purchase Code</label>
-                                                    <input type="text" name="purchase_code" required placeholder="Enter Purchase Code" class="form-control" />
+                                                    <label><?= lang('purchase_code'); ?></label>
+                                                    <input type="text" name="purchase_code" required placeholder="<?= lang('enter_purchase_code'); ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Update Zip <small class="text-danger">Only zip file allow</small></label>
+                                                    <label class="control-label"><?= lang('update_zip'); ?> <small class="text-danger"><?= lang('only_zip_file_allow'); ?></small></label>
                                                     <input id="file" name="file" type="file" accept=".zip,.rar" required class="form-control">
-                                                    <small class="text-danger">Your Current Version is <?php echo (!empty($system_version['message'])) ? $system_version['message'] : "" ?> , Please update nearest version here if available</small>
+                                                    <small class="text-danger"><?= lang('your_current_version_is'); ?> <?php echo (!empty($system_version['message'])) ? $system_version['message'] : "" ?> , <?= lang('please_update_nearest_version_here_if_available'); ?></small>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-10">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -62,7 +62,6 @@
             </div>
         </div>
     </div>
-
     <?php base_url() . include 'footer.php'; ?>
 </body>
 

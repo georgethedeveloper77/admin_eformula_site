@@ -21,13 +21,13 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('update', 'firebase_configurations')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $data = $this->Setting_model->firebase_configurations();
                         if ($data == false) {
-                            $this->session->set_flashdata('error', 'Only json file allow..!');
+                            $this->session->set_flashdata('error', lang('only_json_file_allow'));
                         } else {
-                            $this->session->set_flashdata('success', 'Configurations Update successfully.!');
+                            $this->session->set_flashdata('success', lang('configuration_updated_successfully'));
                         }
                     }
                     redirect('firebase-configurations');
@@ -43,10 +43,10 @@ class Settings extends CI_Controller
 
         if ($this->input->post('btnadd')) {
             if (!has_permissions('update', 'system_configuration')) {
-                $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
             } else {
                 $this->Setting_model->update_system_utility();
-                $this->session->set_flashdata('success', 'Settings Update successfully.! ');
+                $this->session->set_flashdata('success', lang('settings_updated_successfully'));
             }
             redirect('system-utilities');
         }
@@ -162,10 +162,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('update', 'system_configuration')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_settings();
-                        $this->session->set_flashdata('success', 'Settings Update successfully.! ');
+                        $this->session->set_flashdata('success', lang('settings_updated_successfully'));
                     }
                     redirect('system-configurations');
                 }
@@ -212,10 +212,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('update', 'ads_settings')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_ads();
-                        $this->session->set_flashdata('success', 'Settings Update successfully.!');
+                        $this->session->set_flashdata('success', lang('settings_updated_successfully'));
                     }
                     redirect('ads-settings');
                 }
@@ -257,13 +257,13 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'profile')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $data = $this->Setting_model->update_profile();
                         if ($data == false) {
-                            $this->session->set_flashdata('error', IMAGE_ALLOW_PNG_JPG_SVG_MSG);
+                            $this->session->set_flashdata('error', lang(IMAGE_ALLOW_PNG_JPG_SVG_MSG));
                         } else {
-                            $this->session->set_flashdata('success', 'Profile update successfully.! ');
+                            $this->session->set_flashdata('success', lang('profile_updated_successfully'));
                         }
                     }
                     redirect('profile');
@@ -289,19 +289,19 @@ class Settings extends CI_Controller
                 }
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'send_notification')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $users = $this->input->post('users');
                         if ($users === 'selected') {
                             if ($this->input->post('selected_list') == '') {
-                                $this->session->set_flashdata('error', 'Please Select the users from the table..');
+                                $this->session->set_flashdata('error', lang('please_select_the_users_from_the_table'));
                             } else {
                                 $this->Notification_model->add_notification();
-                                $this->session->set_flashdata('success', 'Notification Sent Successfully..');
+                                $this->session->set_flashdata('success', lang('notification_sent_successfully'));
                             }
                         } else {
                             $this->Notification_model->add_notification();
-                            $this->session->set_flashdata('success', 'Notification Sent Successfully..');
+                            $this->session->set_flashdata('success', lang('notification_sent_successfully'));
                         }
                     }
                     redirect('send-notifications');
@@ -323,7 +323,7 @@ class Settings extends CI_Controller
                 $id = $this->input->post('id');
                 $image_url = $this->input->post('image_url');
                 $this->Notification_model->delete_notification($id, $image_url);
-                echo "Notification deleted successfully..";
+                echo lang('notification_deleted_successfully');
             }
         }
     }
@@ -344,10 +344,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'contact_us')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_contact_us();
-                        $this->session->set_flashdata('success', 'Contact Us updated successfully.!');
+                        $this->session->set_flashdata('success', lang('contact_us_updated_successfully'));
                     }
                     redirect('contact-us');
                 }
@@ -373,10 +373,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'terms_conditions')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_terms_conditions();
-                        $this->session->set_flashdata('success', 'Terms Conditions updated successfully.!');
+                        $this->session->set_flashdata('success', lang('terms_conditions_updated_successfully'));
                     }
                     redirect('terms-conditions');
                 }
@@ -402,10 +402,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'privacy_policy')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_privacy_policy();
-                        $this->session->set_flashdata('success', 'Privacy Policy updated successfully.!');
+                        $this->session->set_flashdata('success', lang('privacy_policy_updated_successfully'));
                     }
                     redirect('privacy-policy');
                 }
@@ -425,10 +425,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'instructions')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_instructions();
-                        $this->session->set_flashdata('success', 'Instructions updated successfully.!');
+                        $this->session->set_flashdata('success', lang('instructions_updated_successfully'));
                     }
                     redirect('instructions');
                 }
@@ -448,10 +448,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'about_us')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_about_us();
-                        $this->session->set_flashdata('success', 'About Us updated successfully.!');
+                        $this->session->set_flashdata('success', lang('about_us_updated_successfully'));
                     }
                     redirect('about-us');
                 }
@@ -531,10 +531,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'system_configuration')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_web_settings();
-                        $this->session->set_flashdata('success', 'Updated successfully.!');
+                        $this->session->set_flashdata('success',  lang('data_updated_successfully'));
                     }
                     redirect('web-settings');
                 }
@@ -597,10 +597,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'system_configuration')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_web_home_settings();
-                        $this->session->set_flashdata('success', 'Updated successfully.!');
+                        $this->session->set_flashdata('success', lang('data_updated_successfully'));
                     }
                     redirect('web-home-settings');
                 }
@@ -616,10 +616,10 @@ class Settings extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'system_configuration')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Setting_model->update_web_home_settings();
-                    $this->session->set_flashdata('success', 'Settings updated successfully.!');
+                    $this->session->set_flashdata('success', lang('data_updated_successfully'));
                 }
                 redirect('web-home-settings/' . $id);
             }
@@ -686,10 +686,10 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('update', 'in_app_settings')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_in_app_settings();
-                        $this->session->set_flashdata('success', 'In App Settings Update successfully.! ');
+                        $this->session->set_flashdata('success', lang('in_app_settings_update_successfully'));
                     }
                     redirect('in-app-settings');
                 }
@@ -743,16 +743,16 @@ class Settings extends CI_Controller
             } else {
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('update', 'authentication_settings')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $gmail = $this->input->post('gmail_login');
                         $email = $this->input->post('email_login');
                         $phone = $this->input->post('phone_login');
                         if (($gmail == 0 && $email == 0 && $phone == 0)) {
-                            $this->session->set_flashdata('error', 'Any One Authentication method have to enabled.');
+                            $this->session->set_flashdata('error', lang('any_one_authentication_method_have_to_enabled'));
                         } else {
                             $this->Setting_model->auth_settings();
-                            $this->session->set_flashdata('success', 'Settings Update successfully.! ');
+                            $this->session->set_flashdata('success', lang('data_updated_successfully'));
                         }
                     }
                     redirect('authentication-settings');

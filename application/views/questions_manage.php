@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Questions for Quiz | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('questions_for_quiz'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -22,7 +22,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Manage Questions</h1>
+                        <h1><?= lang('manage_questions'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -33,7 +33,7 @@
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class="col-md-3">
                                                     <select id="filter_language" class="form-control" required>
-                                                        <option value="">Select Language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
@@ -41,14 +41,14 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <select id="filter_category" class="form-control" required>
-                                                        <option value="">Select Main Category</option>
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
 
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
                                                 <div class="col-md-3">
                                                     <select id="filter_category" class="form-control" required>
-                                                        <option value="">Select Main Category</option>
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) { ?>
                                                             <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                                         <?php } ?>
@@ -57,43 +57,43 @@
                                             <?php } ?>
                                             <div class='col-md-3'>
                                                 <select id='filter_subcategory' class='form-control' required>
-                                                    <option value=''>Select Sub Category</option>
+                                                    <option value=''><?= lang('select_sub_category'); ?></option>
                                                 </select>
                                             </div>
                                             <div class='col-md-3'>
-                                                <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'>Filter Data</button>
+                                                <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>
                                         <div id="toolbar">
                                             <?php if (has_permissions('delete', 'questions')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_questions" title="Delete Selected Questions"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_questions" title="<?= lang('delete_selected_questions'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='question_list' data-toggle="table" data-url="<?= base_url() . 'Table/question' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "question-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="category" data-sortable="true" data-visible='false'>Category</th>
-                                                    <th scope="col" data-field="subcategory" data-sortable="true" data-visible='false'>Sub Category</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="category" data-sortable="true" data-visible='false'><?= lang('main_category'); ?></th>
+                                                    <th scope="col" data-field="subcategory" data-sortable="true" data-visible='false'><?= lang('sub_category'); ?></th>
                                                     <?php if (is_language_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible='false'>Language ID</th>
-                                                        <th scope="col" data-field="language" data-sortable="true" data-visible='true'>Language</th>
+                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible='false'><?= lang('language_id'); ?></th>
+                                                        <th scope="col" data-field="language" data-sortable="true" data-visible='true'><?= lang('language'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="image" data-sortable="false">Image</th>
-                                                    <th scope="col" data-field="question" data-sortable="true">Question</th>
-                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false' data-formatter="questionTypeFormatter">Question Type</th>
-                                                    <th scope="col" data-field="optiona" data-sortable="true">Option A</th>
-                                                    <th scope="col" data-field="optionb" data-sortable="true">Option B</th>
-                                                    <th scope="col" data-field="optionc" data-sortable="true">Option C</th>
-                                                    <th scope="col" data-field="optiond" data-sortable="true">Option D</th>
+                                                    <th scope="col" data-field="image" data-sortable="false"><?= lang('image'); ?></th>
+                                                    <th scope="col" data-field="question" data-sortable="true"><?= lang('question'); ?></th>
+                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false'><?= lang('quesion_type'); ?></th>
+                                                    <th scope="col" data-field="optiona" data-sortable="true"><?= lang('option_a'); ?></th>
+                                                    <th scope="col" data-field="optionb" data-sortable="true"><?= lang('option_b'); ?></th>
+                                                    <th scope="col" data-field="optionc" data-sortable="true"><?= lang('option_c'); ?></th>
+                                                    <th scope="col" data-field="optiond" data-sortable="true"><?= lang('option_d'); ?></th>
                                                     <?php if (is_option_e_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="optione" data-sortable="true">Option E</th>
+                                                        <th scope="col" data-field="optione" data-sortable="true"><?= lang('option_e'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="answer" data-sortable="true" data-visible='false'>Answer</th>
-                                                    <th scope="col" data-field="level" data-sortable="true">Level</th>
-                                                    <th scope="col" data-field="note" data-sortable="true" data-visible='false'>Note</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false">Operate</th>
+                                                    <th scope="col" data-field="answer" data-sortable="true" data-visible='false'><?= lang('answer'); ?></th>
+                                                    <th scope="col" data-field="level" data-sortable="true"><?= lang('level'); ?></th>
+                                                    <th scope="col" data-field="note" data-sortable="true" data-visible='false'><?= lang('note'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -135,9 +135,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some questions to delete!");
+                alert("<?= lang('please_select_questions_to_delete'); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected questions?")) {
+                if (confirm("<?= lang('sure_to_delete_all_questions'); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -147,9 +147,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("Questions deleted successfully");
+                                alert("<?= lang('questions_deleted_successfully'); ?>");
                             } else {
-                                alert("Could not delete Questions. Try again!");
+                                alert("<?= lang('not_delete_question_try_again'); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -162,7 +162,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete question? All related questions report will also be deleted')) {
+            if (confirm("<?= lang('sure_to_delete_questions_releated_data_deleted'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 image = $(this).data("image");
@@ -174,7 +174,7 @@
                         if (result) {
                             $('#question_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }
@@ -194,7 +194,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#filter_category').html('<option value="">Please wait..</option>');
+                    $('#filter_category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#filter_category').html(result);
@@ -209,7 +209,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#filter_subcategory').html('<option value="">Please wait..</option>');
+                    $('#filter_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#filter_subcategory').html(result);

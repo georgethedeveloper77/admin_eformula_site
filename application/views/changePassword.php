@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Reset Password | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('reset_password'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
     <?php base_url() . include 'include.php'; ?>
 </head>
 
@@ -20,7 +20,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Reset Password</h1>
+                        <h1><?= lang('reset_password'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -32,7 +32,7 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-8">
-                                                    <label>Old Password <span class="required">*</span></label>
+                                                    <label><?= lang('old_password'); ?> <span class="required">*</span></label>
                                                     <input type="password" id="old_password" name="oldpassword" class="form-control" required>
                                                 </div>
                                                 <div class="col-md-1">
@@ -42,24 +42,24 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-8">
-                                                    <label>New Password <span class="required">*</span></label>
+                                                    <label><?= lang('new_password'); ?> <span class="required">*</span></label>
                                                     <input type="password" id="new_password" name="newpassword" class="form-control" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-8">
-                                                    <label>Confirm Password <span class="required">*</span></label>
+                                                    <label><?= lang('confirm_password'); ?> <span class="required">*</span></label>
                                                     <input type="password" id="confirm_password" name="confirmpassword" class="form-control" required>
                                                     <div class="invalid-feedback">
-                                                        Passwords do not match!
+                                                        <?= lang('password_do_not_match'); ?>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-8">
-                                                    <input name="btnchange" value="Submit" type="submit" id="submit" class="<?= BUTTON_CLASS ?>">
+                                                    <input name="btnchange" value="<?= lang('submit'); ?>" type="submit" id="submit" class="<?= BUTTON_CLASS ?>">
                                                 </div>
                                             </div>
                                         </form>
@@ -99,7 +99,7 @@
                         oldpass: old_password
                     },
                     beforeSend: function() {
-                        $('#old_status').html('Checking..');
+                        $('#old_status').html("<?= lang('checking'); ?>");
                     },
                     success: function(result) {
                         if (result == 'True') {

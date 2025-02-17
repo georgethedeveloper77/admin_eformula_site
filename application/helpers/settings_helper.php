@@ -254,3 +254,60 @@ if (!function_exists('is_room_category_mode_enabled')) {
         }
     }
 }
+
+if (!function_exists('panel_languages')) {
+
+    function panel_languages()
+    {
+        $language_path = APPPATH . 'language/';
+        $languages = array();
+        $exclude_folder = 'sample_file'; // Folder to exclude
+
+        // Scan the language directory
+        $dirs = glob($language_path . '*', GLOB_ONLYDIR);
+        foreach ($dirs as $dir) {
+            $folder_name = basename($dir);
+
+            // Skip the excluded folder
+            if ($folder_name === $exclude_folder) {
+                continue;
+            }
+
+            $languages[] = $folder_name;
+        }
+        return $languages;
+    }
+}
+
+if (!function_exists('get_version')) {
+
+    function get_version($current_version)
+    {
+        list($major, $minor, $patch) = explode('.', $current_version);
+        $major = (int)$major;
+        $minor = (int)$minor;
+        $patch = (int)$patch;
+        if ($patch < 99) {
+            $patch++;
+        } else {
+            $patch = 0;
+            if ($minor < 99) {
+                $minor++;
+            } else {
+                $minor = 0;
+                if ($major < 99) {
+                    $major++;
+                } else {
+                    // For now, let's reset to 0.0.1
+                    $major = 0;
+                    $minor = 0;
+                    $patch = 1;
+                }
+            }
+        }
+
+        // Construct the new version string
+        $new_version = "$major.$minor.$patch";
+        return $new_version;
+    }
+}

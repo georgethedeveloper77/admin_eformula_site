@@ -48,7 +48,7 @@ class Payments extends CI_Controller
             ];
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'payment_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     foreach ($settings as $type) {
                         $message = $this->input->post($type);
@@ -64,7 +64,7 @@ class Payments extends CI_Controller
                             $this->db->insert('tbl_settings', $data);
                         }
                     }
-                    $this->session->set_flashdata('success', 'Settings Update successfully.!');
+                    $this->session->set_flashdata('success', lang('settings_updated_successfully'));
                     redirect('payment-settings', 'refresh');
                 }
             }
@@ -90,21 +90,21 @@ class Payments extends CI_Controller
                 $multiple_ids = $this->input->post('multiple_ids');
                 // $multiple_ids = explode(',', $multiple_ids);
                 if (!has_permissions('create', 'payment_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     if ($multiple_ids == '') {
-                        $this->session->set_flashdata('error', 'Please select some records');
+                        $this->session->set_flashdata('error', lang('please_select_some_records'));
                     } else {
                         $status = $this->input->post('status');
                         $this->db->query("UPDATE tbl_payment_request SET `status`='$status' WHERE id in ( " . $multiple_ids . " ) ");
-                        $this->session->set_flashdata('success', 'Updated successfully.!');
+                        $this->session->set_flashdata('success', lang('data_updated_successfully'));
                     }
                 }
                 redirect('payment-requests', 'refresh');
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'payment_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $edit_id = $this->input->post('edit_id');
                     $firebase_id = $this->input->post('uid');
@@ -115,7 +115,7 @@ class Payments extends CI_Controller
 
                     $res = $this->db->where('id', $edit_id)->get('tbl_payment_request')->row_array();
                     if ($res['status'] == 2) {
-                        $this->session->set_flashdata('error', "Oops! Can not update status. Once its done.");
+                        $this->session->set_flashdata('error', lang('oops_can_not_update_status_once_its_done'));
                     } else {
                         $user_res = $this->db->where('id', $user_id)->get('tbl_users')->row_array();
                         $fcm_id = $user_res['fcm_id'];
@@ -145,12 +145,12 @@ class Payments extends CI_Controller
                         if ($status == 1  || $status == 2) {
                             // send notification                           
                             if ($status == 1) {
-                                $title = 'Payment Request Complete';
-                                $message = "Your Payment is Complete..You have used " . $coins . " Points. Thank You!!!";
+                                $title = lang('payment_request_complete');
+                                $message = lang('your_payment_is_complete_you_have_used') . " " . $coins . " " . lang('points_thank_you');
                             }
                             if ($status == 2) {
-                                $title = 'Payment Details is Wrong';
-                                $message = "Your Payment Details is Wrong..we have Refund Your " . $coins . " Points. Thank You!!!";
+                                $title = lang('payment_details_is_wrong');
+                                $message = lang('your_payment_details_is_wrong_we_have_refund_your') . " " . $coins . " " . lang('points_thank_you');
                             }
 
                             $fcmMsg = array(
@@ -166,7 +166,7 @@ class Payments extends CI_Controller
                                 $this->send_notification($fcm_ids, $fcmMsg);
                             }
                         }
-                        $this->session->set_flashdata('success', 'Updated successfully.!');
+                        $this->session->set_flashdata('success', lang('data_updated_successfully'));
                     }
                     redirect('payment-requests', 'refresh');
                 }

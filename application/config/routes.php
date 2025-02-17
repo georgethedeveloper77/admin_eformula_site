@@ -79,10 +79,13 @@ $route['delete_multiple'] = 'Dashboard/delete_multiple';
 
 $route['get_categories_of_language'] = 'Dashboard/get_categories_of_language';
 $route['get_subcategories_of_category'] = 'Dashboard/get_subcategories_of_category';
+$route['get_subcategories_of_language'] = 'Dashboard/get_subcategories_of_language';
 
 $route['user-accounts-rights'] = 'Dashboard/users_accounts_rights';
 $route['delete_accounts_rights'] = 'Dashboard/delete_accounts_rights';
 $route['edit_accounts_rights'] = 'Dashboard/edit_accounts_rights';
+
+$route['removeImage'] = 'Dashboard/removeImage';
 
 $route['languages'] = 'Languages';
 $route['delete_language'] = 'Languages/delete_language';
@@ -142,7 +145,6 @@ $route['audio-question'] = 'Audio';
 $route['delete_audio_question'] = 'Audio/delete_audio_question';
 
 $route['system-utilities'] = 'Settings/system_utilities';
-
 $route['send-notifications'] = 'Settings/send_notifications';
 $route['delete_notification'] = 'Settings/delete_notification';
 $route['system-configurations'] = 'Settings/system_configurations';
@@ -157,9 +159,20 @@ $route['play-store-terms-conditions'] = 'Settings/play_store_terms_conditions';
 $route['contact-us'] = 'Settings/contact_us';
 $route['play-store-contact-us'] = 'Settings/play_store_contact_us';
 $route['profile'] = 'Settings/profile';
+$route['firebase-configurations'] = 'Settings/firebase_configurations';
+
+$route['web-settings'] = 'Settings/web_settings';
+$route['web-home-settings'] = 'Settings/web_home_settings';
+$route['web-home-settings/(:num)'] = 'Settings/edit_web_home_settings/$1';
+
+$route['in-app-settings'] = 'Settings/in_app_settings';
+$route['in-app-users'] = 'Settings/in_app_users';
+$route['in-app-users/(:num)'] = 'Settings/in_app_users';
+
+$route['authentication-settings'] = 'Settings/auth_settings';
+
 $route['badges-settings'] = 'Badges';
 $route['badges-settings/(:num)'] = 'Badges/edit_data/$1';
-$route['firebase-configurations'] = 'Settings/firebase_configurations';
 
 $route['system-updates'] = 'System_Update';
 $route['set_setting'] = 'System_Update/set_setting';
@@ -190,21 +203,12 @@ $route['delete_maths_questions'] = 'Maths_Question/delete_questions';
 $route['sliders'] = 'Slider';
 $route['delete_sliders'] = 'Slider/delete_sliders';
 
-$route['web-settings'] = 'Settings/web_settings';
-$route['web-home-settings'] = 'Settings/web_home_settings';
-$route['web-home-settings/(:num)'] = 'Settings/edit_web_home_settings/$1';
-// $route['upload-languages'] = 'Upload_Languages';
-// $route['delete-upload-languages'] = 'Upload_Languages/delete_language_data';
-
 $route['coin-store-settings'] = 'CoinStore';
 $route['delete-coin-store-data'] = 'CoinStore/deleteCoinStoreData';
 
-$route['get_subcategories_of_language'] = 'Dashboard/get_subcategories_of_language';
-
-$route['in-app-settings'] = 'Settings/in_app_settings';
-$route['in-app-users'] = 'Settings/in_app_users';
-$route['in-app-users/(:num)'] = 'Settings/in_app_users';
-
-$route['removeImage'] = 'Dashboard/removeImage';
-
-$route['authentication-settings'] = 'Settings/auth_settings';
+$route['system-languages'] = 'System_Languages';
+$route['delete-system-languages'] = 'System_Languages/delete_language_data';
+$route['new-labels/(:any)'] = 'System_Languages/new_language_data';
+$route['delete-app-system-languages'] = 'System_Languages/delete_app_language_data';
+$route['delete-web-system-languages'] = 'System_Languages/delete_web_language_data';
+$route['new-labels/(:any)/(:any)'] = 'System_Languages/new_json_language_data';

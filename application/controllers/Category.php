@@ -26,17 +26,17 @@ class Category extends CI_Controller
                 $type_name = $this->input->post('type');
                 $type = $this->category_type[$type_name];
                 if (!has_permissions('create', 'categories')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Category_model->add_data($type);
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else if ($data === 3) {
-                        $this->session->set_flashdata('error', 'Slug Already Exists');
+                        $this->session->set_flashdata('error', lang('slug_already_exists'));
                     } else if ($data === 4) {
-                        $this->session->set_flashdata('error', 'Slug is required');
+                        $this->session->set_flashdata('error', lang('slug_is_required'));
                     } else {
-                        $this->session->set_flashdata('success', 'Category created successfully.! ');
+                        $this->session->set_flashdata('success', lang('category_created_successfully'));
                     }
                 }
                 redirect($type_name, 'refresh');
@@ -45,17 +45,17 @@ class Category extends CI_Controller
                 $type_name = $this->input->post('type');
                 $type = $this->category_type[$type_name];
                 if (!has_permissions('update', 'categories')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Category_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else if ($data1 === 3) {
-                        $this->session->set_flashdata('error', 'Slug Already Exists');
+                        $this->session->set_flashdata('error', lang('slug_already_exists'));
                     } else if ($data1 === 4) {
-                        $this->session->set_flashdata('error', 'Slug is required');
+                        $this->session->set_flashdata('error', lang('slug_is_required'));
                     } else {
-                        $this->session->set_flashdata('success', 'Category updated successfully.!');
+                        $this->session->set_flashdata('success', lang('category_updated_successfully'));
                     }
                 }
                 redirect($type_name, 'refresh');
@@ -85,20 +85,20 @@ class Category extends CI_Controller
             if ($this->input->post('btnaddcategory')) {
                 $type_name = $this->input->post('type');
                 if (!has_permissions('update', 'category_order')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Category_model->update_order();
-                    $this->session->set_flashdata('success', 'Category order update successfully.! ');
+                    $this->session->set_flashdata('success', lang('category_order_updated_successfully'));
                 }
                 redirect($type_name, 'refresh');
             }
             if ($this->input->post('btnaddsubcategory')) {
                 $type_name = $this->input->post('type');
                 if (!has_permissions('update', 'category_order')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Subcategory_model->update_order();
-                    $this->session->set_flashdata('success', 'Subcategory order update successfully.! ');
+                    $this->session->set_flashdata('success', lang('subcategory_order_updated_successfully'));
                 }
                 redirect($type_name, 'refresh');
             }

@@ -11,17 +11,17 @@ $actions = [
 ?>
 <table class="table permission-table" aria-describedby="mydesc">
     <tr>
-        <th scope="col">Module/Permissions</th>
+        <th scope="col"><?= lang('module_permissions'); ?></th>
         <?php foreach ($actions as $row) { ?>
             <th scope="col"><?= ucfirst($row) ?></th>
         <?php }
         ?>
     </tr>
-    <tbody >
+    <tbody>
         <?php
         foreach ($system_modules as $key => $value) {
             $flag = 0;
-            ?>
+        ?>
             <tr>
                 <td><?= ucwords(str_replace('_', ' ', $key)) ?></td>
                 <?php
@@ -39,7 +39,7 @@ $actions = [
                         } else {
                             $checked = 'checked';
                         }
-                        ?>
+                ?>
                         <td>
                             <input type="checkbox" name="<?= 'permissions[' . $key . '][' . $value[$index] . ']' ?>" <?= $checked; ?> data-plugin="switchery1">
 
@@ -55,9 +55,11 @@ $actions = [
 </table>
 
 <script type="text/javascript">
-    $('[data-plugin="switchery1"]').each(function (index, element) {
+    $('[data-plugin="switchery1"]').each(function(index, element) {
         var init = new Switchery(element, {
-            size: 'small', color: '#1abc9c', secondaryColor: '#f1556c'
+            size: 'small',
+            color: '#1abc9c',
+            secondaryColor: '#f1556c'
         });
     });
 </script>

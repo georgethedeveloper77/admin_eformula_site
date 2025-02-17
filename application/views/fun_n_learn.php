@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create and Manage Fun 'N' Learn | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('create_and_manage_fun_n_learn'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Fun 'N' Learn</h1>
+                        <h1><?= lang('create_and_manage_fun_n_learn'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Fun 'N' Learn</h4>
+                                        <h4><?= lang('create_fun_n_learn'); ?></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -51,60 +51,83 @@
                                             <div class="form-group row">
                                                 <?php if (is_language_mode_enabled()) { ?>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Language</label>
+                                                        <label class="control-label"><?= lang('language'); ?></label>
                                                         <select name="language_id" id="create_language_id" class="form-control" required>
-                                                            <option value="">Select Language</option>
+                                                            <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
                                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Main Category</label>
+                                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                                         <select id="category" name="category" class="form-control" required>
-                                                            <option value="">Select Main Category</option>
+                                                            <option value=""><?= lang('select_main_category'); ?></option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Sub Category</label>
+                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
-                                                            <option value="">Select Sub Category</option>
+                                                            <option value=""><?= lang('select_sub_category'); ?></option>
                                                         </select>
                                                     </div>
                                                 <?php } else { ?>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Main Category</label>
+                                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                                         <select id="category" name="category" class="form-control" required>
-                                                            <option value="">Select Main Category</option>
+                                                            <option value=""><?= lang('select_main_category'); ?></option>
                                                             <?php foreach ($category as $cat) { ?>
                                                                 <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Sub Category</label>
+                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
-                                                            <option value="">Select Sub Category</option>
+                                                            <option value=""><?= lang('select_sub_category'); ?></option>
                                                         </select>
                                                     </div>
                                                 <?php } ?>
                                             </div>
                                             <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label">Title</label>
-                                                    <input name="title" type="text" class="form-control" placeholder="Enter Title" required>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('title'); ?></label>
+                                                    <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('content_type'); ?></label>
+                                                    <div>
+                                                        <div class="form-check-inline bg-light p-2">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="content_type" value="1" checked required><?= lang('youtube_id'); ?>
+                                                            </label>
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="content_type" value="2"><?= lang('pdf'); ?>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12" id="youtube_content">
+                                                    <label class="control-label"><?= lang('youtube_id'); ?></label>
+                                                    <input name="content_data" type="text" class="form-control" placeholder="<?= lang('youtube_id'); ?>">
+                                                </div>
+                                                <div class="col-md-4 col-sm-12" id="pdf_content">
+                                                    <label class="control-label"><?= lang('pdf'); ?></label>
+                                                    <input id="file" name="file" type="file" accept="pdf" class="form-control">
+                                                    <small class="text-danger"><?= lang('file_type_supported'); ?></small>
+                                                    <p style="display: none" id="file_error_msg" class="badge badge-danger"></p>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label">Detail</label>
+                                                    <label class="control-label"><?= lang('details'); ?></label>
                                                     <textarea id="detail" name="detail" class="form-control"></textarea>
                                                     <input name="img" type="file" accept="image/*" id="upload" style="display: none" onchange="">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -116,7 +139,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Fun 'N' Learn <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('fun_n_learn'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -124,7 +147,7 @@
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class='col-md-3'>
                                                     <select id='filter_language' class='form-control' required>
-                                                        <option value="">Select language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
@@ -132,13 +155,13 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <select id="filter_category" class="form-control" required>
-                                                        <option value="">Select Main Category</option>
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
                                                 <div class="col-md-3">
                                                     <select id="filter_category" class="form-control" required>
-                                                        <option value="">Select Main Category</option>
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) { ?>
                                                             <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                                         <?php } ?>
@@ -147,34 +170,35 @@
                                             <?php } ?>
                                             <div class='col-md-3'>
                                                 <select id='filter_subcategory' class='form-control' required>
-                                                    <option value=''>Select Sub Category</option>
+                                                    <option value=''><?= lang('select_sub_category'); ?></option>
                                                 </select>
                                             </div>
                                             <div class='col-md-3'>
-                                                <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'>Filter Data</button>
+                                                <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>
                                         <div id="toolbar">
                                             <?php if (has_permissions('delete', 'fun_n_learn')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_fun_n_learn" title="Delete Selected Fun 'N' Learn"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_fun_n_learn" title="<?= lang('delete_selected_fun_n_learn'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='fun_n_learn_list' data-toggle="table" data-url="<?= base_url() . 'Table/fun_n_learn' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "fun-n-learn-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="status" data-sortable="false">Status</th>
-                                                    <th scope="col" data-field="category" data-sortable="true" data-visible='false'>Category</th>
-                                                    <th scope="col" data-field="subcategory" data-sortable="true" data-visible='false'>Sub Category</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="status" data-sortable="false"><?= lang('status'); ?></th>
+                                                    <th scope="col" data-field="category" data-sortable="true" data-visible='false'><?= lang('main_category'); ?></th>
+                                                    <th scope="col" data-field="subcategory" data-sortable="true" data-visible='false'><?= lang('sub_category'); ?></th>
                                                     <?php if (is_language_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false">Language ID</th>
-                                                        <th scope="col" data-field="language" data-sortable="true">Language</th>
+                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false"><?= lang('language_id'); ?></th>
+                                                        <th scope="col" data-field="language" data-sortable="true"><?= lang('language'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="title" data-sortable="true">Title</th>
-                                                    <th scope="col" data-field="detail" data-sortable="false" data-visible='false'>Detail</th>
-                                                    <th scope="col" data-field="no_of_que" data-sortable="false">Total Question</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="title" data-sortable="true"><?= lang('title'); ?></th>
+                                                    <th scope="col" data-field="detail" data-sortable="false" data-visible='false'><?= lang('details'); ?></th>
+                                                    <th scope="col" data-field="no_of_que" data-sortable="false"><?= lang('total_question'); ?></th>
+                                                    <th scope="col" data-field="content_type" data-sortable="false" data-formatter="contentTypeFormatter"><?= lang('content_type'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -193,7 +217,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Fun 'N' Learn</h5>
+                    <h5 class="modal-title"><?= lang('edit_fun_n_learn'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -206,7 +230,7 @@
                             <div class="form-group row">
                                 <?php if (is_language_mode_enabled()) { ?>
                                     <div class="col-md-6 col-sm-12">
-                                        <label class="control-label">Language</label>
+                                        <label class="control-label"><?= lang('language'); ?></label>
                                         <select id="language_id" name="language_id" class="form-control" required>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
@@ -214,16 +238,16 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
-                                        <label class="control-label">Main Category</label>
+                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                         <select id="edit_category" name="category" class="form-control" required>
-                                            <option value="">Select Main Category</option>
+                                            <option value=""><?= lang('select_main_category'); ?></option>
                                         </select>
                                     </div>
                                 <?php } else { ?>
                                     <div class="col-md-12 col-sm-12">
-                                        <label class="control-label">Main Category</label>
+                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                         <select id="edit_category" name="category" class="form-control" required>
-                                            <option value="">Select Main Category</option>
+                                            <option value=""><?= lang('select_main_category'); ?></option>
                                             <?php foreach ($category as $cat) { ?>
                                                 <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                             <?php } ?>
@@ -233,29 +257,54 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Sub Category</label>
+                                    <label class="control-label"><?= lang('sub_category'); ?></label>
                                     <select id="edit_subcategory" name="subcategory" class="form-control">
-                                        <option value="">Select Sub Category</option>
+                                        <option value=""><?= lang('select_sub_category'); ?></option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Title</label>
-                                    <input id="title" name="title" type="text" class="form-control" placeholder="Enter Title" required>
+                                    <label class="control-label"><?= lang('title'); ?></label>
+                                    <input id="title" name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-12">
+                                    <label class="control-label"><?= lang('content_type'); ?></label>
+                                    <div>
+                                        <div class="form-check-inline bg-light p-2">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="edit_content_type" value="1" checked required><?= lang('youtube_id'); ?>
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" name="edit_content_type" value="2"><?= lang('pdf'); ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-sm-12" id="edit_youtube_content">
+                                    <label class="control-label"><?= lang('youtube_id'); ?></label>
+                                    <input name="content_data" id="content_data" type="text" class="form-control" placeholder="<?= lang('youtube_id'); ?>">
+                                </div>
+                                <div class="col-md-8 col-sm-12" id="edit_pdf_content">
+                                    <label class="control-label"><?= lang('pdf'); ?></label>
+                                    <input id="update_file" name="file" type="file" accept="pdf" class="form-control">
+                                    <small class="text-danger"><?= lang('file_type_supported'); ?></small>
+                                    <p style="display: none" id="update_file_error_msg" class="badge badge-danger"></p>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Detail</label>
+                                    <label class="control-label"><?= lang('details'); ?></label>
                                     <textarea id="edit_detail" name="detail" class="form-control"></textarea>
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -268,7 +317,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update Status</h5>
+                    <h5 class="modal-title"><?= lang('update_status'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -281,21 +330,21 @@
 
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Status</label>
+                                    <label class="control-label"><?= lang('status'); ?></label>
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-default">
-                                            <input type="radio" name="status" value="1"> Active
+                                            <input type="radio" name="status" value="1"> <?= lang('active'); ?>
                                         </label>
                                         <label class="btn btn-danger">
-                                            <input type="radio" name="status" value="0"> Deactive
+                                            <input type="radio" name="status" value="0"> <?= lang('deactive'); ?>
                                         </label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdatestatus" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdatestatus" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -325,9 +374,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some fun-n-learn to delete!");
+                alert("<?= lang('please_select_fun_n_learn_to_delete'); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected fun-n-learn?")) {
+                if (confirm("<?= lang('sure_to_delete_all_fun_n_learn'); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -337,9 +386,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("fun-n-learn deleted successfully");
+                                alert("<?= lang('fun_n_learn_deleted_successfully'); ?>");
                             } else {
-                                alert("Could not delete fun-n-learn. Try again!");
+                                alert("<?= lang('not_delete_fun_n_learn_try_again'); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -351,6 +400,10 @@
     </script>
 
     <script type="text/javascript">
+        function contentTypeFormatter(value, row) {
+            var content_type = (row.content_type == 1) ? ' <label class="badge badge-info">Youtube ID</label>' : (row.content_type == 2) ? '<label class="badge badge-info">PDF</label>' : '';
+            return content_type;
+        }
         window.actionEvents = {
             'click .edit-data': function(e, value, row, index) {
                 $('#edit_id').val(row.id);
@@ -369,6 +422,12 @@
                 var detail = tinyMCE.get('edit_detail').setContent(row.detail);
                 $('#edit_detail').val(detail);
                 $('#edit_subcategory').val(row.subcategory);
+                $("input[name=edit_content_type][value=" + row.content_type + "]").prop('checked', true).trigger('click');
+                if (row.content_type == 0) {
+                    $("input[name=edit_content_type][value=1]").prop('checked', true).trigger('click');
+                } else if (row.content_type == 1) {
+                    $('#content_data').val(row.content_data);
+                }
             },
             'click .edit-status': function(e, value, row, index) {
                 $('#update_id').val(row.id);
@@ -381,7 +440,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete fun-n-learn? All related questions will also be deleted')) {
+            if (confirm("<?= lang('sure_to_delete_fun_n_learn_releated_data_deleted'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 $.ajax({
@@ -392,7 +451,7 @@
                         if (result) {
                             $('#fun_n_learn_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }
@@ -425,7 +484,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#category').html('<option value="">Please wait..</option>');
+                    $('#category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#category').html(result).trigger("change");
@@ -442,7 +501,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#edit_category').html('<option value="">Please wait..</option>');
+                    $('#edit_category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#edit_category').html(result);
@@ -459,7 +518,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#filter_category').html('<option value="">Please wait..</option>');
+                    $('#filter_category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#filter_category').html(result);
@@ -469,7 +528,7 @@
 
         category_options = '';
         <?php
-        $category_options = "<option value=''>Select Category</option>";
+        $category_options = "<option value=''>" . lang('select_main_category') . "</option>";
         foreach ($category as $cat) {
             $category_options .= "<option value=" . $cat->id . ">" . $cat->category_name . "</option>";
         }
@@ -483,7 +542,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#subcategory').html('<option value="">Please wait..</option>');
+                    $('#subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#subcategory').html(result);
@@ -500,7 +559,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#edit_subcategory').html('<option value="">Please wait..</option>');
+                    $('#edit_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#edit_subcategory').html(result);
@@ -517,7 +576,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#filter_subcategory').html('<option value="">Please wait..</option>');
+                    $('#filter_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#filter_subcategory').html(result);
@@ -626,7 +685,6 @@
             ],
             toolbar: 'insert | undo redo |  formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image removeformat | help',
             image_advtab: true,
-            images_upload_url: base_url + "upload_img",
             relative_urls: false,
             remove_script_host: false,
             file_picker_callback: function(callback, value, meta) {
@@ -673,6 +731,72 @@
         });
     </script>
 
+    <script>
+        $('#youtube_content').show('fast');
+        $('#pdf_content').hide('fast');
+        $('input[name="content_type"]').on("click", function(e) {
+            var content_type = $(this).val();
+            if (content_type == "1") {
+                $('#youtube_content').show('fast');
+                $('#pdf_content').hide('fast');
+            } else if (content_type == "2") {
+                $('#pdf_content').show('fast');
+                $('#youtube_content').hide('fast');
+            }
+        });
+        $('input[name="edit_content_type"]').on("click", function(e) {
+            var content_type = $(this).val();
+            if (content_type == "1") {
+                $('#edit_youtube_content').show('fast');
+                $('#edit_pdf_content').hide('fast');
+            } else if (content_type == "2") {
+                $('#edit_pdf_content').show('fast');
+                $('#edit_youtube_content').hide('fast');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        var _URL = window.URL || window.webkitURL;
+
+        $("#file").change(function(e) {
+            var file, img;
+            file = this.files[0];
+            var maxSize = 500 * 1024 * 1024; // 500MB
+
+            if (file.type !== 'application/pdf') {
+                $('#file').val('');
+                $('#file_error_msg').html('<?= INVALID_FILE_TYPE; ?>');
+                $('#file_error_msg').show().delay(3000).fadeOut();
+                return;
+            }
+            if (file.size > maxSize) {
+                $('#file').val('');
+                $('#file_error_msg').html('<?= FILE_SIZE_EXCEEDED; ?>');
+                $('#file_error_msg').show().delay(3000).fadeOut();
+                return;
+            }
+        });
+
+
+        $("#update_file").change(function(e) {
+            var file, img;
+            file = this.files[0];
+            var maxSize = 500 * 1024 * 1024; // 500MB
+
+            if (file.type !== 'application/pdf') {
+                $('#update_file').val('');
+                $('#update_file_error_msg').html('<?= INVALID_FILE_TYPE; ?>');
+                $('#update_file_error_msg').show().delay(3000).fadeOut();
+                return;
+            }
+            if (file.size > maxSize) {
+                $('#update_file').val('');
+                $('#update_file_error_msg').html('<?= FILE_SIZE_EXCEEDED; ?>');
+                $('#update_file_error_msg').show().delay(3000).fadeOut();
+                return;
+            }
+        });
+    </script>
 </body>
 
 </html>

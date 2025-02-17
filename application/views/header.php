@@ -7,29 +7,45 @@
                 <?php
                 if (!ALLOW_MODIFICATION) {
                 ?>
-                    <span class="right badge badge-danger">Modification in demo version is not allowed</span>
+                    <span class="right badge badge-danger"><?= lang('Modification in demo version is not allowed.'); ?></span>
                 <?php } ?>
             </li>
-
         </ul>
     </form>
     <ul class="navbar-nav navbar-right">
+        <li class="dropdown dropdown-list-toggle">
+            <a href="#" data-toggle="dropdown" class="nav-link nav-link-lg" aria-expanded="false">
+                <h6>
+                    <em class="fas fa-language"></em>
+                    <?= ucwords(get_user_permissions($this->session->userdata('authId'))['language'] ?? '') ?>
+                </h6>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <?php foreach (panel_languages() as $value) { ?>
+                    <a href="<?php echo base_url('System_Languages/switch/') . $value; ?>" class="dropdown-item text-decoration-none <?php if (get_user_permissions($this->session->userdata('authId'))['language'] == $value) echo 'active'; ?>">
+                        <div class="dropdown-item-desc">
+                            <b><?= ucwords($value) ?></b>
+                        </div>
+                    </a>
+                <?php } ?>
+            </div>
+        </li>
         <li class="dropdown">
             <a href="<?= base_url(); ?>" data-toggle="dropdown" class="nav-link dropdown-toggle  nav-link-lg nav-link-user">
                 <span class="user_profile_icon"><i class="fa fa-user-circle" aria-hidden="true"></i> </span>
-                <div class="d-sm-none d-lg-inline-block">Hi, <?= ucwords($this->session->userdata('authName')); ?></div>
+                <div class="d-sm-none d-lg-inline-block"><?= lang('hi'); ?>, <?= ucwords($this->session->userdata('authName')); ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <?php if ($this->session->userdata('authStatus')) { ?>
                     <a href="<?php echo base_url(); ?>profile" class="dropdown-item has-icon">
-                        <em class="fas fa-user"></em> Profile
+                        <em class="fas fa-user"></em> <?= lang('profile'); ?>
                     </a>
                 <?php } ?>
                 <a href="<?php echo base_url(); ?>resetpassword" class="dropdown-item has-icon">
-                    <em class="fas fa-key"></em> Reset Password
+                    <em class="fas fa-key"></em> <?= lang('reset_password'); ?>
                 </a>
                 <a href="<?php echo base_url(); ?>logout" class="dropdown-item has-icon">
-                    <em class="fas fa-sign-out-alt"></em> Logout
+                    <em class="fas fa-sign-out-alt"></em> <?= lang('logout'); ?>
                 </a>
             </div>
         </li>
@@ -53,213 +69,218 @@
                 </a>
             </div>
             <li>
-                <a class="nav-link" href="<?= base_url(); ?>dashboard"><em class="fas fa-home"></em> <span>Dashboard</span></a>
+                <a class="nav-link" href="<?= base_url(); ?>dashboard"><em class="fas fa-home"></em> <span><?= lang('dashboard'); ?></span></a>
             </li>
             <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'questions') || has_permissions('read', 'questions') || has_permissions('read', 'question_report')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em><span>Quiz Zone</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em><span><?= lang('quiz_zone'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'categories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>main-category">Main Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>main-category"><?= lang('main_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'subcategories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>sub-category">Sub Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>sub-category"><?= lang('sub_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'category_order')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>category-order">Category Order</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'questions')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>create-questions">Create Questions</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>create-questions"><?= lang('create_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'questions')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>manage-questions">View Questions</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>manage-questions"><?= lang('view_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'questions')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>import-questions"> Import Questions</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>import-questions"> <?= lang('import_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'question_report')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>question-reports"> Question Reports</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>question-reports"> <?= lang('question_reports'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'daily_quiz')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url(); ?>daily-quiz"><em class="fas fa-question"></em> <span>Daily Quiz</span></a>
+                    <a class="nav-link" href="<?= base_url(); ?>daily-quiz"><em class="fas fa-question"></em> <span><?= lang('daily_quiz'); ?></span></a>
                 </li>
             <?php } ?>
 
             <?php if (has_permissions('read', 'manage_contest') || has_permissions('read', 'manage_contest_question') || has_permissions('read', 'import_contest_question')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em> <span>Contests</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em> <span><?= lang('contests'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'manage_contest')) { ?>
-                            <li><a href="<?= base_url(); ?>contest"> Manage Contest</a></li>
+                            <li><a href="<?= base_url(); ?>contest"> <?= lang('manage_contest'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'manage_contest_question')) { ?>
-                            <li><a href="<?= base_url(); ?>contest-questions"> Manage Questions</a></li>
+                            <li><a href="<?= base_url(); ?>contest-questions"> <?= lang('manage_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'manage_contest_question')) { ?>
-                            <li><a href="<?= base_url(); ?>contest-questions-import"> Import Questions</a></li>
+                            <li><a href="<?= base_url(); ?>contest-questions-import"> <?= lang('import_questions'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('read', 'fun_n_learn')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book-open"></em><span>Fun 'N' Learn</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book-open"></em><span><?= lang('fun_n_learn'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'categories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>fun-n-learn-category">Main Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>fun-n-learn-category"><?= lang('main_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'subcategories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>fun-n-learn-subcategory">Sub Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>fun-n-learn-subcategory"><?= lang('sub_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'category_order')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>fun-n-learn-category-order">Category Order</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>fun-n-learn-category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'fun_n_learn')) { ?>
-                            <li><a class="nav-link" href="<?= base_url() ?>fun-n-learn">Manage Fun 'N' Learn</a></li>
+                            <li><a class="nav-link" href="<?= base_url() ?>fun-n-learn"><?= lang('manage_fun_n_learn'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('read', 'guess_the_word')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-atom"></em><span>Guess The Word</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-atom"></em><span><?= lang('guess_the_word'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'categories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>guess-the-word-category">Main Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>guess-the-word-category"><?= lang('main_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'subcategories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>guess-the-word-subcategory">Sub Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>guess-the-word-subcategory"><?= lang('sub_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'category_order')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>guess-the-word-category-order">Category Order</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>guess-the-word-category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'guess_the_word')) { ?>
-                            <li><a class="nav-link" href="<?= base_url() ?>guess-the-word">Manage Guess The Word</a></li>
+                            <li><a class="nav-link" href="<?= base_url() ?>guess-the-word"><?= lang('manage_guess_the_word'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('read', 'audio_question')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-microphone-alt"></em><span>Audio Questions</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-microphone-alt"></em><span><?= lang('audio_questions'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'categories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>audio-question-category">Main Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>audio-question-category"><?= lang('main_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'subcategories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>audio-question-subcategory">Sub Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>audio-question-subcategory"><?= lang('sub_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'category_order')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>audio-question-category-order">Category Order</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>audio-question-category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'audio_question')) { ?>
-                            <li><a class="nav-link" href="<?= base_url() ?>audio-question">Manage Audio Questions</a></li>
+                            <li><a class="nav-link" href="<?= base_url() ?>audio-question"><?= lang('manage_audio_questions'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'maths_questions') || has_permissions('read', 'maths_questions')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book-open"></em><span>Maths Quiz</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book-open"></em><span><?= lang('maths_quiz'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'categories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>maths-question-category">Main Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>maths-question-category"><?= lang('main_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'subcategories')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>maths-question-subcategory">Sub Category</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>maths-question-subcategory"><?= lang('sub_category'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'category_order')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>maths-question-category-order">Category Order</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>maths-question-category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'maths_questions')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>create-maths-questions">Create Questions</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>create-maths-questions"><?= lang('create_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'maths_questions')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>manage-maths-questions">View Questions</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>manage-maths-questions"><?= lang('view_questions'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'exam_module')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book"></em><span>Exam Module</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book"></em><span><?= lang('exam_module'); ?></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="<?= base_url(); ?>exam-module">Exam Module</a></li>
-                        <li><a class="nav-link" href="<?= base_url(); ?>exam-module-questions-import">Import Exam Question</a></li>
+                        <li><a class="nav-link" href="<?= base_url(); ?>exam-module"><?= lang('exam_module'); ?></a></li>
+                        <li><a class="nav-link" href="<?= base_url(); ?>exam-module-questions-import"><?= lang('import_exam_question'); ?></a></li>
                     </ul>
                 </li>
             <?php } ?>
 
             <?php if (has_permissions('read', 'users')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url() ?>users"><em class="fas fa-users"></em> <span>Users</span></a>
+                    <a class="nav-link" href="<?= base_url() ?>users"><em class="fas fa-users"></em> <span><?= lang('users'); ?></span></a>
                 </li>
             <?php } ?>
             <?php if (has_permissions('read', 'in_app_users')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url() ?>in-app-users"><em class="fas fa-users"></em> <span>In App Users</span></a>
+                    <a class="nav-link" href="<?= base_url() ?>in-app-users"><em class="fas fa-users"></em> <span><?= lang('in_app_users'); ?></span></a>
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('authStatus')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url() ?>activity-tracker"><em class="fas fa-chart-bar"></em> <span>Activity Tracker</span></a>
+                    <a class="nav-link" href="<?= base_url() ?>activity-tracker"><em class="fas fa-chart-bar"></em> <span><?= lang('activity_tracker'); ?></span></a>
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('authStatus')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url() ?>payment-requests"><em class="fas fa-rupee-sign"></em> <span>Payment Requests</span></a>
+                    <a class="nav-link" href="<?= base_url() ?>payment-requests"><em class="fas fa-rupee-sign"></em> <span><?= lang('payment_requests'); ?></span></a>
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('authStatus')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-th"></em><span>Leaderboard</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-th"></em><span><?= lang('leaderboard'); ?></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="<?= base_url(); ?>global-leaderboard">All</a></li>
-                        <li><a class="nav-link" href="<?= base_url(); ?>monthly-leaderboard">Monthly</a></li>
-                        <li><a class="nav-link" href="<?= base_url(); ?>daily-leaderboard">Daily</a></li>
+                        <li><a class="nav-link" href="<?= base_url(); ?>global-leaderboard"><?= lang('all'); ?></a></li>
+                        <li><a class="nav-link" href="<?= base_url(); ?>monthly-leaderboard"><?= lang('monthly'); ?></a></li>
+                        <li><a class="nav-link" href="<?= base_url(); ?>daily-leaderboard"><?= lang('daily'); ?></a></li>
                     </ul>
                 </li>
             <?php } ?>
             <?php if (is_language_mode_enabled()) { ?>
                 <?php if (has_permissions('read', 'languages')) { ?>
                     <li>
-                        <a class="nav-link" href="<?= base_url() ?>languages"><em class="fas fa-language"></em> <span>Languages</span></a>
+                        <a class="nav-link" href="<?= base_url() ?>languages"><em class="fas fa-language"></em> <span><?= lang('languages'); ?></span></a>
                     </li>
                 <?php } ?>
             <?php } ?>
+            <?php if (has_permissions('read', 'system_languages')) { ?>
+                <li>
+                    <a class="nav-link" href="<?= base_url() ?>system-languages"><em class="fas fa-language"></em> <span><?= lang('system_languages') ?></span></a>
+                </li>
+            <?php } ?>
             <?php if (has_permissions('read', 'system_configuration')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span>Settings</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span><?= lang('settings'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'system_configuration')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>system-configurations">System Configurations</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>system-configurations"><?= lang('system_configurations'); ?></a></li>
                         <?php } ?>
 
 
                         <?php if (has_permissions('read', 'system_configuration')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>system-utilities">System Utilities</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>system-utilities"><?= lang('system_utilities'); ?></a></li>
                         <?php } ?>
 
                         <?php if (has_permissions('read', 'authentication_settings')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>authentication-settings">Authentication Settings</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>authentication-settings"><?= lang('authentication_settings'); ?></a></li>
                         <?php } ?>
 
                         <?php if ($this->session->userdata('authStatus')) { ?>
-                            <li><a class="nav-link" href="<?= base_url(); ?>firebase-configurations">Firebase Configurations</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>payment-settings">Payment Settings</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>ads-settings">Ads. Settings</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>badges-settings">Badges Settings</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>coin-store-settings">Coin Store Settings</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>in-app-settings">In App Settings</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>about-us">About Us</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>contact-us">Contact Us</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>instructions">How to Play</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>privacy-policy">Privacy Policy</a></li>
-                            <li><a class="nav-link" href="<?= base_url(); ?>terms-conditions">Terms Conditions</a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>firebase-configurations"><?= lang('firebase_configurations'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>payment-settings"><?= lang('payment_settings'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>ads-settings"><?= lang('ads_settings'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>badges-settings"><?= lang('badges_settings'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>coin-store-settings"><?= lang('coin_store_settings'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>in-app-settings"><?= lang('in_app_settings'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>about-us"><?= lang('about_us'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>contact-us"><?= lang('contact_us'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>instructions"><?= lang('how_to_play'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>privacy-policy"><?= lang('privacy_policy'); ?></a></li>
+                            <li><a class="nav-link" href="<?= base_url(); ?>terms-conditions"><?= lang('term_conditions'); ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>
@@ -267,21 +288,21 @@
 
             <?php if (has_permissions('read', 'send_notification')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url(); ?>send-notifications"><em class="fas fa-bullhorn"></em> <span>Send Notifications</span></a>
+                    <a class="nav-link" href="<?= base_url(); ?>send-notifications"><em class="fas fa-bullhorn"></em> <span><?= lang('send_notifications'); ?></span></a>
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('authStatus')) { ?>
                 <li>
-                    <a class="nav-link" href="<?= base_url(); ?>user-accounts-rights"><em class="fas fa-user"></em> <span>User Accounts and Rights</span></a>
+                    <a class="nav-link" href="<?= base_url(); ?>user-accounts-rights"><em class="fas fa-user"></em> <span><?= lang('user_accounts_and_rights'); ?></span></a>
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('authStatus')) { ?>
                 <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span>Web Settings</span></a>
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span><?= lang('web_settings'); ?></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="<?= base_url('web-settings'); ?>">Settings</a></li>
-                        <li><a class="nav-link" href="<?= base_url('web-home-settings'); ?>">Home Settings</a></li>
-                        <li><a class="nav-link" href="<?= base_url('sliders'); ?>">Sliders</a></li>
+                        <li><a class="nav-link" href="<?= base_url('web-settings'); ?>"><?= lang('settings'); ?></a></li>
+                        <li><a class="nav-link" href="<?= base_url('web-home-settings'); ?>"><?= lang('home_settings'); ?></a></li>
+                        <li><a class="nav-link" href="<?= base_url('sliders'); ?>"><?= lang('sliders'); ?></a></li>
                     </ul>
                 </li>
             <?php } ?>

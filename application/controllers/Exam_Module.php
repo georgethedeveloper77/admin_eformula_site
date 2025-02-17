@@ -24,15 +24,15 @@ class Exam_Module extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'exam_module')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Exam_Module_model->import_data();
                     if ($data == "1") {
-                        $this->session->set_flashdata('success', 'CSV file is successfully imported!');
+                        $this->session->set_flashdata('success', lang('csv_file_successfully_imported'));
                     } else if ($data == "0") {
-                        $this->session->set_flashdata('error', 'Please upload data in CSV file!');
+                        $this->session->set_flashdata('error', lang('please_upload_data_in_csv_file'));
                     } else if ($data == "2") {
-                        $this->session->set_flashdata('error', 'Please fill all the data in CSV file!');
+                        $this->session->set_flashdata('error', lang('please_fill_all_the_data_in_csv_file'));
                     } else {
                         $this->session->set_flashdata('error', $data);
                     }
@@ -60,33 +60,33 @@ class Exam_Module extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'exam_module')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Exam_Module_model->add_data();
-                    $this->session->set_flashdata('success', 'Exam Module created successfully.! ');
+                    $this->session->set_flashdata('success', lang('exam_module_created_successfully'));
                 }
                 redirect('exam-module');
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'exam_module')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Exam_Module_model->update_data();
-                    $this->session->set_flashdata('success', 'Exam Module updated successfully.!');
+                    $this->session->set_flashdata('success', lang('exam_module_updated_successfully'));
                 }
                 redirect('exam-module');
             }
             if ($this->input->post('btnupdatestatus')) {
                 if (!has_permissions('update', 'exam_module')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $contest_id = $this->input->post('update_id');
                     $res = $this->db->where('exam_module_id', $contest_id)->get('tbl_exam_module_question')->result();
                     if (empty($res)) {
-                        $this->session->set_flashdata('error', 'No enough question for active exam module.!');
+                        $this->session->set_flashdata('error',  lang('not_enought_question_for_active_exam_module'));
                     } else {
                         $this->Exam_Module_model->update_exam_module_status();
-                        $this->session->set_flashdata('success', 'Exam Module updated successfully.!');
+                        $this->session->set_flashdata('success', lang('exam_module_updated_successfully'));
                     }
                 }
                 redirect('exam-module');
@@ -116,10 +116,10 @@ class Exam_Module extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'exam_module')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Exam_Module_model->add_exam_module_question();
-                    $this->session->set_flashdata('success', 'Question created successfully.! ');
+                    $this->session->set_flashdata('success', lang('question_created_successfully'));
                 }
                 redirect('exam-module-questions/' . $id);
             }
@@ -145,10 +145,10 @@ class Exam_Module extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'exam_module')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Exam_Module_model->update_exam_module_question();
-                    $this->session->set_flashdata('success', 'Question updated successfully.!');
+                    $this->session->set_flashdata('success', lang('question_updated_successfully'));
                 }
                 redirect('exam-module-questions-edit/' . $id);
             }

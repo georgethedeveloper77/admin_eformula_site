@@ -29,13 +29,13 @@ class Questions extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Question_model->add_data();
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question created successfully.! ');
+                        $this->session->set_flashdata('success', lang('question_created_successfully'));
                     }
                     $type = $this->uri->segment(1);
                     $setData["$type"] = [
@@ -49,13 +49,13 @@ class Questions extends CI_Controller
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Question_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
                 redirect('create-questions');
@@ -80,13 +80,13 @@ class Questions extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Question_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
                 redirect('manage-questions');
@@ -112,27 +112,15 @@ class Questions extends CI_Controller
     {
         if ($this->input->post('btnadd')) {
             if (!has_permissions('update', 'import_question')) {
-                $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
             } else {
-                // $filename = $_FILES['file']['tmp_name'];
-                // $file = fopen($filename, "r");
-                // $count = 0;
-                // while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE) {
-                //     if (count($emapData) > 2) {
-                //         $count++;
-                //     if ($count > 1) {
-                //         echo $emapData[1].'-';
-                //     }
-                //     }
-                // }
-                // return false;
                 $data = $this->Question_model->import_data();
                 if ($data == "1") {
-                    $this->session->set_flashdata('success', 'CSV file is successfully imported!');
+                    $this->session->set_flashdata('success', lang('csv_file_successfully_imported'));
                 } else if ($data == "0") {
-                    $this->session->set_flashdata('error', 'Please upload data in CSV file!');
+                    $this->session->set_flashdata('error',  lang('please_upload_data_in_csv_file'));
                 } else if ($data == "2") {
-                    $this->session->set_flashdata('error', 'Please fill all the data in CSV file!');
+                    $this->session->set_flashdata('error', lang('please_fill_all_the_data_in_csv_file'));
                 } else {
                     $this->session->set_flashdata('error', $data);
                 }
@@ -154,13 +142,13 @@ class Questions extends CI_Controller
     public function add_daily_quiz()
     {
         if (!has_permissions('update', 'daily_quiz')) {
-            $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+            $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
         } else {
             $language_id = $this->input->post('language_id');
             $question_ids = $this->input->post('question_ids');
             $daily_quiz_date = $this->input->post('daily_quiz_date');
             $this->Question_model->add_daily_quiz($language_id, $question_ids, $daily_quiz_date);
-            $this->session->set_flashdata('success', 'Daily Quiz created successfully.! ');
+            $this->session->set_flashdata('success', lang('daily_quiz_created_successfully'));
         }
         return TRUE;
     }
@@ -202,13 +190,13 @@ class Questions extends CI_Controller
         } else {
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Question_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
                 redirect('question-reports');
@@ -224,13 +212,13 @@ class Questions extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Question_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
                 redirect('question-reports');

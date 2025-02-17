@@ -36,20 +36,96 @@ class Setting_model extends CI_Model
     public function update_system_utility()
     {
         $settings = [
-            'maximum_winning_coins', 'minimum_coins_winning_percentage', 'quiz_winning_percentage', 'score',
-            'answer_mode', 'welcome_bonus_coin', 'review_answers_deduct_coin', 'question_shuffle_mode', 'option_shuffle_mode',
-            'quiz_zone_mode', 'quiz_zone_fix_level_question', 'quiz_zone_total_level_question', 'quiz_zone_duration', 'quiz_zone_lifeline_deduct_coin', 'quiz_zone_wrong_answer_deduct_score', 'quiz_zone_correct_answer_credit_score',
-            'guess_the_word_question', 'guess_the_word_fix_question', 'guess_the_word_total_question', 'guess_the_word_seconds', 'guess_the_word_max_hints', 'guess_the_word_max_winning_coin', 'guess_the_word_wrong_answer_deduct_score', 'guess_the_word_correct_answer_credit_score',
-            'audio_mode_question', 'audio_quiz_fix_question', 'audio_quiz_total_question', 'total_audio_time', 'audio_quiz_seconds', 'audio_quiz_wrong_answer_deduct_score', 'audio_quiz_correct_answer_credit_score',
-            'maths_quiz_mode', 'maths_quiz_fix_question', 'maths_quiz_total_question', 'maths_quiz_seconds', 'maths_quiz_wrong_answer_deduct_score', 'maths_quiz_correct_answer_credit_score',
-            'fun_n_learn_question', 'fun_n_learn_quiz_fix_question', 'fun_n_learn_quiz_total_question', 'fun_and_learn_time_in_seconds', 'fun_n_learn_quiz_wrong_answer_deduct_score', 'fun_n_learn_quiz_correct_answer_credit_score',
-            'true_false_mode', 'true_false_quiz_fix_question', 'true_false_quiz_total_question', 'true_false_quiz_in_seconds', 'true_false_quiz_wrong_answer_deduct_score', 'true_false_quiz_correct_answer_credit_score',
-            'battle_mode_one', 'battle_mode_one_category', 'battle_mode_one_fix_question', 'battle_mode_one_total_question', 'battle_mode_one_in_seconds', 'battle_mode_one_wrong_answer_deduct_score', 'battle_mode_one_correct_answer_credit_score', 'battle_mode_one_quickest_correct_answer_extra_score', 'battle_mode_one_second_quickest_correct_answer_extra_score', 'battle_mode_one_code_char', 'battle_mode_one_entry_coin',
-            'battle_mode_group', 'battle_mode_group_category', 'battle_mode_group_fix_question', 'battle_mode_group_total_question', 'battle_mode_group_in_seconds', 'battle_mode_group_wrong_answer_deduct_score', 'battle_mode_group_correct_answer_credit_score', 'battle_mode_group_quickest_correct_answer_extra_score', 'battle_mode_group_second_quickest_correct_answer_extra_score', 'battle_mode_group_code_char', 'battle_mode_group_entry_coin',
-            'battle_mode_random', 'battle_mode_random_category', 'battle_mode_random_fix_question', 'battle_mode_random_total_question', 'battle_mode_random_in_seconds', 'battle_mode_random_wrong_answer_deduct_score', 'battle_mode_random_correct_answer_credit_score', 'battle_mode_random_quickest_correct_answer_extra_score', 'battle_mode_random_second_quickest_correct_answer_extra_score', 'battle_mode_random_search_duration', 'battle_mode_random_entry_coin',
-            'self_challenge_mode', 'self_challenge_max_minutes', 'self_challenge_max_questions',
-            'exam_module', 'exam_module_resume_exam_timeout',
-            'contest_mode', 'contest_mode_wrong_deduct_score', 'contest_mode_correct_credit_score'
+            'maximum_winning_coins',
+            'minimum_coins_winning_percentage',
+            'quiz_winning_percentage',
+            'score',
+            'answer_mode',
+            'welcome_bonus_coin',
+            'review_answers_deduct_coin',
+            'question_shuffle_mode',
+            'option_shuffle_mode',
+            'quiz_zone_mode',
+            'quiz_zone_fix_level_question',
+            'quiz_zone_total_level_question',
+            'quiz_zone_duration',
+            'quiz_zone_lifeline_deduct_coin',
+            'quiz_zone_wrong_answer_deduct_score',
+            'quiz_zone_correct_answer_credit_score',
+            'guess_the_word_question',
+            'guess_the_word_fix_question',
+            'guess_the_word_total_question',
+            'guess_the_word_seconds',
+            'guess_the_word_max_hints',
+            'guess_the_word_max_winning_coin',
+            'guess_the_word_wrong_answer_deduct_score',
+            'guess_the_word_correct_answer_credit_score',
+            'audio_mode_question',
+            'audio_quiz_fix_question',
+            'audio_quiz_total_question',
+            'total_audio_time',
+            'audio_quiz_seconds',
+            'audio_quiz_wrong_answer_deduct_score',
+            'audio_quiz_correct_answer_credit_score',
+            'maths_quiz_mode',
+            'maths_quiz_fix_question',
+            'maths_quiz_total_question',
+            'maths_quiz_seconds',
+            'maths_quiz_wrong_answer_deduct_score',
+            'maths_quiz_correct_answer_credit_score',
+            'fun_n_learn_question',
+            'fun_n_learn_quiz_fix_question',
+            'fun_n_learn_quiz_total_question',
+            'fun_and_learn_time_in_seconds',
+            'fun_n_learn_quiz_wrong_answer_deduct_score',
+            'fun_n_learn_quiz_correct_answer_credit_score',
+            'true_false_mode',
+            'true_false_quiz_fix_question',
+            'true_false_quiz_total_question',
+            'true_false_quiz_in_seconds',
+            'true_false_quiz_wrong_answer_deduct_score',
+            'true_false_quiz_correct_answer_credit_score',
+            'battle_mode_one',
+            'battle_mode_one_category',
+            'battle_mode_one_fix_question',
+            'battle_mode_one_total_question',
+            'battle_mode_one_in_seconds',
+            'battle_mode_one_wrong_answer_deduct_score',
+            'battle_mode_one_correct_answer_credit_score',
+            'battle_mode_one_quickest_correct_answer_extra_score',
+            'battle_mode_one_second_quickest_correct_answer_extra_score',
+            'battle_mode_one_code_char',
+            'battle_mode_one_entry_coin',
+            'battle_mode_group',
+            'battle_mode_group_category',
+            'battle_mode_group_fix_question',
+            'battle_mode_group_total_question',
+            'battle_mode_group_in_seconds',
+            'battle_mode_group_wrong_answer_deduct_score',
+            'battle_mode_group_correct_answer_credit_score',
+            'battle_mode_group_quickest_correct_answer_extra_score',
+            'battle_mode_group_second_quickest_correct_answer_extra_score',
+            'battle_mode_group_code_char',
+            'battle_mode_group_entry_coin',
+            'battle_mode_random',
+            'battle_mode_random_category',
+            'battle_mode_random_fix_question',
+            'battle_mode_random_total_question',
+            'battle_mode_random_in_seconds',
+            'battle_mode_random_wrong_answer_deduct_score',
+            'battle_mode_random_correct_answer_credit_score',
+            'battle_mode_random_quickest_correct_answer_extra_score',
+            'battle_mode_random_second_quickest_correct_answer_extra_score',
+            'battle_mode_random_search_duration',
+            'battle_mode_random_entry_coin',
+            'self_challenge_mode',
+            'self_challenge_max_minutes',
+            'self_challenge_max_questions',
+            'exam_module',
+            'exam_module_resume_exam_timeout',
+            'contest_mode',
+            'contest_mode_wrong_deduct_score',
+            'contest_mode_correct_credit_score'
         ];
 
 
@@ -73,12 +149,26 @@ class Setting_model extends CI_Model
     {
 
         $settings = [
-            'system_timezone', 'system_timezone_gmt',
-            'app_link', 'more_apps',
-            'ios_app_link', 'ios_more_apps',
-            'refer_coin', 'earn_coin', 'app_version', 'app_version_ios', 'force_update',
-            'true_value', 'false_value', 'shareapp_text', 'app_maintenance',
-            'language_mode', 'option_e_mode', 'daily_quiz_mode', 'latex_mode', 'exam_latex_mode'
+            'system_timezone',
+            'system_timezone_gmt',
+            'app_link',
+            'more_apps',
+            'ios_app_link',
+            'ios_more_apps',
+            'refer_coin',
+            'earn_coin',
+            'app_version',
+            'app_version_ios',
+            'force_update',
+            'true_value',
+            'false_value',
+            'shareapp_text',
+            'app_maintenance',
+            'language_mode',
+            'option_e_mode',
+            'daily_quiz_mode',
+            'latex_mode',
+            'exam_latex_mode'
         ];
 
         if (isset($type['coins'])) {
@@ -193,10 +283,20 @@ class Setting_model extends CI_Model
     public function update_ads()
     {
         $settings = [
-            'in_app_ads_mode', 'ads_type',
-            'android_banner_id', 'android_interstitial_id', 'android_rewarded_id',
-            'ios_banner_id', 'ios_interstitial_id', 'ios_rewarded_id',
-            'android_game_id', 'ios_game_id', 'daily_ads_visibility', 'daily_ads_coins', 'daily_ads_counter', 'reward_coin'
+            'in_app_ads_mode',
+            'ads_type',
+            'android_banner_id',
+            'android_interstitial_id',
+            'android_rewarded_id',
+            'ios_banner_id',
+            'ios_interstitial_id',
+            'ios_rewarded_id',
+            'android_game_id',
+            'ios_game_id',
+            'daily_ads_visibility',
+            'daily_ads_coins',
+            'daily_ads_counter',
+            'reward_coin'
         ];
 
         foreach ($settings as $type) {
@@ -512,7 +612,9 @@ class Setting_model extends CI_Model
                 'tbl_exam_module_question' => EXAM_QUESTION_IMG_PATH,
                 'tbl_maths_question' => MATHS_QUESTION_IMG_PATH,
                 'tbl_slider' => SLIDER_IMG_PATH,
-                'tbl_coin_store' => COIN_STORE_IMG_PATH
+                'tbl_coin_store' => COIN_STORE_IMG_PATH,
+                'tbl_fun_n_learn' => FUN_LEARN_IMG_PATH,
+                'tbl_fun_n_learn_question' => FUN_LEARN_QUESTION_IMG_PATH,
             );
             if ($table == 'tbl_audio_question') {
                 $query = $this->db->query("SELECT `audio` FROM " . $table . " WHERE id in ( " . $ids . " )");
@@ -521,6 +623,22 @@ class Setting_model extends CI_Model
                     if (!empty($audio->audio) && file_exists($path[$table] . $audio->audio)) {
                         unlink($path[$table] . $audio->audio);
                     }
+                }
+            } else if ($table == 'tbl_fun_n_learn') {
+                $query = $this->db->query("SELECT id,content_data FROM " . $table . " WHERE id in ( " . $ids . " )");
+                $res = $query->result();
+                foreach ($res as $contentData) {
+                    if (!empty($contentData->content_data) && file_exists($path[$table] . $contentData->content_data)) {
+                        unlink($path[$table] . $contentData->content_data);
+                    }
+                    $id = $contentData->id;
+                    $question_data = $this->db->select('image')->where('fun_n_learn_id', $id)->get('tbl_fun_n_learn_question')->result_array();
+                    foreach ($question_data as $que1) {
+                        if (!empty($que1->image) && file_exists(FUN_LEARN_QUESTION_IMG_PATH . $que1->image)) {
+                            unlink(FUN_LEARN_QUESTION_IMG_PATH . $que1->image);
+                        }
+                    }
+                    $this->db->where('fun_n_learn_id', $id)->delete('tbl_fun_n_learn_question');
                 }
             } else {
                 $query = $this->db->query("SELECT `image` FROM " . $table . " WHERE id in ( " . $ids . " )");
@@ -623,20 +741,46 @@ class Setting_model extends CI_Model
         }
         $settings = [
             // 'data_ad_client','data_ad_slot',
-            'firebase_api_key', 'firebase_auth_domain', 'firebase_database_url', 'firebase_project_id', 'firebase_storage_bucket', 'firebase_messager_sender_id', 'firebase_app_id', 'firebase_measurement_id',
+            'firebase_api_key',
+            'firebase_auth_domain',
+            'firebase_database_url',
+            'firebase_project_id',
+            'firebase_storage_bucket',
+            'firebase_messager_sender_id',
+            'firebase_app_id',
+            'firebase_measurement_id',
             // 'meta_description', 'meta_keywords',
             'rtl_support',
-            'company_name_footer', 'email_footer', 'phone_number_footer', 'web_link_footer', 'company_text', 'address_text',
+            'company_name_footer',
+            'email_footer',
+            'phone_number_footer',
+            'web_link_footer',
+            'company_text',
+            'address_text',
             // 'favicon', 
-            'header_logo', 'footer_logo', 'sticky_header_logo',
-            'quiz_zone_icon', 'daily_quiz_icon', 'true_false_icon', 'fun_learn_icon', 'self_challange_icon', 'contest_play_icon', 'one_one_battle_icon', 'group_battle_icon', 'audio_question_icon', 'math_mania_icon', 'exam_icon', 'guess_the_word_icon',
-            'primary_color', 'footer_color', 'social_media'
+            'header_logo',
+            'footer_logo',
+            'sticky_header_logo',
+            'quiz_zone_icon',
+            'daily_quiz_icon',
+            'true_false_icon',
+            'fun_learn_icon',
+            'self_challange_icon',
+            'contest_play_icon',
+            'one_one_battle_icon',
+            'group_battle_icon',
+            'audio_question_icon',
+            'math_mania_icon',
+            'exam_icon',
+            'guess_the_word_icon',
+            'primary_color',
+            'footer_color',
+            'social_media'
         ];
 
         foreach ($settings as $type) {
             // get post data 
             $message = $this->input->post($type);
-
             // Check that data exists or not 
             $res = $this->db->where('type', $type)->get('tbl_web_settings')->row_array();
             if ($res) {
@@ -756,7 +900,7 @@ class Setting_model extends CI_Model
                             continue;
                         }
                     }
-                    $data = ['message' => $message];
+                    $data = ['message' => trim($message)];
                 }
                 $this->db->where('type', $type)->update('tbl_web_settings', $data);
             } else {
@@ -820,7 +964,7 @@ class Setting_model extends CI_Model
                             $message = $data['file_name'];
                         }
                     }
-                    $data = ['message' => $message, 'type' => $type];
+                    $data = ['message' => trim($message), 'type' => $type];
                 }
 
                 $this->db->insert('tbl_web_settings', $data);
@@ -835,9 +979,45 @@ class Setting_model extends CI_Model
             mkdir(WEB_HOME_SETTINGS_LOGO_PATH, 0777, TRUE);
         }
         $settings = [
-            'section_1_mode', 'section1_heading', 'section1_title1', 'section1_title2', 'section1_title3', 'section1_image1', 'section1_image2', 'section1_image3', 'section1_desc1', 'section1_desc2', 'section1_desc3',
-            'section_2_mode', 'section2_heading', 'section2_title1', 'section2_title2', 'section2_title3', 'section2_title4', 'section2_desc1', 'section2_desc2', 'section2_desc3', 'section2_desc4', 'section2_image1', 'section2_image2', 'section2_image3', 'section2_image4',
-            'section_3_mode', 'section3_heading', 'section3_title1', 'section3_title2', 'section3_title3', 'section3_title4', 'section3_image1', 'section3_image2', 'section3_image3', 'section3_image4', 'section3_desc1', 'section3_desc2', 'section3_desc3', 'section3_desc4'
+            'section_1_mode',
+            'section1_heading',
+            'section1_title1',
+            'section1_title2',
+            'section1_title3',
+            'section1_image1',
+            'section1_image2',
+            'section1_image3',
+            'section1_desc1',
+            'section1_desc2',
+            'section1_desc3',
+            'section_2_mode',
+            'section2_heading',
+            'section2_title1',
+            'section2_title2',
+            'section2_title3',
+            'section2_title4',
+            'section2_desc1',
+            'section2_desc2',
+            'section2_desc3',
+            'section2_desc4',
+            'section2_image1',
+            'section2_image2',
+            'section2_image3',
+            'section2_image4',
+            'section_3_mode',
+            'section3_heading',
+            'section3_title1',
+            'section3_title2',
+            'section3_title3',
+            'section3_title4',
+            'section3_image1',
+            'section3_image2',
+            'section3_image3',
+            'section3_image4',
+            'section3_desc1',
+            'section3_desc2',
+            'section3_desc3',
+            'section3_desc4'
         ];
 
         foreach ($settings as $type) {
@@ -909,7 +1089,9 @@ class Setting_model extends CI_Model
     {
 
         $settings = [
-            'in_app_purchase_mode', 'app_package_name', 'shared_secrets'
+            'in_app_purchase_mode',
+            'app_package_name',
+            'shared_secrets'
         ];
 
         foreach ($settings as $type) {
@@ -941,7 +1123,10 @@ class Setting_model extends CI_Model
     public function auth_settings()
     {
         $settings = [
-            'gmail_login', 'email_login', 'phone_login', 'apple_login'
+            'gmail_login',
+            'email_login',
+            'phone_login',
+            'apple_login'
         ];
 
         foreach ($settings as $type) {

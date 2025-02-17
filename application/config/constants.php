@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
   |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | of this setting
   |
  */
-defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
+defined('SHOW_DEBUG_BACKTRACE') or define('SHOW_DEBUG_BACKTRACE', TRUE);
 
 /*
   |--------------------------------------------------------------------------
@@ -27,10 +27,10 @@ defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
   | always be used to set the mode correctly.
   |
  */
-defined('FILE_READ_MODE') OR define('FILE_READ_MODE', 0644);
-defined('FILE_WRITE_MODE') OR define('FILE_WRITE_MODE', 0666);
-defined('DIR_READ_MODE') OR define('DIR_READ_MODE', 0755);
-defined('DIR_WRITE_MODE') OR define('DIR_WRITE_MODE', 0755);
+defined('FILE_READ_MODE') or define('FILE_READ_MODE', 0644);
+defined('FILE_WRITE_MODE') or define('FILE_WRITE_MODE', 0666);
+defined('DIR_READ_MODE') or define('DIR_READ_MODE', 0755);
+defined('DIR_WRITE_MODE') or define('DIR_WRITE_MODE', 0755);
 
 /*
   |--------------------------------------------------------------------------
@@ -40,14 +40,14 @@ defined('DIR_WRITE_MODE') OR define('DIR_WRITE_MODE', 0755);
   | These modes are used when working with fopen()/popen()
   |
  */
-defined('FOPEN_READ') OR define('FOPEN_READ', 'rb');
-defined('FOPEN_READ_WRITE') OR define('FOPEN_READ_WRITE', 'r+b');
-defined('FOPEN_WRITE_CREATE_DESTRUCTIVE') OR define('FOPEN_WRITE_CREATE_DESTRUCTIVE', 'wb'); // truncates existing file data, use with care
-defined('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE') OR define('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE', 'w+b'); // truncates existing file data, use with care
-defined('FOPEN_WRITE_CREATE') OR define('FOPEN_WRITE_CREATE', 'ab');
-defined('FOPEN_READ_WRITE_CREATE') OR define('FOPEN_READ_WRITE_CREATE', 'a+b');
-defined('FOPEN_WRITE_CREATE_STRICT') OR define('FOPEN_WRITE_CREATE_STRICT', 'xb');
-defined('FOPEN_READ_WRITE_CREATE_STRICT') OR define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
+defined('FOPEN_READ') or define('FOPEN_READ', 'rb');
+defined('FOPEN_READ_WRITE') or define('FOPEN_READ_WRITE', 'r+b');
+defined('FOPEN_WRITE_CREATE_DESTRUCTIVE') or define('FOPEN_WRITE_CREATE_DESTRUCTIVE', 'wb'); // truncates existing file data, use with care
+defined('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE') or define('FOPEN_READ_WRITE_CREATE_DESTRUCTIVE', 'w+b'); // truncates existing file data, use with care
+defined('FOPEN_WRITE_CREATE') or define('FOPEN_WRITE_CREATE', 'ab');
+defined('FOPEN_READ_WRITE_CREATE') or define('FOPEN_READ_WRITE_CREATE', 'a+b');
+defined('FOPEN_WRITE_CREATE_STRICT') or define('FOPEN_WRITE_CREATE_STRICT', 'xb');
+defined('FOPEN_READ_WRITE_CREATE_STRICT') or define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
 
 /*
   |--------------------------------------------------------------------------
@@ -74,23 +74,24 @@ defined('FOPEN_READ_WRITE_CREATE_STRICT') OR define('FOPEN_READ_WRITE_CREATE_STR
   |       http://tldp.org/LDP/abs/html/exitcodes.html
   |
  */
-defined('EXIT_SUCCESS') OR define('EXIT_SUCCESS', 0); // no errors
-defined('EXIT_ERROR') OR define('EXIT_ERROR', 1); // generic error
-defined('EXIT_CONFIG') OR define('EXIT_CONFIG', 3); // configuration error
-defined('EXIT_UNKNOWN_FILE') OR define('EXIT_UNKNOWN_FILE', 4); // file not found
-defined('EXIT_UNKNOWN_CLASS') OR define('EXIT_UNKNOWN_CLASS', 5); // unknown class
-defined('EXIT_UNKNOWN_METHOD') OR define('EXIT_UNKNOWN_METHOD', 6); // unknown class member
-defined('EXIT_USER_INPUT') OR define('EXIT_USER_INPUT', 7); // invalid user input
-defined('EXIT_DATABASE') OR define('EXIT_DATABASE', 8); // database error
-defined('EXIT__AUTO_MIN') OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
-defined('EXIT__AUTO_MAX') OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+defined('EXIT_SUCCESS') or define('EXIT_SUCCESS', 0); // no errors
+defined('EXIT_ERROR') or define('EXIT_ERROR', 1); // generic error
+defined('EXIT_CONFIG') or define('EXIT_CONFIG', 3); // configuration error
+defined('EXIT_UNKNOWN_FILE') or define('EXIT_UNKNOWN_FILE', 4); // file not found
+defined('EXIT_UNKNOWN_CLASS') or define('EXIT_UNKNOWN_CLASS', 5); // unknown class
+defined('EXIT_UNKNOWN_METHOD') or define('EXIT_UNKNOWN_METHOD', 6); // unknown class member
+defined('EXIT_USER_INPUT') or define('EXIT_USER_INPUT', 7); // invalid user input
+defined('EXIT_DATABASE') or define('EXIT_DATABASE', 8); // database error
+defined('EXIT__AUTO_MIN') or define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
+defined('EXIT__AUTO_MAX') or define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 /* * ************************ Application Configuration ******************* */
 define('ALLOW_MODIFICATION', 1);
 //define('PERMISSION_ERROR_MSG', 'You are not authorize to operate on the module');
-define('PERMISSION_ERROR_MSG','Modification in demo version is not allowed.');
+define('PERMISSION_ERROR_MSG', 'Modification in demo version is not allowed.');
 
 //Image paths
+define('FILE_ALLOWED_TYPES', 'pdf|PDF');
 define('IMG_ALLOWED_TYPES', 'jpg|png|jpeg|JPG|PNG|JPEG|webp');
 define('IMG_ALLOWED_WITH_SVG_TYPES', 'jpg|png|jpeg|svg');
 
@@ -105,15 +106,19 @@ define('USER_IMG_PATH', 'images/profile/');
 define('LOGO_IMG_PATH', 'images/');
 define('BADGE_IMG_PATH', 'images/badges/');
 define('FUN_LEARN_IMG_PATH', 'images/fun-n-learn/');
+define('FUN_LEARN_QUESTION_IMG_PATH', 'images/fun-n-learn-question/');
 define('EXAM_QUESTION_IMG_PATH', 'images/exam-question/');
 define('MATHS_QUESTION_IMG_PATH', 'images/maths-questions/');
 define('SLIDER_IMG_PATH', 'images/slider/');
 define('WEB_SETTINGS_LOGO_PATH', 'images/web-settings/');
 define('WEB_SETTINGS_LOGO_IMG_ALLOWED_TYPES', 'jpg|png|jpeg|svg');
 define('WEB_HOME_SETTINGS_LOGO_PATH', 'images/web-home-settings/');
-define('LANGUAGE_FILE_PATH', 'upload/languages/');
-define('LANGUAGE_FILE_ALLOWED_TYPES', 'json');
+define('APP_LANGUAGE_FILE_PATH', 'upload/languages/app/');
+define('WEB_LANGUAGE_FILE_PATH', 'upload/languages/web/');
+define('LANGUAGE_FILE_ALLOWED_TYPES', 'json|JSON');
 define('COIN_STORE_IMG_PATH', 'images/coin-store/');
+define('LANGUAGE_PATH', 'application/language/');
+define('LANGUAGE_ALLOWED_TYPES', 'PHP|php');
 
 //audio path
 define('QUESTION_AUDIO_PATH', 'images/audio/');
@@ -133,6 +138,7 @@ define('AUDIO_ALLOW_MSG', 'Only Audio allow..!');
 define('INVALID_AUDIO_TYPE', 'Invalid Audio Type');
 define('INVALID_FILE_TYPE', 'Invalid File Type');
 define('AUDIO_TIME_ERROR', 'Audio file length is too long to upload');
+define('FILE_SIZE_EXCEEDED', 'file length is long to upload');
 
 //API constant messgae
 define('INVALID_KEY_MSG', 'invalid access key');

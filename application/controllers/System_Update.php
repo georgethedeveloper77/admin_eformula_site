@@ -58,7 +58,7 @@ class System_Update extends CI_Controller
                 }
                 if ($this->input->post('btnadd')) {
                     if (!has_permissions('create', 'set_setting')) {
-                        $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         if ($_FILES['file']['name'] != '') {
                             $purchase_code = $this->input->post('purchase_code');
@@ -130,45 +130,45 @@ class System_Update extends CI_Controller
                                                         unlink($sql_file);
                                                         $frm_data = ['message' => $version_file['update_version']];
                                                         $this->db->where('type', 'system_version')->update('tbl_settings', $frm_data);
-                                                        $this->session->set_flashdata('success', 'System update successfully.!');
+                                                        $this->session->set_flashdata('success', lang('system_update_successfully'));
                                                         redirect('system-updates', 'refresh');
                                                     } else {
                                                         unlink($source_path);
                                                         unlink($ver_file);
                                                         unlink($sql_file);
-                                                        $this->session->set_flashdata('error', 'Something wrong, please try again.!');
+                                                        $this->session->set_flashdata('error', lang('something_wrong_please_try_again'));
                                                         redirect('system-updates', 'refresh');
                                                     }
                                                 } else if ($current_version == $version_file['update_version']) {
                                                     unlink($source_path);
                                                     unlink($ver_file);
                                                     unlink($sql_file);
-                                                    $this->session->set_flashdata('error', 'System is already updated.!');
+                                                    $this->session->set_flashdata('error', lang('system_is_alreay_updated'));
                                                     redirect('system-updates', 'refresh');
                                                 } else {
                                                     unlink($source_path);
                                                     unlink($ver_file);
                                                     unlink($sql_file);
-                                                    $this->session->set_flashdata('error', 'Your version is ' . $current_version . '. Please update nearest version first');
+                                                    $this->session->set_flashdata('error', lang('your_version_is') . ' ' . $current_version . '.' . lang('please_update_nearest_version_first'));
                                                     redirect('system-updates', 'refresh');
                                                 }
                                             } else {
                                                 $this->DeleteDir($tmp_path);
-                                                $this->session->set_flashdata('error', 'Invalid file, please try again.!');
+                                                $this->session->set_flashdata('error', lang('invalid_file_please_try_again'));
                                                 redirect('system-updates', 'refresh');
                                             }
                                         } else {
                                             $this->DeleteDir($tmp_path);
-                                            $this->session->set_flashdata('error', 'Invalid file, please try again.!');
+                                            $this->session->set_flashdata('error', lang('invalid_file_please_try_again'));
                                             redirect('system-updates', 'refresh');
                                         }
                                     } else {
                                         $this->DeleteDir($tmp_path);
-                                        $this->session->set_flashdata('error', 'Something wrong, please try again.!');
+                                        $this->session->set_flashdata('error',  lang('something_wrong_please_try_again'));
                                         redirect('system-updates', 'refresh');
                                     }
                                 } else {
-                                    $this->session->set_flashdata('error', 'Only zip allow, please try again.!');
+                                    $this->session->set_flashdata('error',  lang('only_zip_allow_please_try_again'));
                                     redirect('system-updates', 'refresh');
                                 }
                             } else {
@@ -176,7 +176,7 @@ class System_Update extends CI_Controller
                                 redirect('system-updates', 'refresh');
                             }
                         } else {
-                            $this->session->set_flashdata('error', 'Please Upload zip file.!');
+                            $this->session->set_flashdata('error', lang('please_upload_zip_file'));
                             redirect('system-updates', 'refresh');
                         }
                     }

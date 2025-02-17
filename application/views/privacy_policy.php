@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Privacy Policy | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('privacy_policy'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -22,10 +22,10 @@
                 <section class="section">
                     <div class="section-header">
                         <div class="col-md-8">
-                            <h1>Privacy Policy <small>Policy for App Usage</small></h1>
+                            <h1><?= lang('privacy_policy'); ?> <small><?= lang('policy_for_app_usage'); ?></small></h1>
                         </div>
                         <div class="col-md-4 float-right">
-                            <a href='play-store-privacy-policy' target='_blank' class='<?= BUTTON_CLASS ?> btn-sm'>Privacy Policy Page for Play Store</a>
+                            <a href='play-store-privacy-policy' target='_blank' class='<?= BUTTON_CLASS ?> btn-sm'><?= lang('policy_policy_page_for_play_store'); ?></a>
                         </div>
                     </div>
                     <div class="section-body">
@@ -42,7 +42,7 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-10 offset-1">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>

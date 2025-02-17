@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Authentication Settings | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('authentication_settings') ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Authentication Settings <small class="text-small">Note that this will directly reflect on app & web login</small></h1>
+                        <h1><?= lang('authentication_settings') ?> <small class="text-small"> <?= lang('note_that_this_will_directly_reflect_on_app_and_web_login') ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -32,7 +32,7 @@
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <div class="row">
                                                 <div class="form-group col-md-3 col-sm-6">
-                                                    <label class="control-label">Gmail</label><br>
+                                                    <label class="control-label"><?= lang('gmail') ?></label><br>
                                                     <input type="checkbox" id="gmail_btn" data-plugin="switchery" <?php
                                                                                                                     if (!empty($gmail_login) && $gmail_login['message'] == '1') {
                                                                                                                         echo 'checked';
@@ -42,7 +42,7 @@
                                                     <input type="hidden" id="gmail_login" name="gmail_login" value="<?= $gmail_login['message'] ?? 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-6">
-                                                    <label class="control-label">Email</label><br>
+                                                    <label class="control-label"><?= lang('email') ?></label><br>
                                                     <input type="checkbox" id="email_btn" data-plugin="switchery" <?php
                                                                                                                     if (!empty($email_login) && $email_login['message'] == '1') {
                                                                                                                         echo 'checked';
@@ -52,7 +52,7 @@
                                                     <input type="hidden" id="email_login" name="email_login" value="<?= $email_login['message'] ?? 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-6">
-                                                    <label class="control-label">Phone</label><br>
+                                                    <label class="control-label"><?= lang('phone') ?></label><br>
                                                     <input type="checkbox" id="phone_btn" data-plugin="switchery" <?php
                                                                                                                     if (!empty($phone_login) && $phone_login['message'] == '1') {
                                                                                                                         echo 'checked';
@@ -62,7 +62,7 @@
                                                     <input type="hidden" id="phone_login" name="phone_login" value="<?= $phone_login['message'] ?? 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-6">
-                                                    <label class="control-label">Apple <small class="text-danger">(If you have the iOS app, please ensure it is enabled.)</small></label> <br>
+                                                    <label class="control-label"><?= lang('apple') ?> <small class="text-danger"> <?= lang('if_you_have_the_ios_app_please_ensure_it_is_enabled') ?></small></label> <br>
                                                     <input type="checkbox" id="apple_btn" data-plugin="switchery" <?php
                                                                                                                     if (!empty($apple_login) && $apple_login['message'] == '1') {
                                                                                                                         echo 'checked';
@@ -74,7 +74,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit') ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create and Manage Main Category | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('create_and_manage_main_category'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Main Category</h1>
+                        <h1><?= lang('create_and_manage_main_category'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Main Category</h4>
+                                        <h4><?= lang('create_main_category'); ?></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -38,9 +38,9 @@
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class="row">
                                                     <div class="form-group col-md-12 col-sm-12">
-                                                        <label class="control-label">Language</label>
+                                                        <label class="control-label"><?= lang('language'); ?></label>
                                                         <select name="language_id" class="form-control" required>
-                                                            <option value="">Select Language</option>
+                                                            <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
                                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                             <?php } ?>
@@ -50,36 +50,36 @@
                                             <?php } ?>
                                             <div class="row">
                                                 <div class="form-group col-md-6 col-lg-4 col-sm-12 ">
-                                                    <label class="control-label">Category Name</label>
-                                                    <input name="name" id="category-name" type="text" class="form-control" placeholder="Enter Category Name" required>
+                                                    <label class="control-label"><?= lang('category_name'); ?></label>
+                                                    <input name="name" id="category-name" type="text" class="form-control" placeholder="<?= lang('enter_category_name'); ?>" required>
                                                 </div>
                                                 <div class="form-group col-md-6 col-lg-4 col-sm-12 ">
-                                                    <label class="control-label">Slug</label>
-                                                    <input name="slug" id="category-slug" type="text" class="form-control" placeholder="Enter Slug" required>
-                                                    <small class="text-danger d-block">Only English Characters, Numbers And Hypens Allowed</small>
+                                                    <label class="control-label"><?= lang('slug'); ?></label>
+                                                    <input name="slug" id="category-slug" type="text" class="form-control" placeholder="<?= lang('enter_slug'); ?>" required>
+                                                    <small class="text-danger d-block"><?= lang('only_english_character_number_hypens_allowed') ?></small>
                                                     <div class="badge badge-danger m-1" id="category-slug-warning" style="display:none;"></div>
                                                 </div>
                                                 <div class="form-group col-md-6 col-lg-4 col-sm-12 ">
-                                                    <label class="control-label">Image</label>
+                                                    <label class="control-label"><?= lang('image'); ?></label>
                                                     <input id="file" name="file" type="file" accept="image/*" class="form-control">
-                                                    <small class="text-danger">Image type supported (png, jpg and jpeg)</small>
+                                                    <small class="text-danger"><?= lang('image_type_supported'); ?></small>
                                                     <p style="display: none" id="img_error_msg" class="badge badge-danger"></p>
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-12">
-                                                    <label class="control-label">Is Premium</label><br>
+                                                    <label class="control-label"><?= lang('is_premium'); ?></label><br>
                                                     <input type="checkbox" id="is_premium_switch" data-plugin="switchery">
 
                                                     <input type="hidden" id="is_premium" name="is_premium" value="0">
                                                 </div>
 
                                                 <div class="form-group col-md-4 col-lg-2 col-sm-12 is_premium_coins_div" style="display: none;">
-                                                    <label class="control-label">Coins</label>
-                                                    <input name="coins" type="number" min="1" class="form-control is_premium_coin" placeholder="Enter Coins">
+                                                    <label class="control-label"><?= lang('coins'); ?></label>
+                                                    <input name="coins" type="number" min="1" class="form-control is_premium_coin" placeholder="<?= lang('enter_coins'); ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" id="create-form-save-button" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" id="create-form-save-button" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -91,7 +91,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Categories <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('categories'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -99,46 +99,46 @@
                                             <div class="row">
                                                 <div class='col-md-4'>
                                                     <select id='filter_language' class='form-control' required>
-                                                        <option value="">Select language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
                                                 <div class='col-md-4'>
-                                                    <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'>Filter Data</button>
+                                                    <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                                 </div>
                                             </div>
                                         <?php } ?>
                                         <div id="toolbar">
                                             <?php if (has_permissions('delete', 'categories')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_categories" title="Delete Selected Categories"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_categories" title="<?= lang('delete_selected_categories'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='category_list' data-toggle="table" data-url="<?= base_url() . 'Table/category' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="row_order" data-sort-order="asc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "category-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
                                                     <?php if (is_language_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false">Language ID</th>
-                                                        <th scope="col" data-field="language" data-sortable="true">Language</th>
+                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false"><?= lang('language_id'); ?></th>
+                                                        <th scope="col" data-field="language" data-sortable="true"><?= lang('language'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="row_order" data-sortable="true" data-visible="false">Order</th>
-                                                    <th scope="col" data-field="category_name" data-sortable="true">Category Name</th>
-                                                    <th scope="col" data-field="slug" data-sortable="true" data-visible="false">Slug</th>
-                                                    <th scope="col" data-field="image" data-sortable="false">Image</th>
-                                                    <th scope="col" data-field="is_premium" data-sortable="false" data-formatter="isPremiumFormatter">Is Premium</th>
-                                                    <th scope="col" data-field="coins" data-sortable="false">Coins</th>
+                                                    <th scope="col" data-field="row_order" data-sortable="true" data-visible="false"><?= lang('order'); ?></th>
+                                                    <th scope="col" data-field="category_name" data-sortable="true"><?= lang('category_name'); ?></th>
+                                                    <th scope="col" data-field="slug" data-sortable="true" data-visible="false"><?= lang('slug'); ?></th>
+                                                    <th scope="col" data-field="image" data-sortable="false"><?= lang('image'); ?></th>
+                                                    <th scope="col" data-field="is_premium" data-sortable="false" data-formatter="isPremiumFormatter"><?= lang('is_premium'); ?></th>
+                                                    <th scope="col" data-field="coins" data-sortable="false"><?= lang('coins'); ?></th>
                                                     <?php $type = $this->uri->segment(1);
                                                     if ($type == 'fun-n-learn-category') { ?>
-                                                        <th scope="col" data-field="no_of_que" data-sortable="false">Total Fun 'N' Learn</th>
+                                                        <th scope="col" data-field="no_of_que" data-sortable="false"><?= lang('total_fun_n_learn'); ?></th>
                                                     <?php } else if ($type == 'guess-the-word-category') { ?>
-                                                        <th scope="col" data-field="no_of_que" data-sortable="false">Total Guess the Word</th>
+                                                        <th scope="col" data-field="no_of_que" data-sortable="false"><?= lang('total_guess_the_word'); ?></th>
                                                     <?php } else { ?>
-                                                        <th scope="col" data-field="no_of_que" data-sortable="false">Total Question</th>
+                                                        <th scope="col" data-field="no_of_que" data-sortable="false"><?= lang('total_question'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents" data-force-hide="true">Operate</th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents" data-force-hide="true"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -158,7 +158,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Main Category</h5>
+                    <h5 class="modal-title"><?= lang('edit_main_category'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -173,7 +173,7 @@
                             <?php if (is_language_mode_enabled()) { ?>
                                 <div class="row">
                                     <div class="form-group col-md-12 col-sm-12">
-                                        <label class="control-label">Language</label>
+                                        <label class="control-label"><?= lang('language'); ?></label>
                                         <select id="language_id" name="language_id" class="form-control" required>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
@@ -184,25 +184,25 @@
                             <?php } ?>
                             <div class="row">
                                 <div class="form-group col-md-12 col-sm-12">
-                                    <label class="control-label">Category Name</label>
-                                    <input id="edit-category-name" name="name" type="text" class="form-control" required placeholder="Enter Category Name">
+                                    <label class="control-label"><?= lang('category_name'); ?></label>
+                                    <input id="edit-category-name" name="name" type="text" class="form-control" required placeholder="<?= lang('enter_category_name'); ?>">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label">Slug</label>
-                                    <input name="edit_slug" id="edit-category-slug" type="text" class="form-control" placeholder="Enter Slug" required>
-                                    <small class="text-danger d-block">Only English Characters, Numbers And Hypens Allowed</small>
+                                    <label class="control-label"><?= lang('slug'); ?></label>
+                                    <input name="edit_slug" id="edit-category-slug" type="text" class="form-control" placeholder="<?= lang('enter_slug'); ?>" required>
+                                    <small class="text-danger d-block"><?= lang('only_english_character_number_hypens_allowed'); ?></small>
                                     <div class="badge badge-danger m-1" id="edit-category-slug-warning" style="display:none;"></div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="form-group col-md-12 col-sm-12">
-                                    <label class="control-label">Image <small>( Leave it blank for no change )</small></label>
+                                    <label class="control-label"><?= lang('image'); ?> <small><?= lang('leave_it_blank'); ?></small></label>
                                     <input id="update_file" name="update_file" type="file" accept="image/*" class="form-control">
-                                    <small class="text-danger">Image type supported (png, jpg and jpeg)</small>
+                                    <small class="text-danger"><?= lang('image_type_supported'); ?></small>
                                     <p style="display: none" id="up_img_error_msg" class="badge badge-danger"></p>
                                     <div class="m-2" id="imageView" style="display: none">
                                         <img id="setImage" src="" alt="logo" width="40" height="40">
@@ -214,20 +214,20 @@
 
                             <div class="row">
                                 <div class="form-group col-md-4 col-sm-12">
-                                    <label class="control-label">Is Premium</label><br>
+                                    <label class="control-label"><?= lang('is_premium'); ?></label><br>
                                     <input type="checkbox" id="edit_is_premium_switch" data-plugin="switchery">
 
                                     <input type="hidden" id="edit_is_premium" name="edit_is_premium" value="0">
                                 </div>
                                 <div class="form-group col-md-8 col-sm-12 edit_is_premium_coins_div" style="display: none;">
-                                    <label class="control-label">Coins</label>
-                                    <input name="edit_coins" type="number" min="1" class="form-control edit_coins" placeholder="Enter Coins">
+                                    <label class="control-label"><?= lang('coins'); ?></label>
+                                    <input name="edit_coins" type="number" min="1" class="form-control edit_coins" placeholder="<?= lang('enter_coins'); ?>">
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" id="edit-form-save-button" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" id="edit-form-save-button" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -288,9 +288,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some categories to delete!");
+                alert("<?= lang("please_select_category_to_delete"); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected categories?")) {
+                if (confirm("<?= lang("sure_to_delete_all_category"); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -300,9 +300,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("Categories deleted successfully");
+                                alert("<?= lang("category_deleted_successfully"); ?>");
                             } else {
-                                alert("Could not delete Categories. Try again!");
+                                alert("<?= lang("not_delete_category_try_again"); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -357,7 +357,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete category? All related data will also be deleted')) {
+            if (confirm("<?= lang("sure_to_delete_category_releated_data_deleted"); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 image = $(this).data("image");
@@ -369,7 +369,7 @@
                         if (result) {
                             $('#category_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }
@@ -402,7 +402,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#file').val('');
-                    $('#img_error_msg').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#img_error_msg').html("<?= lang(INVALID_IMAGE_TYPE); ?>");
                     $('#img_error_msg').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);
@@ -416,7 +416,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#update_file').val('');
-                    $('#up_img_error_msg').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#up_img_error_msg').html("<?= lang(INVALID_IMAGE_TYPE); ?>");
                     $('#up_img_error_msg').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);
@@ -426,9 +426,9 @@
         function isPremiumFormatter(value, row) {
             let html = "";
             if (row.is_premium == 1) {
-                html = "<span class='badge badge-success'>Yes</span>";
+                html = "<span class='badge badge-success'><?= lang('yes'); ?></span>";
             } else {
-                html = "<span class='badge badge-danger'>No</span>";
+                html = "<span class='badge badge-danger'><?= lang('no'); ?></span>";
             }
             return html;
         }
@@ -449,7 +449,7 @@
                         'category_name': $(this).val()
                     },
                     beforeSend: function() {
-                        slugElement.attr('readonly', true).val('Please wait....')
+                        slugElement.attr('readonly', true).val("<?= lang('please_wait'); ?>")
                     },
                     success: function(slug) {
                         if (slug != null) {

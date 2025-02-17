@@ -38,19 +38,19 @@ class Question_model extends CI_Model
                     $count++;
                     if ($count > 1) {
                         if ($emapData[3] == '1') {
-                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && $emapData[7] != '' && $emapData[8] != '' && !empty($emapData[10]) && $emapData[11] != '') {
+                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && $emapData[7] != '' && $emapData[8] != '' && !empty($emapData[10]) && $emapData[11]) {
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo 'Please Check ' . $count . ' row';
+                                echo lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else if ($emapData[3] == '2') {
-                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && !empty($emapData[10]) && $emapData[11] != '') {
+                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && !empty($emapData[10]) && $emapData[11]) {
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo 'Please Check ' . $count . ' row';
+                                echo lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else {

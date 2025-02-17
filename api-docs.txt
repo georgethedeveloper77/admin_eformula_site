@@ -72,6 +72,8 @@ API methods
 61. update_daily_ads_counter
 62. delete_pending_payment_request
 63. set_user_in_app
+64. get_system_language_list
+65. get_system_language_json
 
 
 ------------------------------------------
@@ -357,6 +359,11 @@ a. For Sign Up:-
 		purchase_token //after purchase get token
 		pay_from  //1=android,2=ios
 		product_id  //5_consumable_coin
+64. get_system_language_list
+		from  //1=app,2=web
+65. get_system_language_json
+		from  //1=app,2=web
+		language  //set name param from get_system_language_list
 	
 
 Status And their responses :- 

@@ -80,7 +80,7 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? SLIDER_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
@@ -89,7 +89,7 @@ class Table extends REST_Controller
             $tempRow['language'] = $row->language;
             $tempRow['description'] = $row->description;
             $tempRow['title'] = $row->title;
-            $tempRow['image'] = (!empty($image)) ? '<a href=' . base_url() . $image . '  data-lightbox="Slider Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
+            $tempRow['image'] = (!empty($image)) ? '<a href=' . base_url() . $image . '  data-lightbox="' . lang('slider_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -169,7 +169,7 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? MATHS_QUESTION_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "create-maths-questions/" . $row->id . '" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "create-maths-questions/" . $row->id . '" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
@@ -178,7 +178,7 @@ class Table extends REST_Controller
             $tempRow['subcategory'] = $row->subcategory;
             $tempRow['language_id'] = $row->language_id;
             $tempRow['language'] = $row->language;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Question Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['question_type'] = $row->question_type;
             $tempRow['answer'] = $row->answer;
             $tempRow['question'] = "<textarea class='editor-questions-inline'>" . $row->question . "</textarea>";
@@ -247,7 +247,7 @@ class Table extends REST_Controller
         $tempRow = array();
         $count = 1;
         foreach ($res1 as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
 
             $paymentAddress = '';
             $payment_address = json_decode($row->payment_address);
@@ -266,7 +266,7 @@ class Table extends REST_Controller
             $tempRow['coin_used'] = $row->coin_used;
             $tempRow['details'] = $row->details;
             $tempRow['status1'] = $row->status;
-            $tempRow['status'] = ($row->status) ? (($row->status == 1) ? "<label class='badge badge-success'>Completed</label>" : "<label class='badge badge-danger'>Invalid Details</label>") : "<label class='badge badge-warning'>Pending</label>";
+            $tempRow['status'] = ($row->status) ? (($row->status == 1) ? "<label class='badge badge-success'>" . lang('completed') . "</label>" : "<label class='badge badge-danger'>" . lang('invalid_details') . "</label>") : "<label class='badge badge-warning'>" . lang('pending') . "</label>";
             $tempRow['date'] = $row->date;
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
@@ -327,34 +327,34 @@ class Table extends REST_Controller
         $count = 1;
 
         $type_key = array(
-            "wonQuizZone" => "Won Quiz Zone Quiz",
-            "wonBattle" => "Won Battle",
-            "usedSkiplifeline" => "Used Skip lifeline",
-            "usedAudiencePolllifeline" => "Used Audience-poll lifeline",
-            "usedResetTimerlifeline" => "Used Reset-timer lifeline",
-            "used5050lifeline" => "Used 50-50 lifeline",
-            "usedHintLifeline" => "Used Hint lifeline",
-            "rewardByScratchingCard" => "Reward By Scratching Card",
-            "boughtCoins" => "Bought Coins",
-            "watchedRewardAd" => "Watched Reward Ad",
-            "wonAudioQuiz" => "Won Audio Quiz",
-            "wonDailyQuiz" => "Won Daily Quiz",
-            "wonTrueFalse" => "Won True / False Quiz",
-            "wonFunNLearn" => "Won Fun N Learn Quiz",
-            "wonGuessTheWord" => "Won Guess The Word Quiz",
-            "wonGroupBattle" => "Won Group Battle",
-            "playedGroupBattle" => "Played Group Battle",
-            "playedContest" => "Played Contest",
-            "playedBattle" => "Played Battle",
-            "redeemedAmount" => "Redeemed Amount",
-            "welcomeBonus" => "Welcome Bonus",
-            "wonContest" => "Won Contest",
-            "redeemRequest" => "Redeem Request",
-            "reversedByAdmin" => "Reversed by admin",
-            "referredCodeToFriend" => "Referred Code To Friend",
-            "usedReferCode" => "Used Refer Code",
-            "reviewAnswers" => "Review answers",
-            "wonMathQuiz" => "Won Math Quiz"
+            "wonQuizZone" => lang('wonQuizZone'),
+            "wonBattle" => lang('wonBattle'),
+            "usedSkiplifeline" =>  lang('usedSkiplifeline'),
+            "usedAudiencePolllifeline" => lang('usedAudiencePolllifeline'),
+            "usedResetTimerlifeline" => lang('usedResetTimerlifeline'),
+            "used5050lifeline" =>  lang('used5050lifeline'),
+            "usedHintLifeline" => lang('usedHintLifeline'),
+            "rewardByScratchingCard" => lang('rewardByScratchingCard'),
+            "boughtCoins" => lang('boughtCoins'),
+            "watchedRewardAd" => lang('watchedRewardAd'),
+            "wonAudioQuiz" => lang('wonAudioQuiz'),
+            "wonDailyQuiz" => lang('wonDailyQuiz'),
+            "wonTrueFalse" => lang('wonTrueFalse'),
+            "wonFunNLearn" => lang('wonFunNLearn'),
+            "wonGuessTheWord" => lang('wonGuessTheWord'),
+            "wonGroupBattle" => lang('wonGroupBattle'),
+            "playedGroupBattle" => lang('playedGroupBattle'),
+            "playedContest" => lang('playedContest'),
+            "playedBattle" => lang('playedBattle'),
+            "redeemedAmount" => lang('redeemedAmount'),
+            "welcomeBonus" => lang('welcomeBonus'),
+            "wonContest" => lang('wonContest'),
+            "redeemRequest" => lang('redeemRequest'),
+            "reversedByAdmin" => lang('reversedByAdmin'),
+            "referredCodeToFriend" => lang('referredCodeToFriend'),
+            "usedReferCode" => lang('usedReferCode'),
+            "reviewAnswers" => lang('reviewAnswers'),
+            "wonMathQuiz" => lang('wonMathQuiz')
         );
 
         foreach ($res1 as $row) {
@@ -413,7 +413,7 @@ class Table extends REST_Controller
             FROM (
                 SELECT r.*, u.id as u_id, u.name as u_name, @rank:=@rank+1 as rank
                 FROM tbl_exam_module_result r $join $where 
-                ORDER BY CAST(obtained_marks AS INT ) DESC , CAST(total_duration AS INT) ASC
+                ORDER BY CAST(obtained_marks AS SIGNED) DESC, CAST(total_duration AS SIGNED) ASC
             ) r
             ORDER BY $sort $order 
             LIMIT $offset , $limit
@@ -426,7 +426,7 @@ class Table extends REST_Controller
         $tempRow = array();
         $count = 1;
         foreach ($res1 as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-eye"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-eye"></i></a>';
             // $operate .=($row->rules_violated) ? '<a class="edit-captured" data-toggle="modal" data-target="#editCapturedModal"><label class="badge badge-success">Yes</label></a>' : '<label class="badge badge-danger">No</label>'; 
 
             $tempRow['id'] = $row->id;
@@ -504,13 +504,13 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? EXAM_QUESTION_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "exam-module-questions-edit/" . $row->id . '" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "exam-module-questions-edit/" . $row->id . '" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
             $tempRow['id'] = $row->id;
             $tempRow['exam_module_id'] = $row->exam_module_id;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Question Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['marks'] = $row->marks;
             $tempRow['question_type'] = $row->question_type;
 
@@ -595,13 +595,13 @@ class Table extends REST_Controller
         $tempRow = array();
         $count = 1;
         foreach ($res1 as $row) {
-            $operate = "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "exam-module-questions/" . $row->id . "' title='Add question'><i class='fas fa-plus'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-info' href='" . base_url() . "exam-module-questions-list/" . $row->id . "' title='List Questions'><i class='fas fa-list'></i></a>";
-            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate .= "<a class='btn btn-icon btn-sm btn-success edit-status' data-id='" . $row->id . "' data-toggle='modal' data-target='#editStatusModal' title='Edit Status'><i class='fas fa-edit'></i></a>";
+            $operate = "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "exam-module-questions/" . $row->id . "' title='" . lang('add_question') . "'><i class='fas fa-plus'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-info' href='" . base_url() . "exam-module-questions-list/" . $row->id . "' title='" . lang('list_questions') . "'><i class='fas fa-list'></i></a>";
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= "<a class='btn btn-icon btn-sm btn-success edit-status' data-id='" . $row->id . "' data-toggle='modal' data-target='#editStatusModal' title='" . lang('edit_status') . "'><i class='fas fa-edit'></i></a>";
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
             if ($this->toDate >= $row->date) {
-                $operate .= "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "exam-module-result/" . $row->id . "' title='Result'><i class='fas fa-list-alt'></i></a>";
+                $operate .= "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "exam-module-result/" . $row->id . "' title='" . lang('result') . "'><i class='fas fa-list-alt'></i></a>";
             }
 
             $tempRow['id'] = $row->id;
@@ -612,8 +612,8 @@ class Table extends REST_Controller
             $tempRow['exam_key'] = $row->exam_key;
             $tempRow['duration'] = $row->duration;
             $tempRow['no_of_que'] = $row->no_of_que;
-            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>Active</label>" : "<label class='badge badge-danger'>Deactive</label>";
-            $tempRow['answer_again'] = ($row->answer_again) ? "<label class='badge badge-success'>Yes</label>" : "<label class='badge badge-danger'>No</label>";
+            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>" . lang('active') . "</label>" : "<label class='badge badge-danger'>" . lang('deactive') . "</label>";
+            $tempRow['answer_again'] = ($row->answer_again) ? "<label class='badge badge-success'>" . lang('yes') . "</label>" : "<label class='badge badge-danger'>" . lang('no') . "</label>";
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -693,7 +693,7 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? GUESS_WORD_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
@@ -702,7 +702,7 @@ class Table extends REST_Controller
             $tempRow['language'] = $row->language;
             $tempRow['category'] = $row->category;
             $tempRow['subcategory'] = $row->subcategory;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Question Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['question'] = $row->question;
             $tempRow['answer'] = $row->answer;
             $tempRow['operate'] = $operate;
@@ -761,9 +761,12 @@ class Table extends REST_Controller
         $tempRow = array();
         $count = 1;
         foreach ($res1 as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
+            $image = (!empty($row->image)) ? FUN_LEARN_QUESTION_IMG_PATH . $row->image : '';
 
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image=' . $image . '><i class="fa fa-trash"></i></a>';
+
+            $tempRow['image_url'] = $image;
             $tempRow['id'] = $row->id;
             $tempRow['fun_n_learn_id'] = $row->fun_n_learn_id;
             $tempRow['question'] = $row->question;
@@ -774,6 +777,7 @@ class Table extends REST_Controller
             $tempRow['optiond'] = $row->optiond;
             $tempRow['optione'] = $row->optione;
             $tempRow['answer'] = $row->answer;
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -854,9 +858,9 @@ class Table extends REST_Controller
         $tempRow = array();
         $count = 1;
         foreach ($res1 as $row) {
-            $operate = "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "fun-n-learn-questions/" . $row->id . "' title='Add question'><i class='fas fa-plus'></i></a>";
-            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate .= "<a class='btn btn-icon btn-sm btn-success edit-status' data-id='" . $row->id . "' data-toggle='modal' data-target='#editStatusModal' title='Edit Status'><i class='fas fa-edit'></i></a>";
+            $operate = "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "fun-n-learn-questions/" . $row->id . "' title='" . lang('add_question') . "'><i class='fas fa-plus'></i></a>";
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= "<a class='btn btn-icon btn-sm btn-success edit-status' data-id='" . $row->id . "' data-toggle='modal' data-target='#editStatusModal' title='" . lang('edit_status') . "'><i class='fas fa-edit'></i></a>";
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->id;
@@ -865,9 +869,11 @@ class Table extends REST_Controller
             $tempRow['subcategory'] = $row->subcategory;
             $tempRow['language'] = $row->language;
             $tempRow['title'] = $row->title;
+            $tempRow['content_type'] = $row->content_type;
+            $tempRow['content_data'] = $row->content_data;
             $tempRow['detail'] = $row->detail;
             $tempRow['no_of_que'] = $row->no_of_que;
-            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>Active</label>" : "<label class='badge badge-danger'>Deactive</label>";
+            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>" . lang('active') . "</label>" : "<label class='badge badge-danger'>" . lang('deactive') . "</label>";
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -926,9 +932,9 @@ class Table extends REST_Controller
             $tempRow['opponent_name'] = ($row->user_id1 == $user_id) ? $row->user_2 : $row->user_1;
 
             if ($row->is_drawn == 1) {
-                $tempRow['mystatus'] = "Draw";
+                $tempRow['mystatus'] = lang('draw');
             } else {
-                $tempRow['mystatus'] = ($row->winner_id == $user_id) ? "Won" : "Lost";
+                $tempRow['mystatus'] = ($row->winner_id == $user_id) ? lang('won') : lang('lost');
             }
             $rows[] = $tempRow;
             $count++;
@@ -1235,14 +1241,14 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? CONTEST_QUESTION_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
             $tempRow['id'] = $row->id;
             $tempRow['contest_id'] = $row->contest_id;
             $tempRow['name'] = $row->name;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Question Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['question'] = $row->question;
             $tempRow['question_type'] = $row->question_type;
             $tempRow['optiona'] = $row->optiona;
@@ -1304,7 +1310,7 @@ class Table extends REST_Controller
         $tempRow = array();
         $count = 1;
         foreach ($res1 as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' ><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->id;
@@ -1370,11 +1376,11 @@ class Table extends REST_Controller
 
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? CONTEST_IMG_PATH . $row->image : '';
-            $operate = "<a class='btn btn-icon btn-sm btn-primary edit-data' data-id='" . $row->id . "' data-image='" . $image . "' data-toggle='modal' data-target='#editDataModal' title='Edit'><i class='fas fa-edit'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-success edit-status' data-id='" . $row->id . "' data-toggle='modal' data-target='#editStatusModal' title='Edit Status'><i class='fas fa-edit'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-danger delete-data' data-id='" . $row->id . "' data-image='" . $image . "' title='Delete'><i class='fas fa-trash'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "contest-leaderboard/" . $row->id . "' title='View Top Users'><i class='fas fa-list'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-info' href='contest-prize-distribute/" . $row->id . "' title='Ready to Distribute Prize'><i class='fas fa-bullhorn'></i></a>";
+            $operate = "<a class='btn btn-icon btn-sm btn-primary edit-data' data-id='" . $row->id . "' data-image='" . $image . "' data-toggle='modal' data-target='#editDataModal' title='" . lang('edit') . "'><i class='fas fa-edit'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-success edit-status' data-id='" . $row->id . "' data-toggle='modal' data-target='#editStatusModal' title='" . lang('edit_status') . "'><i class='fas fa-edit'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-danger delete-data' data-id='" . $row->id . "' data-image='" . $image . "' title='" . lang('delete') . "'><i class='fas fa-trash'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "contest-leaderboard/" . $row->id . "' title='" . lang('view_top_users') . "'><i class='fas fa-list'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-info' href='contest-prize-distribute/" . $row->id . "' title='" . lang('ready_to_distribute_prize') . "'><i class='fas fa-bullhorn'></i></a>";
 
             $tempRow['image_url'] = $image;
             $tempRow['id'] = $row->id;
@@ -1382,14 +1388,14 @@ class Table extends REST_Controller
             $tempRow['name'] = $row->name;
             $tempRow['start_date'] = $row->start_date;
             $tempRow['end_date'] = $row->end_date;
-            $tempRow['image'] = "<a data-fancybox='Contest Gallery' href='" . $image . "' data-lightbox='" . $row->name . "'><img src='" . $image . "' title='" . $row->name . "' width='50'/></a>";
+            $tempRow['image'] = "<a data-fancybox='" . lang('contest_gallery') . "' href='" . $image . "' data-lightbox='" . $row->name . "'><img src='" . $image . "' title='" . $row->name . "' width='50'/></a>";
             $tempRow['description'] = $row->description;
             $tempRow['entry'] = $row->entry;
-            $tempRow['top_users'] = '<a class="btn btn-xs btn-warning" href="' . base_url() . 'contest-prize/' . $row->id . '" title="View Prize">' . $row->top_users . '</a>';
+            $tempRow['top_users'] = '<a class="btn btn-xs btn-warning" href="' . base_url() . 'contest-prize/' . $row->id . '" title="' . lang('view_prize') . '">' . $row->top_users . '</a>';
             $tempRow['participants'] = $row->participants;
             $tempRow['total_question'] = $row->total_question;
-            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>Active</label>" : "<label class='badge badge-danger'>Deactive</label>";
-            $tempRow['prize_status'] = ($row->prize_status == 0) ? '<label class="badge badge-warning">Not Distributed</label>' : '<label class="badge badge-success">Distributed</label>';
+            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>" . lang('active') . "</label>" : "<label class='badge badge-danger'>" . lang('deactive') . "</label>";
+            $tempRow['prize_status'] = ($row->prize_status == 0) ? '<label class="badge badge-warning">' . lang('not_distributed') . '</label>' : '<label class="badge badge-success">' . lang('distributed') . '</label>';
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
         }
@@ -1440,7 +1446,7 @@ class Table extends REST_Controller
         $rows = array();
         $tempRow = array();
         foreach ($res1 as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->auth_id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->auth_id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->auth_id . '><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->auth_id;
@@ -1509,7 +1515,7 @@ class Table extends REST_Controller
             $tempRow['type'] = ucwords($row->type);
             $tempRow['type_id'] = ucwords($row->type_id);
             $tempRow['date_sent'] = date('d-m-Y', strtotime($row->date_sent));
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Image"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('image') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -1576,14 +1582,14 @@ class Table extends REST_Controller
         );
 
         foreach ($res as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate .= "<a class='btn btn-icon btn-sm btn-success' href='" . base_url() . "monthly-leaderboard/" . $row->id . "' title='Monthly Leaderboard'><i class='fas fa-th'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-info' href='" . base_url() . "battle-statistics/" . $row->id . "' title='User Statistics'><i class='fas fa-chart-pie'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "activity-tracker/" . $row->id . "' title='Track Activities'><i class='far fa-chart-bar'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-primary' href='" . base_url() . "payment-requests/" . $row->id . "' title='Track Activities'><i class='fas fa-rupee-sign'></i></a>";
-            $operate .= "<a class='btn btn-icon btn-sm btn-info admin-coin' data-id='" . $row->id . "' data-toggle='modal' data-target='#coinsmodal' title='Coins'><i class='fas fa-coins'></i></a>";
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= "<a class='btn btn-icon btn-sm btn-success' href='" . base_url() . "monthly-leaderboard/" . $row->id . "' title='" . lang('monthly_leaderboard') . "'><i class='fas fa-th'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-info' href='" . base_url() . "battle-statistics/" . $row->id . "' title='" . lang('user_statistics') . "'><i class='fas fa-chart-pie'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-warning' href='" . base_url() . "activity-tracker/" . $row->id . "' title='" . lang('track_activities') . "'><i class='far fa-chart-bar'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-primary' href='" . base_url() . "payment-requests/" . $row->id . "' title='" . lang('track_activities') . "'><i class='fas fa-rupee-sign'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-info admin-coin' data-id='" . $row->id . "' data-toggle='modal' data-target='#coinsmodal' title='" . lang('coins') . "'><i class='fas fa-coins'></i></a>";
             //            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' ><i class="fa fa-trash"></i></a>';
-            $operate .= "<a class='btn btn-icon btn-sm btn-success' href='" . base_url() . "in-app-users/" . $row->id . "' title='In App History'><i class='fas fa-database'></i></a>";
+            $operate .= "<a class='btn btn-icon btn-sm btn-success' href='" . base_url() . "in-app-users/" . $row->id . "' title='" . lang('in_app_history') . "'><i class='fas fa-database'></i></a>";
 
             if (filter_var($row->profile, FILTER_VALIDATE_URL) === FALSE) {
                 // Not a valid URL. Its a image only or empty
@@ -1598,7 +1604,7 @@ class Table extends REST_Controller
 
 
             $tempRow['id'] = $row->id;
-            $tempRow['profile'] = (!empty($row->profile)) ? "<a data-lightbox='Profile Picture' href='" . $profile . "'><img src='" . $profile . "' width='80'/></a>" : "No Image";
+            $tempRow['profile'] = (!empty($row->profile)) ? "<a data-lightbox='" . lang('profile_picture') . "' href='" . $profile . "'><img src='" . $profile . "' width='80'/></a>" : lang('no_image');
             $tempRow['name'] = $row->name;
             $tempRow['email'] =   $row->email;
             $tempRow['mobile'] =  $row->mobile;
@@ -1607,9 +1613,9 @@ class Table extends REST_Controller
             $tempRow['coins'] = $row->coins;
             $tempRow['refer_code'] = $row->refer_code;
             $tempRow['friends_code'] = $row->friends_code;
-            $tempRow['remove_ads'] = ($row->remove_ads) ? "<label class='badge badge-success'>YES</label>" : "<label class='badge badge-danger'>NO</label>";
+            $tempRow['remove_ads'] = ($row->remove_ads) ? "<label class='badge badge-success'>" . lang('yes') . "</label>" : "<label class='badge badge-danger'>" . lang('no') . "</label>";
             $tempRow['date_registered'] = date('d-M-Y h:i A', strtotime($row->date_registered));
-            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>Active</label>" : "<label class='badge badge-danger'>Deactive</label>";
+            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>" . lang('active') . "</label>" : "<label class='badge badge-danger'>" . lang('deactive') . "</label>";
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -1661,8 +1667,8 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? QUESTION_IMG_PATH . $row->image : '';
-            // $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "question-reports/" . $row->question_id . '" title="Edit"><i class="fa fa-edit"></i></a>';
+            // $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "question-reports/" . $row->question_id . '" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->id;
@@ -1767,8 +1773,8 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? QUESTION_IMG_PATH . $row->image : '';
-            // $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "create-questions/" . $row->id . '" title="Edit"><i class="fa fa-edit"></i></a>';
+            // $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "create-questions/" . $row->id . '" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
@@ -1777,7 +1783,7 @@ class Table extends REST_Controller
             $tempRow['subcategory'] = $row->subcategory;
             $tempRow['language_id'] = $row->language_id;
             $tempRow['language'] = $row->language;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Question Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['question_type'] = $row->question_type;
             if (is_settings('latex_mode')) {
                 $question = "<textarea class='editor-questions-inline'>" . $row->question . "</textarea>";
@@ -1890,7 +1896,7 @@ class Table extends REST_Controller
             }
             $audio_url = (!empty($row->audio) && $row->audio_type == 2) ? QUESTION_AUDIO_PATH . $row->audio : $row->audio;
             $audio = (!empty($row->audio)) ? (($row->audio_type == 2) ? $path . $row->audio : $row->audio) : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-audio="' . QUESTION_AUDIO_PATH . $row->audio . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['audio_url'] = $audio_url;
@@ -1992,7 +1998,7 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? SUBCATEGORY_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
@@ -2004,10 +2010,10 @@ class Table extends REST_Controller
             $tempRow['row_order'] = $row->row_order;
             $tempRow['subcategory_name'] = $row->subcategory_name;
             $tempRow['slug'] = $row->slug;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Subcategory Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('subcategory_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
             $tempRow['is_premium'] = $row->is_premium;
             $tempRow['coins'] = $row->coins;
-            $tempRow['status'] = ($row->status) ? "<span class='badge badge-success'>Active</span>" : "<span class='badge badge-danger'>Deactive</span>";
+            $tempRow['status'] = ($row->status) ? "<span class='badge badge-success'>" . lang('active') . "</span>" : "<span class='badge badge-danger'>" . lang('deactive') . "</span>";
             $tempRow['no_of_que'] = $row->no_of_que;
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
@@ -2089,7 +2095,7 @@ class Table extends REST_Controller
 
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? CATEGORY_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
 
             $tempRow['image_url'] = $image;
@@ -2099,7 +2105,7 @@ class Table extends REST_Controller
             $tempRow['row_order'] = $row->row_order;
             $tempRow['category_name'] = $row->category_name;
             $tempRow['slug'] = $row->slug;
-            $tempRow['image'] = (!empty($image)) ? '<a href=' . base_url() . $image . '  data-lightbox="Category Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
+            $tempRow['image'] = (!empty($image)) ? '<a href=' . base_url() . $image . '  data-lightbox="' . lang('category_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
             $tempRow['is_premium'] = $row->is_premium;
             $tempRow['coins'] = $row->coins;
             $tempRow['no_of_que'] = $row->no_of_que;
@@ -2151,73 +2157,17 @@ class Table extends REST_Controller
         $count = 1;
 
         foreach ($res as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' ><i class="fa fa-trash"></i></a>';
+            $operate = "";
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            if ($row->default_active != 1) {
+                $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' ><i class="fa fa-trash"></i></a>';
+            }
 
             $tempRow['id'] = $row->id;
             $tempRow['language'] = $row->language;
             $tempRow['code'] = $row->code;
-            $tempRow['status'] = ($row->status) ? "<span class='badge badge-success'>Enabled</span>" : "<span class='badge badge-danger'>Disabled</span>";
-            $tempRow['operate'] = $operate;
-            $rows[] = $tempRow;
-            $count++;
-        }
-
-        $bulkData['rows'] = $rows;
-        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function upload_langauge_get()
-    {
-        $offset = 0;
-        $limit = 10;
-        $sort = 'id';
-        $order = 'DESC';
-        $where = '';
-
-        if ($this->get('offset'))
-            $offset = $this->get('offset');
-        if ($this->get('limit'))
-            $limit = $this->get('limit');
-
-        if ($this->get('sort'))
-            $sort = $this->get('sort');
-        if ($this->get('order'))
-            $order = $this->get('order');
-
-
-        if ($this->get('search')) {
-            $search = $this->get('search');
-            $where .= " AND (id like '%" . $search . "%' OR name like '%" . $search . "%')";
-        }
-
-        $query = $this->db->query("SELECT COUNT(*) as total FROM tbl_upload_languages $where ");
-        $res1 = $query->result();
-        foreach ($res1 as $row1) {
-            $total = $row1->total;
-        }
-
-        $query1 = $this->db->query("SELECT * FROM tbl_upload_languages  $where  ORDER BY  $sort  $order  LIMIT  $offset , $limit");
-        $res = $query1->result();
-        $bulkData = array();
-        $bulkData['total'] = $total;
-        $rows = array();
-        $tempRow = array();
-        $count = 1;
-
-
-
-
-
-        foreach ($res as $row) {
-            $file = (!empty($row->file)) ? LANGUAGE_FILE_PATH . $row->file : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
-            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-file="' . $file . '"><i class="fa fa-trash"></i></a>';
-
-            $tempRow['id'] = $row->id;
-            $tempRow['language_name'] = $row->name;
-            $tempRow['file'] = (!empty($file)) ? '<a href=' . base_url() . $file . ' target="_blank">' . $row->file . '</a>' : '';
-            $tempRow['file_url'] = $file;
+            $tempRow['status'] = $row->status;
+            $tempRow['default_active'] = $row->default_active;
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
@@ -2267,8 +2217,8 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? COIN_STORE_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary status-update" data-id=' . $row->id . ' data-toggle="modal" data-target="#updateStatusModal" title="Edit"><i class="fa fa-toggle-on"></i></a>';
-            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary status-update" data-id=' . $row->id . ' data-toggle="modal" data-target="#updateStatusModal" title="' . lang('edit') . '"><i class="fa fa-toggle-on"></i></a>';
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image=' . $image . ' ><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->id;
@@ -2278,7 +2228,7 @@ class Table extends REST_Controller
             $tempRow['product_id'] = $row->product_id;
             $tempRow['description'] = $row->description;
             $tempRow['image_url'] = $image;
-            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>Active</label>" : "<label class='badge badge-danger'>Deactive</label>";
+            $tempRow['status'] = ($row->status) ? "<label class='badge badge-success'>" . lang('active') . "</label>" : "<label class='badge badge-danger'>" . lang('deactive') . "</label>";
             $tempRow['status_db'] = $row->status;
             $tempRow['image'] = (!empty($image)) ? '<a href=' . base_url() . $image . '  data-lightbox="Coin Store Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : '<img src=' . $this->NO_IMAGE . ' height=30 >';
             $tempRow['operate'] = $operate;
@@ -2304,7 +2254,8 @@ class Table extends REST_Controller
             $sort = $this->get('sort');
         if ($this->get('order'))
             $order = $this->get('order');
-        $join = " LEFT JOIN tbl_languages l ON l.id = q.language_id LEFT JOIN tbl_category as c on c.id = q.category LEFT JOIN tbl_subcategory as sc on sc.id = q.subcategory where c.is_premium = 0 and (sc.is_premium = 0 OR q.subcategory = 0)";
+
+        $join = " LEFT JOIN tbl_languages l ON l.id = q.language_id LEFT JOIN tbl_category as c on c.id = q.category LEFT JOIN tbl_subcategory as sc on sc.id = q.subcategory where c.is_premium = 0";
         if ($this->get('language') && $this->get('language') != '') {
             $where = " AND q.language_id=" . $this->get('language') . "";
             if ($this->get('category') && $this->get('category') != '') {
@@ -2351,7 +2302,7 @@ class Table extends REST_Controller
         $count = 1;
         foreach ($res1 as $row) {
             $image = (!empty($row->image)) ? QUESTION_IMG_PATH . $row->image : '';
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
             $tempRow['image_url'] = $image;
             $tempRow['id'] = $row->id;
@@ -2359,7 +2310,7 @@ class Table extends REST_Controller
             $tempRow['subcategory'] = $row->subcategory;
             $tempRow['language_id'] = $row->language_id;
             $tempRow['language'] = $row->language;
-            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="Question Images"><img src=' . base_url() . $image . ' height=50, width=50 >' : 'No Image';
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
             $tempRow['question_type'] = $row->question_type;
             if (is_settings('latex_mode')) {
                 $question = "<textarea class='editor-questions-inline'>" . $row->question . "</textarea>";
@@ -2410,9 +2361,42 @@ class Table extends REST_Controller
 
         $join = " LEFT JOIN tbl_languages l on l.id = w.language_id";
         $settings = [
-            'section1_heading', 'section1_title1', 'section1_title2', 'section1_title3', 'section1_image1', 'section1_image2', 'section1_image3', 'section1_desc1', 'section1_desc2', 'section1_desc3',
-            'section2_heading', 'section2_title1', 'section2_title2', 'section2_title3', 'section2_title4', 'section2_desc1', 'section2_desc2', 'section2_desc3', 'section2_desc4', 'section2_image1', 'section2_image2', 'section2_image3', 'section2_image4',
-            'section3_heading', 'section3_title1', 'section3_title2', 'section3_title3', 'section3_title4', 'section3_image1', 'section3_image2', 'section3_image3', 'section3_image4', 'section3_desc1', 'section3_desc2', 'section3_desc3', 'section3_desc4'
+            'section1_heading',
+            'section1_title1',
+            'section1_title2',
+            'section1_title3',
+            'section1_image1',
+            'section1_image2',
+            'section1_image3',
+            'section1_desc1',
+            'section1_desc2',
+            'section1_desc3',
+            'section2_heading',
+            'section2_title1',
+            'section2_title2',
+            'section2_title3',
+            'section2_title4',
+            'section2_desc1',
+            'section2_desc2',
+            'section2_desc3',
+            'section2_desc4',
+            'section2_image1',
+            'section2_image2',
+            'section2_image3',
+            'section2_image4',
+            'section3_heading',
+            'section3_title1',
+            'section3_title2',
+            'section3_title3',
+            'section3_title4',
+            'section3_image1',
+            'section3_image2',
+            'section3_image3',
+            'section3_image4',
+            'section3_desc1',
+            'section3_desc2',
+            'section3_desc3',
+            'section3_desc4'
         ];
 
         $settings = "'" . implode("','", $settings) . "'"; // Convert array to string
@@ -2433,7 +2417,7 @@ class Table extends REST_Controller
         $count = 1;
 
         foreach ($res as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "web-home-settings/" . $row->language_id . '" data-id=' . $row->id . 'title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "web-home-settings/" . $row->language_id . '" data-id=' . $row->id . 'title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             // $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->id;
@@ -2517,7 +2501,7 @@ class Table extends REST_Controller
         $count = 1;
 
         foreach ($res as $row) {
-            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "badges-settings/" . $row->language_id . '" data-id=' . $row->id . 'title="Edit"><i class="fa fa-edit"></i></a>';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "badges-settings/" . $row->language_id . '" data-id=' . $row->id . 'title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
             // $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
 
             $tempRow['id'] = $row->id;
@@ -2591,6 +2575,182 @@ class Table extends REST_Controller
             $tempRow['transaction_id'] = $row->transaction_id;
             $tempRow['amount'] = $row->amount;
             $tempRow['date'] = $row->date;
+            $rows[] = $tempRow;
+            $count++;
+        }
+
+        $bulkData['rows'] = $rows;
+        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function system_langauge_get()
+    {
+        $offset = 0;
+        $limit = 10;
+        $sort = 'language_name';
+        $order = 'DESC';
+        $where = '';
+
+        if ($this->get('offset'))
+            $offset = $this->get('offset');
+        if ($this->get('limit'))
+            $limit = $this->get('limit');
+
+        if ($this->get('sort'))
+            $sort = $this->get('sort');
+        if ($this->get('order'))
+            $order = $this->get('order');
+
+        if ($this->get('search')) {
+            $search = trim($this->get('search'));
+        }
+
+        $res = panel_languages();
+
+        if (!empty($search)) {
+            $res = array_filter($res, function ($item) use ($search) {
+                return stripos($item, $search) !== false; // Case-insensitive search
+            });
+        }
+
+        if ($sort == 'language_name') {
+            if ($order == 'ASC') {
+                sort($res);
+            } else {
+                rsort($res);
+            }
+        }
+
+        // Pagination logic
+        $totalRows = count($res);
+        $slicedData = array_slice($res, $offset, $limit);
+
+        $bulkData = array();
+        $rows = array();
+        $count = $offset + 1;
+        $bulkData['total'] = $totalRows;
+
+        $tempRow = array();
+        foreach ($slicedData as $row) {
+            $title = $row;
+            $operate = '';
+            $user_current_language = get_user_permissions($this->session->userdata('authId'))['language'] ?? 'english';
+            if ($row != $user_current_language && ($row != 'en' && $row != 'english' && $row != 'sample_file')) {
+                $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-lang=' . $row . '><i class="fa fa-trash"></i></a>';
+            }
+            $operate .= '<a class="btn btn-icon btn-sm btn-warning view-data" href="' . base_url() . "new-labels/" . $row . '" ><i class="fa fa-eye"></i></a>';
+
+            $tempRow['no'] = $count;
+            $tempRow['name'] = $row;
+            $tempRow['title'] = $title;
+            $tempRow['operate'] = $operate;
+            $rows[] = $tempRow;
+            $count++;
+        }
+        $bulkData['rows'] = $rows;
+        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function app_system_langauge_get()
+    {
+        $sort = $this->get('sort') ?? 'id';
+        $order = $this->get('order') ?? 'DESC';
+
+        $this->db->where('app_version!=', '0.0.0');
+        $this->db->from('tbl_upload_languages');
+
+        if ($this->get('search')) {
+            $search = $this->get('search');
+            $this->db->group_start()->like('id', $search)
+                ->or_like('name', $search)->group_end();
+        }
+
+        $total = $this->db->count_all_results('', false);
+        $this->db->order_by($sort, $order);
+        if ($this->get('limit')) {
+            $offset = $this->get('offset');
+            $limit = $this->get('limit');
+            $this->db->limit($limit, $offset);
+        }
+        $query = $this->db->get();
+        $res1 = $query->result();
+
+        $bulkData = array();
+        $bulkData['total'] = $total;
+        $rows = array();
+        $count = 1;
+        $tempRow = array();
+        foreach ($res1 as $row) {
+            $file = $row->name;
+            $operate = '';
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-toggle="modal" data-target="#editDataModalApp" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            if ($row->app_default == 0) {
+                $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-app-data" data-lang=' . $file . '><i class="fa fa-trash"></i></a>';
+            }
+            $operate .= '<a class="btn btn-icon btn-sm btn-warning view-data" href="' . base_url() . "new-labels/app/" . $file . '" ><i class="fa fa-eye"></i></a>';
+
+            $tempRow['no'] = $count;
+            $tempRow['name'] = $file;
+            $tempRow['title'] = $row->title;
+            $tempRow['app_default'] = $row->app_default;
+            $tempRow['app_version'] = $row->app_version;
+            $tempRow['app_status'] = $row->app_status;
+            $tempRow['app_rtl_support'] = $row->app_rtl_support;
+            $tempRow['operate'] = $operate;
+            $rows[] = $tempRow;
+            $count++;
+        }
+
+        $bulkData['rows'] = $rows;
+        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function web_system_langauge_get()
+    {
+        $sort = $this->get('sort') ?? 'id';
+        $order = $this->get('order') ?? 'DESC';
+
+        $this->db->where('web_version!=', '0.0.0');
+        $this->db->from('tbl_upload_languages');
+
+        if ($this->get('search')) {
+            $search = $this->get('search');
+            $this->db->group_start()->like('id', $search)
+                ->or_like('name', $search)->group_end();
+        }
+
+        $total = $this->db->count_all_results('', false);
+        $this->db->order_by($sort, $order);
+        if ($this->get('limit')) {
+            $offset = $this->get('offset');
+            $limit = $this->get('limit');
+            $this->db->limit($limit, $offset);
+        }
+        $query = $this->db->get();
+        $res1 = $query->result();
+
+        $bulkData = array();
+        $bulkData['total'] = $total;
+        $rows = array();
+        $count = 1;
+        $tempRow = array();
+        foreach ($res1 as $row) {
+            $file = $row->name;
+            $operate = '';
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-toggle="modal" data-target="#editDataModalWeb" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            if ($row->web_default == 0) {
+                $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-web-data" data-lang=' . $file . '><i class="fa fa-trash"></i></a>';
+            }
+            $operate .= '<a class="btn btn-icon btn-sm btn-warning view-data" href="' . base_url() . "new-labels/web/" . $file . '" ><i class="fa fa-eye"></i></a>';
+
+            $tempRow['no'] = $count;
+            $tempRow['name'] = $file;
+            $tempRow['title'] = $row->title;
+            $tempRow['web_default'] = $row->web_default;
+            $tempRow['web_version'] = $row->web_version;
+            $tempRow['web_status'] = $row->web_status;
+            $tempRow['web_rtl_support'] = $row->web_rtl_support;
+            $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;
         }

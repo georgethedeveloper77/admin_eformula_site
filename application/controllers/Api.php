@@ -296,9 +296,6 @@ class Api extends REST_Controller
                     }
                     $this->db->join('tbl_category c', 'tbl_question.category = c.id')->where('c.is_premium = 0');
                     $this->db->join('tbl_subcategory sc', 'tbl_question.subcategory = sc.id', 'left');
-                    $this->db->group_start();
-                    $this->db->or_where('tbl_question.subcategory', '0');
-                    $this->db->group_end();
                     $this->db->order_by('rand()');
                     if ($fix_question == 1) {
                         $this->db->limit($limit, 0);
@@ -586,15 +583,34 @@ class Api extends REST_Controller
             return false;
         }
 
+        $get_user_data = $this->db->select('date_registered')->where('id', $user_id)->get('tbl_users')->row_array();
+        $register_date = date('Y-m-d', strtotime($get_user_data['date_registered']));
+
         $limit = ($this->post('limit') && is_numeric($this->post('limit'))) ? $this->post('limit') : 10;
         $offset = ($this->post('offset') && is_numeric($this->post('offset'))) ? $this->post('offset') : 0;
 
         $sort = ($this->post('sort')) ? $this->post('sort') : 'id';
         $order = ($this->post('order')) ? $this->post('order') : 'DESC';
 
-        $result = $this->db->query("SELECT * FROM tbl_notifications WHERE users = 'all' ORDER BY $sort $order LIMIT $offset,$limit")->result_array();
-        $result1 = $this->db->query("SELECT * FROM tbl_notifications WHERE users = 'all'")->result_array();
-        $total = count($result1);
+        $this->db->select('id,title,message,users,type,type_id,image,date_sent')
+            ->from('tbl_notifications n')
+            ->where('DATE(n.date_sent) >=', $register_date)
+            ->group_start()
+            ->where('n.users', 'all')
+            ->or_where('FIND_IN_SET(' . $user_id . ', n.user_id) >', 0)
+            ->group_end()
+            ->order_by($sort, $order)
+            ->limit($limit, $offset);
+        $result = $this->db->get()->result_array();
+
+        $this->db->select('COUNT(*) as total')
+            ->from('tbl_notifications n')
+            ->where('DATE(n.date_sent) >=', $register_date)
+            ->group_start()
+            ->where('n.users', 'all')
+            ->or_where('FIND_IN_SET(' . $user_id . ', n.user_id) >', 0)
+            ->group_end();
+        $total = $this->db->get()->row()->total;
 
         if (!empty($result)) {
             for ($i = 0; $i < count($result); $i++) {
@@ -953,7 +969,7 @@ class Api extends REST_Controller
                     $no_of =  '(SELECT @no_of_subcategories := count(`id`) from tbl_subcategory s WHERE s.maincat_id = c.id and s.status = 1 AND s.id IN (SELECT subcategory FROM tbl_question WHERE subcategory != 0)) as no_of';
                 }
             } else if ($type == 2 || $type == '2') {
-                $no_of_que = ' (select count(id) from tbl_fun_n_learn q where q.category=c.id ) as no_of_que,';
+                $no_of_que = ' (select count(id) from tbl_fun_n_learn q where q.category=c.id AND q.status=1) as no_of_que,';
                 $no_of =  '(SELECT @no_of_subcategories := count(`id`) from tbl_subcategory s WHERE s.maincat_id = c.id and s.status = 1 AND s.id IN (SELECT subcategory FROM tbl_fun_n_learn WHERE subcategory != 0)) as no_of';
             } else if ($type == 3 || $type == '3') {
                 $no_of_que = ' (select count(id) from tbl_guess_the_word q where q.category=c.id ) as no_of_que,';
@@ -1261,7 +1277,7 @@ class Api extends REST_Controller
                     $no_of_que = ' (select count(id) from tbl_question q where q.subcategory=s.id ) as no_of_que,';
                 }
                 if ($type == 2 || $type == '2') {
-                    $no_of_que = ' (select count(id) from tbl_fun_n_learn q where q.subcategory=s.id ) as no_of_que,';
+                    $no_of_que = ' (select count(id) from tbl_fun_n_learn q where q.subcategory=s.id AND q.status=1) as no_of_que,';
                 }
                 if ($type == 3 || $type == '3') {
                     $no_of_que = ' (select count(id) from tbl_guess_the_word q where q.subcategory=s.id ) as no_of_que,';
@@ -1646,9 +1662,6 @@ class Api extends REST_Controller
             }
             $this->db->join('tbl_category c', 'tbl_question.category = c.id')->where('c.is_premium', '0');
             $this->db->join('tbl_subcategory sc', 'tbl_question.subcategory = sc.id', 'left');
-            $this->db->group_start();
-            $this->db->or_where('tbl_question.subcategory', '0');
-            $this->db->group_end();
             $this->db->order_by($this->Order_By);
 
             if ($fix_question == 1 && $limit) {
@@ -1849,6 +1862,11 @@ class Api extends REST_Controller
             if (!empty($data)) {
                 for ($i = 0; $i < count($data); $i++) {
                     //check if category played or not
+                    if ($data[$i]['content_data'] != '' && $data[$i]['content_type'] == 2) {
+                        $data[$i]['content_data'] = base_url(FUN_LEARN_IMG_PATH . $data[$i]['content_data']);
+                    } else if ($data[$i]['content_type'] == 0) {
+                        $data[$i]['content_data'] = '';
+                    }
                     $res = $this->db->where('type_id', $data[$i]['id'])->where('subcategory', $data[$i]['subcategory'])->where('category', $data[$i]['category'])->where('user_id', $user_id)->get('tbl_quiz_categories')->row_array();
                     $data[$i]['is_play'] = (!empty($res)) ? '1' : '0';
                 }
@@ -1897,6 +1915,7 @@ class Api extends REST_Controller
             $data = $this->db->get('tbl_fun_n_learn_question q')->result_array();
             if (!empty($data)) {
                 for ($i = 0; $i < count($data); $i++) {
+                    $data[$i]['image'] = ($data[$i]['image']) ? base_url() . FUN_LEARN_QUESTION_IMG_PATH . $data[$i]['image'] : '';
                     $data[$i] = $this->suffleOptions($data[$i], $firebase_id);
                 }
                 $response['error'] = false;
@@ -2407,7 +2426,7 @@ class Api extends REST_Controller
             $id = $this->post('id');
             $this->db->where('id', $id);
         }
-        $data = $this->db->select('id, language, code')->where('status', 1)->where('type', 1)->order_by('id', 'ASC')->get('tbl_languages')->result_array();
+        $data = $this->db->select('id, language, code, default_active')->where('status', 1)->where('type', 1)->order_by('id', 'ASC')->get('tbl_languages')->result_array();
         if (!empty($data)) {
             $response['error'] = false;
             $response['data'] = $data;
@@ -3653,7 +3672,10 @@ class Api extends REST_Controller
         $language_id = $this->post('language_id') != "" ? $this->post('language_id') : 14;
         $data = $this->db->where('language_id', $language_id)->where_in('type', $types)->get('tbl_web_settings')->result_array();
         $web_settings_data = array();
-        $sliderData = $this->db->where('language_id', $language_id)->order_by('id', 'DESC')->get('tbl_slider')->result_array();
+        if (is_language_mode_enabled()) {
+            $this->db->where('language_id', $language_id);
+        }
+        $sliderData = $this->db->order_by('id', 'DESC')->get('tbl_slider')->result_array();
         if (!empty($sliderData)) {
             for ($i = 0; $i < count($sliderData); $i++) {
                 $sliderData[$i]['image'] = ($sliderData[$i]['image']) ? base_url() . SLIDER_IMG_PATH . $sliderData[$i]['image'] : '';
@@ -3982,6 +4004,111 @@ class Api extends REST_Controller
         } else {
             $response['error'] = true;
             $response['message'] = "103";
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function get_system_language_list_post()
+    {
+        if ($this->post('from')) {
+            $from = $this->post('from');
+            $this->db->select('name,title');
+            switch ($from) {
+                case 1:
+                    $this->db->select('app_version,app_rtl_support,app_status,app_default')->where('app_status', 1)->where('app_version!=', '0.0.0');
+                    break;
+                case 2:
+                    $this->db->select('web_version,web_rtl_support,web_status,web_default')->where('web_status', 1)->where('web_version!=', '0.0.0');
+                    break;
+                default:
+                    $response = [
+                        'error' => true,
+                        'message' => "122"
+                    ];
+                    $this->response($response, REST_Controller::HTTP_OK);
+                    return;
+            }
+            $checkData = $this->db->get('tbl_upload_languages')->result_array();
+            if ($checkData) {
+                $response = [
+                    'error' => false,
+                    'data' => $checkData
+                ];
+            } else {
+                $response = [
+                    'error' => true,
+                    'message' => "102"
+                ];
+            }
+        } else {
+            $response = [
+                'error' => true,
+                'message' => "103"
+            ];
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function get_system_language_json_post()
+    {
+        if ($this->post('from')) {
+            $from = $this->post('from');
+            $language = $this->post('language') ?? 'english';
+            $version = '';
+            $rtl_support = '0';
+            $status = '0';
+            $default = '0';
+
+            switch ($from) {
+                case 1:
+                    $path = APP_LANGUAGE_FILE_PATH;
+                    $sampleFile = 'app_sample_file.json';
+                    break;
+                case 2:
+                    $path = WEB_LANGUAGE_FILE_PATH;
+                    $sampleFile = 'web_sample_file.json';
+                    break;
+                default:
+                    $response = [
+                        'error' => true,
+                        'message' => "122"
+                    ];
+                    $this->response($response, REST_Controller::HTTP_OK);
+                    return;
+            }
+
+            $file = $path . $language . '.json';
+
+            if (!file_exists($file)) {
+                $file = $path . $sampleFile;
+            } else {
+                $checkData = $this->db->where('name', $language)->get('tbl_upload_languages')->row_array();
+                if ($checkData) {
+                    $version = ($from == 1) ? $checkData['app_version'] : $checkData['web_version'];
+                    $rtl_support = ($from == 1) ? $checkData['app_rtl_support'] : $checkData['web_rtl_support'];
+                    $status = ($from == 1) ? $checkData['app_status'] : $checkData['web_status'];
+                    $default = ($from == 1) ? $checkData['app_default'] : $checkData['web_default'];
+                }
+            }
+
+            $getFileContent = file_get_contents($file);
+            $sampleArray = json_decode($getFileContent, true);
+
+            $response = [
+                'error' => false,
+                'version' => $version,
+                'rtl_support' => $rtl_support,
+                'status' => $status,
+                'default' => $default,
+                'data' => $sampleArray
+            ];
+        } else {
+            $response = [
+                'error' => true,
+                'message' => "103"
+            ];
         }
 
         $this->response($response, REST_Controller::HTTP_OK);

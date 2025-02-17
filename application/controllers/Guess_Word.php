@@ -25,13 +25,13 @@ class Guess_Word extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'guess_the_word')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Guess_Word_model->add_data();
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question created successfully.! ');
+                        $this->session->set_flashdata('success',  lang('question_created_successfully'));
                     }
                     $type = $this->uri->segment(1);
                     $setData["$type"] = [
@@ -45,13 +45,13 @@ class Guess_Word extends CI_Controller
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'guess_the_word')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Guess_Word_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
                 redirect('guess-the-word', 'refresh');

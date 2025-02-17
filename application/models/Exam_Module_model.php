@@ -200,7 +200,7 @@ class Exam_Module_model extends CI_Model
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo 'Please Check ' . $count . ' row';
+                                echo lang('please_check') . $count . ' ' . lang('row');
                                 break;
                             }
                         } else if ($emapData[2] == '2') {
@@ -208,7 +208,7 @@ class Exam_Module_model extends CI_Model
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo 'Please Check ' . $count . ' row';
+                                echo lang('please_check') . $count . ' ' . lang('row');
                                 break;
                             }
                         } else {

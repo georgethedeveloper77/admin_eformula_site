@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create and Manage Languages | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('create_and_mange_languages'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Languages</h1>
+                        <h1><?= lang('create_and_mange_languages'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Language</h4>
+                                        <h4><?= lang('create_language'); ?></h4>
                                     </div>
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="">
@@ -46,16 +46,16 @@
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <div class="form-group row">
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Language Name</label>
-                                                    <input name="language_name" class="form-control language-name" required placeholder="Language Name">
+                                                    <label class="control-label"><?= lang('language_name'); ?></label>
+                                                    <input name="language_name" class="form-control language-name" required placeholder="<?= lang('language_name'); ?>">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Language Code</label>
-                                                    <input name="language_code" class="form-control language-code" required placeholder="Language Code">
+                                                    <label class="control-label"><?= lang('language_code'); ?></label>
+                                                    <input name="language_code" class="form-control language-code" required placeholder="<?= lang('language_code'); ?>">
                                                 </div>
                                                 <div class="col-md-2 col-sm-6">
                                                     <label class="control-label">&nbsp;</label><br />
-                                                    <input type="submit" name="btncreate" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btncreate" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -65,7 +65,7 @@
 
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Add Languages</h4>
+                                        <h4><?= lang('add_languages'); ?></h4>
                                     </div>
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="">
@@ -73,9 +73,9 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Select Language</label>
+                                                    <label class="control-label"><?= lang('select_language'); ?></label>
                                                     <select name="language_id" class="form-control" required>
-                                                        <option value="">Select Language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
@@ -83,7 +83,7 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-6">
                                                     <label class="control-label">&nbsp;</label><br />
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -97,17 +97,18 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Languages <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('languages'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
                                     <div class="card-body">
                                         <table aria-describedby="mydesc" class='table-striped' id='languages_list' data-toggle="table" data-url="<?= base_url() . 'Table/languages' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "languages-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="language" data-sortable="true">Language Name</th>
-                                                    <th scope="col" data-field="code" data-sortable="true" data-visible="false">Language Code</th>
-                                                    <th scope="col" data-field="status" data-sortable="false">Status</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="language" data-sortable="true"><?= lang('language_name'); ?></th>
+                                                    <th scope="col" data-field="code" data-sortable="true" data-visible="false"><?= lang('language_code'); ?></th>
+                                                    <th scope="col" data-field="status" data-sortable="false" data-formatter="statusFormatter"><?= lang('status'); ?></th>
+                                                    <th scope="col" data-field="default_active" data-sortable="false" data-formatter="defaultFormatter"><?= lang('default'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -127,7 +128,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Language</h5>
+                    <h5 class="modal-title"><?= lang('edit_language'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -140,29 +141,28 @@
 
                             <div class="form-group row">
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label">Language Name</label>
-                                    <input name="language_name" class="form-control edit-language-name" required placeholder="Language Name">
+                                    <label class="control-label"><?= lang('language_name'); ?></label>
+                                    <input name="language_name" class="form-control edit-language-name" required placeholder="<?= lang('language_name'); ?>">
                                 </div>
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label">Language Code</label>
-                                    <input name="language_code" class="form-control edit-language-code" required placeholder="Language Code">
+                                    <label class="control-label"><?= lang('language_code'); ?></label>
+                                    <input name="language_code" class="form-control edit-language-code" required placeholder="<?= lang('language_code'); ?>">
                                 </div>
-                                <div class="form-group col-sm-12">
-                                    <label class="control-label">Status</label><br />
-                                    <div id="status" class="btn-group">
-                                        <label class="btn btn-default">
-                                            <input type="radio" name="status" value="1"> Enabled
-                                        </label>
-                                        <label class="btn btn-danger">
-                                            <input type="radio" name="status" value="0"> Disabled
-                                        </label>
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-6 col-sm-12">
+                                    <label class="control-label"><?= lang('status') ?></label><br>
+                                    <input type="checkbox" id="status" name="status" data-plugin="switchery">
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <label class="control-label"><?= lang('default') ?></label><br>
+                                    <input type="checkbox" id="default" name="default_active" data-plugin="switchery">
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -173,6 +173,22 @@
 
     <?php base_url() . include 'footer.php'; ?>
 
+    <script type="text/javascript">
+        $('[data-plugin="switchery"]').each(function(index, element) {
+            var init = new Switchery(element, {
+                size: 'small',
+                color: '#1abc9c',
+                secondaryColor: '#f1556c'
+            });
+        });
+        $('[data-plugin="switchery"]').on('change', function() {
+            if ($(this).prop('checked') == true) {
+                $(this).val(1);
+            } else {
+                $(this).val(0);
+            }
+        })
+    </script>
     <script type="text/javascript">
         var sess_language_name = '<?= $sess_language_name ?>';
         var sess_language_code = '<?= $sess_language_code ?>';
@@ -186,16 +202,43 @@
                 $('#edit_id').val(row.id);
                 $('.edit-language-name').val(row.language);
                 $('.edit-language-code').val(row.code);
-                $("input[name=status][value=1]").prop('checked', true);
-                if ($(row.status).text() == 'Disabled')
-                    $("input[name=status][value=0]").prop('checked', true);
+                $('#status').val(row.status);
+                $("#status").prop("checked", true).trigger("click");
+                if (row.status == 1) {
+                    $("#status").prop("checked", false).trigger("click");
+                }
+                $('#default').val(row.default_active);
+                $("#default").prop("checked", true).trigger("click");
+                if (row.default_active == 1) {
+                    $("#default").prop("checked", false).trigger("click");
+                }
             }
         };
+
+        function statusFormatter(value, row) {
+            let html = "";
+            if (row.status == 1) {
+                html = "<span class='badge badge-success'><?= lang('enabled'); ?></span>";
+            } else {
+                html = "<span class='badge badge-danger'><?= lang('disabled'); ?></span>";
+            }
+            return html;
+        }
+
+        function defaultFormatter(value, row) {
+            let html = "";
+            if (row.default_active == 1) {
+                html = "<span class='badge badge-success'><?= lang('yes'); ?></span>";
+            } else {
+                html = "<span class='badge badge-danger'><?= lang('no'); ?></span>";
+            }
+            return html;
+        }
     </script>
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete language? All related data will also be deleted and as well users may cause inconvenience who have already selected this language with their personal setting.')) {
+            if (confirm("<?= lang('delete_language'); ?>")) {
                 var base_url = "<?= base_url(); ?>";
                 id = $(this).data("id");
                 $.ajax({
@@ -206,7 +249,7 @@
                         if (result) {
                             $('#languages_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }

@@ -18,7 +18,6 @@ class Maths_Question extends CI_Controller
 
         $this->result['language'] = $this->Language_model->get_data();
         $this->result['category'] = $this->Category_model->get_data($this->quiz_type);
-        //        $this->result['subcategory'] = $this->Subcategory_model->get_data();
     }
 
     public function index()
@@ -28,13 +27,13 @@ class Maths_Question extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'maths_questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Maths_model->add_data();
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question created successfully.! ');
+                        $this->session->set_flashdata('success', lang('question_created_successfully'));
                     }
                     $type = $this->uri->segment(1);
                     $setData["$type"] = [
@@ -57,13 +56,13 @@ class Maths_Question extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'maths_questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Maths_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
                 redirect('manage-maths-questions');
@@ -80,13 +79,13 @@ class Maths_Question extends CI_Controller
         } else {
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'maths_questions')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Maths_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Question updated successfully.!');
+                        $this->session->set_flashdata('success',  lang('question_updated_successfully'));
                     }
                 }
                 redirect('manage-maths-questions');

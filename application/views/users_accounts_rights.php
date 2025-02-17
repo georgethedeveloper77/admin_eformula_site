@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>User Accounts and Rights | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('user_account_and_rights'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>User Accounts and Rights</h1>
+                        <h1><?= lang('user_account_and_rights'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -35,25 +35,25 @@
                                                     <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
                                                     <div class="form-group">
-                                                        <label class="control-label">Username</label>
-                                                        <input type="text" name="username" class="form-control" required placeholder="Enter Username">
+                                                        <label class="control-label"><?= lang('username'); ?></label>
+                                                        <input type="text" name="username" class="form-control" required placeholder="<?= lang('enter_username'); ?>">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Password</label>
-                                                        <input type="password" name="password" class="form-control" required placeholder="Enter Password">
+                                                        <label class="control-label"><?= lang('password'); ?></label>
+                                                        <input type="password" name="password" class="form-control" required placeholder="<?= lang('enter_password'); ?>">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Role</label>
+                                                        <label class="control-label"><?= lang('role'); ?></label>
                                                         <select name="role" class="form-control" required>
-                                                            <option value="">Select Role</option>
-                                                            <option value="editor">Editor</option>
-                                                            <option value="admin">Admin</option>
+                                                            <option value=""><?= lang('select_role'); ?></option>
+                                                            <option value="editor"><?= lang('editor'); ?></option>
+                                                            <option value="admin"><?= lang('admin'); ?></option>
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group float-right">
                                                         <div>
-                                                            <input type="submit" name="btnadd" class="<?= BUTTON_CLASS ?> btn-block" value="Submit" />
+                                                            <input type="submit" name="btnadd" class="<?= BUTTON_CLASS ?> btn-block" value="<?= lang('submit'); ?>" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -63,7 +63,7 @@
                                                     <table class="table tableres table-responsive permission-table" aria-describedby="mydesc">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">Module/Permissions</th>
+                                                                <th scope="col"><?= lang('module_permissions'); ?></th>
                                                                 <?php foreach ($actions as $row) { ?>
                                                                     <th scope="col"><?= ucfirst($row) ?></th>
                                                                 <?php }
@@ -107,17 +107,17 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>User Accounts and Rights <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('user_account_and_rights'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
                                     <div class="card-body">
                                         <table aria-describedby="mydesc" class='table-striped' id='user_account_list' data-toggle="table" data-url="<?= base_url() . 'Table/user_account' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar1" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="auth_id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "user-account-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" data-field="id" data-sortable="true" data-align="center">ID</th>
-                                                    <th scope="col" data-field="auth_username" data-sortable="true">Username</th>
-                                                    <th scope="col" data-field="role" data-sortable="true">Role</th>
-                                                    <th scope="col" data-field="created" data-sortable="true">Date Created</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="id" data-sortable="true" data-align="center"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="auth_username" data-sortable="true"><?= lang('username'); ?></th>
+                                                    <th scope="col" data-field="role" data-sortable="true"><?= lang('role'); ?></th>
+                                                    <th scope="col" data-field="created" data-sortable="true"><?= lang('date_created'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -153,19 +153,19 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-6 col-sm-12">
-                                            <label class="control-label">Username</label>
-                                            <input type="text" id="username" name="username" class="form-control" required placeholder="Enter Username">
+                                            <label class="control-label"><?= lang('username'); ?></label>
+                                            <input type="text" id="username" name="username" class="form-control" required placeholder="<?= lang('enter_username'); ?>">
                                         </div>
                                         <div class="col-md-6 col-sm-12">
-                                            <label class="control-label">Password <small>( Leave it blank for no change )</small></label>
-                                            <input type="password" name="password" class="form-control" placeholder="Enter Password">
+                                            <label class="control-label"><?= lang('password'); ?> <small><?= lang('leave_it_blank'); ?></small></label>
+                                            <input type="password" name="password" class="form-control" placeholder="<?= lang('enter_password'); ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label">Role</label>
+                                        <label class="control-label"><?= lang('role'); ?></label>
                                         <select id="role" name="role" class="form-control" required>
-                                            <option value="editor">Editor</option>
-                                            <option value="admin">Admin</option>
+                                            <option value="editor"><?= lang('editor'); ?></option>
+                                            <option value="admin"><?= lang('admin'); ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -177,8 +177,8 @@
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -224,7 +224,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete user accounts and rights')) {
+            if (confirm("<?= lang('sure_to_delete_user_account_and_rights') ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 $.ajax({
@@ -235,7 +235,7 @@
                         if (result) {
                             $('#user_account_list').bootstrapTable('refresh');
                         } else {
-                            alert('user accounts and rights could not be deleted');
+                            alert("<?= lang('not_delete_user_account_and_rights_try_again') ?>");
                         }
                     }
                 });

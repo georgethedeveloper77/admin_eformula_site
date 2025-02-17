@@ -14,20 +14,17 @@ use Kreait\Firebase\JWT\Error\FetchingGooglePublicKeysFailed;
 use Kreait\Firebase\JWT\Keys\ExpiringKeys;
 use Psr\Clock\ClockInterface;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * @internal
  */
 final class WithGuzzle implements Handler
 {
-    private ClientInterface $client;
-
-    private ClockInterface $clock;
-
-    public function __construct(ClientInterface $client, ClockInterface $clock)
-    {
-        $this->client = $client;
-        $this->clock = $clock;
-    }
+    public function __construct(
+        private readonly ClientInterface $client,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function handle(FetchGooglePublicKeys $action): Keys
     {
@@ -41,8 +38,8 @@ final class WithGuzzle implements Handler
             $ttls[] = $result['ttl'];
         }
 
-        $keys = \array_merge(...$keys);
-        $ttl = \min($ttls);
+        $keys = array_merge(...$keys);
+        $ttl = $ttls !== [] ? min($ttls) : 0;
         $now = $this->clock->now();
 
         $expiresAt = $ttl > 0
@@ -54,43 +51,46 @@ final class WithGuzzle implements Handler
 
     /**
      * @return array{
-     *                keys: array<string, string>,
-     *                ttl: int
-     *                }
+     *     keys: array<non-empty-string, non-empty-string>,
+     *     ttl: int
+     * }
      */
     private function fetchKeysFromUrl(string $url): array
     {
         try {
-            $response = $this->client->request('GET', $url, [
+            $response = $this->client->request(RequestMethod::METHOD_GET, $url, [
                 'http_errors' => false,
                 'headers' => [
                     'Content-Type' => 'Content-Type: application/json; charset=UTF-8',
                 ],
             ]);
         } catch (GuzzleException $e) {
-            throw FetchingGooglePublicKeysFailed::because("The connection to {$url} failed: ".$e->getMessage(), $e->getCode(), $e);
+            throw FetchingGooglePublicKeysFailed::because("The connection to {$url} failed: " . $e->getMessage(), $e->getCode(), $e);
         }
 
         if (($statusCode = $response->getStatusCode()) !== 200) {
-            throw FetchingGooglePublicKeysFailed::because("Unexpected status code {$statusCode}");
+            throw FetchingGooglePublicKeysFailed::because(
+                "Unexpected status code {$statusCode} when trying to fetch public keys from {$url}",
+            );
         }
 
-        $response = $this->client->request(RequestMethod::METHOD_GET, $url, [
-            'http_errors' => false,
-            'headers' => [
-                'Content-Type' => 'Content-Type: application/json; charset=UTF-8',
-            ],
-        ]);
-
-        $ttl = \preg_match('/max-age=(\d+)/i', $response->getHeaderLine('Cache-Control'), $matches)
+        $ttl = preg_match('/max-age=(\d+)/i', $response->getHeaderLine('Cache-Control'), $matches)
             ? (int) $matches[1]
             : 0;
 
         try {
-            $keys = \json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+            $keys = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            throw FetchingGooglePublicKeysFailed::because('Unexpected response: '.$e->getMessage());
+            throw FetchingGooglePublicKeysFailed::because('Unexpected response: ' . $e->getMessage());
         }
+
+        if (!is_array($keys)) {
+            $keys = [];
+        }
+
+        $keys = array_filter($keys, fn(mixed $key) => is_string($key));
+        $keys = array_map(fn(string $key) => trim($key), $keys);
+        $keys = array_filter($keys, fn(string $key) => $key !== '');
 
         return [
             'keys' => $keys,

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Firebase Configurations | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('firebase_configurations'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Firebase Configurations </h1>
+                        <h1><?= lang('firebase_configurations'); ?> </h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -40,25 +40,25 @@
                                                         $is_file = 1;
                                                     }
                                                     ?>
-                                                    <label class="control-label">Current File Status : <?= ($is_file) ? '<small class="badge badge-success">File Exists</small>' : '<small class="badge badge-danger">File Not Exists, Please Upload</small>' ?></label>
+                                                    <label class="control-label"><?= lang('current_file_status'); ?> : <?= ($is_file) ? '<small class="badge badge-success">' . lang('file_exists') . '</small>' : '<small class="badge badge-danger">' . lang('file_not_exists_please_upload') . '</small>' ?></label>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Update File <small class="text-danger">Only json file allow</small></label>
+                                                    <label class="control-label"><?= lang('update_file'); ?> <small class="text-danger"><?= lang('only_json_file_allow'); ?></small></label>
                                                     <input id="file" name="file" type="file" accept=".json" required class="form-control">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-10">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
                                         <hr />
                                         <ol>
-                                            <li>Open <a href="https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk" target="_blank">https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk </a> and select the project you want to generate a private key file for.</li>
-                                            <li>Click Generate New Private Key, then confirm by clicking Generate Key, then <b>upload generated .json file</b>.
+                                            <li><?= lang('open'); ?> <a href="https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk" target="_blank">https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk </a> <?= lang('and_select_project_you_want_to_generate_private_key_file_for'); ?></li>
+                                            <li><?= lang('click_generate_new_private_key_then_confirm_by_clicking_generate_key_then'); ?><b><?= lang('upload_generated_json_file'); ?></b>.
                                                 <img src="<?= base_url() . 'assets/generate-key.png' ?>" width="100%" />
                                             </li>
                                         </ol>

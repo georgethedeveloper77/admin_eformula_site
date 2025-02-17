@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create and Manage Exam Module | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('create_and_manage_exam_module'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Exam Module</h1>
+                        <h1><?= lang('create_and_manage_exam_module'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Exam Module</h4>
+                                        <h4><?= lang('create_exam_module'); ?></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -37,59 +37,59 @@
                                             <div class="form-group row">
                                                 <?php if (is_language_mode_enabled()) { ?>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Language</label>
+                                                        <label class="control-label"><?= lang('language'); ?></label>
                                                         <select name="language_id" id="create_language_id" class="form-control" required>
-                                                            <option value="">Select Language</option>
+                                                            <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
                                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Title</label>
-                                                        <input name="title" type="text" class="form-control" placeholder="Enter Title" required>
+                                                        <label class="control-label"><?= lang('title'); ?></label>
+                                                        <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Date</label>
+                                                        <label class="control-label"><?= lang('date'); ?></label>
                                                         <input type="date" name="date" class="form-control" required />
                                                     </div>
                                                 <?php } else { ?>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Title</label>
-                                                        <input name="title" type="text" class="form-control" placeholder="Enter Title" required>
+                                                        <label class="control-label"><?= lang('title'); ?></label>
+                                                        <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Date</label>
+                                                        <label class="control-label"><?= lang('date'); ?></label>
                                                         <input type="date" name="date" class="form-control" required />
                                                     </div>
                                                 <?php } ?>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label">Exam Key</label>
+                                                    <label class="control-label"><?= lang('exam_key'); ?></label>
                                                     <input type="number" name="exam_key" min="1000" max="9999" class="form-control" required />
-                                                    <div class="text-small text-danger">(Minimum 1000 and Maxmimum 9999)</div>
+                                                    <div class="text-small text-danger"><?= lang('minimun_1000_and_maximum_9999'); ?></div>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label">Duration <small class="text-danger">(in minutes)</small></label>
+                                                    <label class="control-label"><?= lang('duration'); ?> <small class="text-danger"><?= lang('in_minutes'); ?></small></label>
                                                     <input type="number" name="duration" min="1" max="180" class="form-control" required />
-                                                    <div class="text-small text-danger">(Minimum 1 and Maxmimum 180)</div>
+                                                    <div class="text-small text-danger"><?= lang('minimun_1_and_maximum_180'); ?></div>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label">Can rechange anwser while in exam</label><br />
+                                                    <label class="control-label"><?= lang('can_rechange_answer_while_in_exam'); ?></label><br />
                                                     <div id="status" class="btn-group">
                                                         <label class="btn btn-success">
-                                                            <input type="radio" name="answer_again" value="1"> Yes
+                                                            <input type="radio" name="answer_again" value="1"> <?= lang('yes'); ?>
                                                         </label>
                                                         <label class="btn btn-danger">
-                                                            <input type="radio" name="answer_again" value="0" checked> No
+                                                            <input type="radio" name="answer_again" value="0" checked> <?= lang('no'); ?>
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -101,7 +101,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Exam Module <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('exam_module'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -109,39 +109,39 @@
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class='col-md-3'>
                                                     <select id='filter_language' class='form-control' required>
-                                                        <option value="">Select language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
                                                 <div class='col-md-3'>
-                                                    <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'>Filter Data</button>
+                                                    <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                                 </div>
                                             <?php } ?>
                                         </div>
                                         <div id="toolbar">
                                             <?php if (has_permissions('delete', 'exam_module')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_exam_module" title="Delete Selected Exam Module"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_exam_module" title="<?= lang('delete_selected_exam_module'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='exam_module_list' data-toggle="table" data-url="<?= base_url() . 'Table/exam_module' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "exam-module-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="status" data-sortable="false">Status</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="status" data-sortable="false"><?= lang('status'); ?></th>
                                                     <?php if (is_language_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false">Language ID</th>
-                                                        <th scope="col" data-field="language" data-sortable="true">Language</th>
+                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false"><?= lang('language_id'); ?></th>
+                                                        <th scope="col" data-field="language" data-sortable="true"><?= lang('language'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="title" data-sortable="true">Title</th>
-                                                    <th scope="col" data-field="date" data-sortable="false">Date</th>
-                                                    <th scope="col" data-field="exam_key" data-sortable="false">Exam Key</th>
-                                                    <th scope="col" data-field="duration" data-sortable="false">Duration</th>
-                                                    <th scope="col" data-field="answer_again" data-sortable="false">Rechange anwser</th>
-                                                    <th scope="col" data-field="no_of_que" data-sortable="false">Total Question</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="title" data-sortable="true"><?= lang('title'); ?></th>
+                                                    <th scope="col" data-field="date" data-sortable="false"><?= lang('date'); ?></th>
+                                                    <th scope="col" data-field="exam_key" data-sortable="false"><?= lang('exam_key'); ?></th>
+                                                    <th scope="col" data-field="duration" data-sortable="false"><?= lang('duration'); ?></th>
+                                                    <th scope="col" data-field="answer_again" data-sortable="false"><?= lang('rechange_answer'); ?></th>
+                                                    <th scope="col" data-field="no_of_que" data-sortable="false"><?= lang('total_question'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -160,7 +160,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Exam Module</h5>
+                    <h5 class="modal-title"><?= lang('edit_exam_module'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -173,7 +173,7 @@
                             <div class="form-group row">
                                 <?php if (is_language_mode_enabled()) { ?>
                                     <div class="col-md-12 col-sm-12">
-                                        <label class="control-label">Language</label>
+                                        <label class="control-label"><?= lang('language'); ?></label>
                                         <select id="language_id" name="language_id" class="form-control" required>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
@@ -185,45 +185,45 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Title</label>
-                                    <input id="title" name="title" type="text" class="form-control" placeholder="Enter Title" required>
+                                    <label class="control-label"><?= lang('title'); ?></label>
+                                    <input id="title" name="title" type="text" class="form-control" placeholder="<?= lang('ente_title'); ?>" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Date</label>
+                                    <label class="control-label"><?= lang('date'); ?></label>
                                     <input type="date" id="date" name="date" class="form-control" required />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Exam Key</label>
+                                    <label class="control-label"><?= lang('exam_key'); ?></label>
                                     <input type="text" id="exam_key" name="exam_key" class="form-control" required />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Duration <small class="text-danger">(in minutes)</small></label>
+                                    <label class="control-label"><?= lang('duration'); ?> <small class="text-danger"><?= lang('in_minutes'); ?></small></label>
                                     <input type="number" id="duration" name="duration" min="0" class="form-control" required />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Can rechange anwser while in exam</label><br />
+                                    <label class="control-label"><?= lang('can_rechange_answer_while_in_exam'); ?></label><br />
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-success">
-                                            <input type="radio" name="edit_answer_again" value="1"> Yes
+                                            <input type="radio" name="edit_answer_again" value="1"> <?= lang('yes'); ?>
                                         </label>
                                         <label class="btn btn-danger">
-                                            <input type="radio" name="edit_answer_again" value="0" checked> No
+                                            <input type="radio" name="edit_answer_again" value="0" checked> <?= lang('no'); ?>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -236,7 +236,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update Status</h5>
+                    <h5 class="modal-title"><?= lang('update_status'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -249,21 +249,21 @@
 
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Status</label>
+                                    <label class="control-label"><?= lang('status'); ?></label>
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-default">
-                                            <input type="radio" name="status" value="1"> Active
+                                            <input type="radio" name="status" value="1"> <?= lang('active'); ?>
                                         </label>
                                         <label class="btn btn-danger">
-                                            <input type="radio" name="status" value="0"> Deactive
+                                            <input type="radio" name="status" value="0"> <?= lang('deactive'); ?>
                                         </label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdatestatus" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdatestatus" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -291,9 +291,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some exam module to delete!");
+                alert("<?= lang('please_select_exam_module_to_delete'); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected exam module?")) {
+                if (confirm("<?= lang('sure_to_delete_all_exam_module'); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -303,9 +303,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("exam-module deleted successfully");
+                                alert("<?= lang('exam_module_deleted_successfully'); ?>");
                             } else {
-                                alert("Could not delete exam module. Try again!");
+                                alert("<?= lang('not_delete_exam_module_try_again'); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -343,7 +343,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete exam module? All related questions will also be deleted')) {
+            if (confirm("<?= lang('sure_to_delete_exam_module_releated_data_deleted'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 $.ajax({
@@ -354,7 +354,7 @@
                         if (result) {
                             $('#exam_module_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }

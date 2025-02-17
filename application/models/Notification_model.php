@@ -39,33 +39,32 @@ class Notification_model extends CI_Model
             $no_of = 0;
         }
 
-        if ($_FILES['file']['name'] == '') {
-            $frm_data = array(
-                'title' => $title,
-                'message' => $message,
-                'users' => $users,
-                'type' => $type,
-                'type_id' => $maincat_id,
-                'image' => '',
-                'date_sent' => $this->toDateTime
-            );
-            $this->db->insert('tbl_notifications', $frm_data);
-            $fcmMsg = array(
-                'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                'title' => $title,
-                'body' => $message,
-                'image' => null,
-                'type' => $type,
-                'type_id' => $maincat_id,
-                'maxlevel' => $maxlevel,
-                'no_of' => $no_of
-            );
-        } else {
+        $frm_data = array(
+            'title' => $title,
+            'message' => $message,
+            'users' => $users,
+            'user_id' => '',
+            'type' => $type,
+            'type_id' => $maincat_id,
+            'image' => '',
+            'date_sent' => $this->toDateTime
+        );
+        $fcmMsg = array(
+            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+            'title' => $title,
+            'body' => $message,
+            'image' => null,
+            'type' => $type,
+            'type_id' => $maincat_id,
+            'maxlevel' => $maxlevel,
+            'no_of' => $no_of
+        );
+        if ($_FILES['file']['name'] != '') {
             // create folder 
             if (!is_dir(NOTIFICATION_IMG_PATH)) {
                 mkdir(NOTIFICATION_IMG_PATH, 0777, TRUE);
             }
-            $image = time();
+            $image = microtime(true) * 10000;
             $config['upload_path'] = NOTIFICATION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = $image;
@@ -79,29 +78,12 @@ class Notification_model extends CI_Model
                 $data = $this->upload->data();
                 $img = $data['file_name'];
                 //Setting values for tabel columns
-                $frm_data = array(
-                    'title' => $title,
-                    'message' => $message,
-                    'users' => $users,
-                    'type' => $type,
-                    'type_id' => $maincat_id,
-                    'image' => $img,
-                    'date_sent' => $this->toDateTime
-                );
-                $this->db->insert('tbl_notifications', $frm_data);
-                $fcmMsg = array(
-                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                    'title' => $title,
-                    'body' => $message,
-                    'image' => base_url() . NOTIFICATION_IMG_PATH . $img,
-                    'type' => $type,
-                    'type_id' => $maincat_id,
-                    'maxlevel' => $maxlevel,
-                    'no_of' => $no_of
-                );
+                $frm_data['image'] = $img;
+                $fcmMsg['image'] = base_url() . NOTIFICATION_IMG_PATH . $img;
             }
         }
-
+        $this->db->insert('tbl_notifications', $frm_data);
+        $insert_id = $this->db->insert_id();
         //notification 
         if ($users == 'all') {
             $res = $this->db->select("fcm_id")->get("tbl_users")->result_array();
@@ -113,12 +95,24 @@ class Notification_model extends CI_Model
             $selected_list = $this->input->post('selected_list');
             if (empty($selected_list)) {
                 $response['error'] = true;
-                $response['message'] = 'Please Select the users from the table';
+                $response['message'] =  lang('please_select_the_users_from_the_table');
                 echo json_encode($response);
                 return false;
             }
             $fcm_ids = array();
             $fcm_ids = explode(",", $selected_list);
+            if ($insert_id) {
+                $getID = $this->db->select('id')->where_in('fcm_id', $fcm_ids)->get("tbl_users")->result_array();
+                $comma_separated_ids = '';
+                if (!empty($getID)) {
+                    $getIds = array_column($getID, 'id');
+                    $comma_separated_ids = implode(',', $getIds);
+                }
+                $userID = array(
+                    'user_id' => $comma_separated_ids,
+                );
+                $this->db->where('id', $insert_id)->update('tbl_notifications', $userID);
+            }
         }
 
         $registrationIDs = $fcm_ids;

@@ -30,7 +30,7 @@ class Language_model extends CI_Model
         $query = $this->db->get('tbl_languages');
 
         if ($query->num_rows() > 0) {
-            return array('error' => true, 'message' => 'Name already exists'); // Duplicate language
+            return array('error' => true, 'message' => lang('name_already_exists')); // Duplicate language
         }
 
         // Check if code already exists
@@ -38,7 +38,7 @@ class Language_model extends CI_Model
         $query = $this->db->get('tbl_languages');
 
         if ($query->num_rows() > 0) {
-            return array('error' => true, 'message' => 'Code already exists'); // Duplicate language
+            return array('error' => true, 'message' => lang('code_already_exists')); // Duplicate language
         }
 
         // Store Langauge Data
@@ -46,10 +46,11 @@ class Language_model extends CI_Model
             'language' => $language,
             'code' => $code,
             'status' => 1,
-            'type' => 1
+            'type' => 1,
+            'default_active' => 0
         );
         $this->db->insert('tbl_languages', $frm_data);
-        return array('error' => false, 'message' => 'Data inserted successfully');
+        return array('error' => false, 'message' => lang('data_created_successfully'));
     }
 
 
@@ -76,7 +77,7 @@ class Language_model extends CI_Model
         $query = $this->db->get('tbl_languages');
 
         if ($query->num_rows() > 0) {
-            return array('error' => true, 'message' => 'Name already exists'); // Duplicate language
+            return array('error' => true, 'message' => lang('name_already_exists')); // Duplicate language
         }
 
         // Check if code already exists
@@ -85,24 +86,41 @@ class Language_model extends CI_Model
         $query = $this->db->get('tbl_languages');
 
         if ($query->num_rows() > 0) {
-            return array('error' => true, 'message' => 'Code already exists'); // Duplicate language
+            return array('error' => true, 'message' =>  lang('code_already_exists')); // Duplicate language
         }
 
+        $message = '';
         $status = $this->input->post('status');
-        $data = array('language' => $language, 'code' => $code, 'status' => $this->input->post('status'));
-        if ($status == 0) {
-            $count = $this->db->where('status', 1)->count_all_results('tbl_languages');
-            if ($count > 1) {
-                $this->db->where('id', $id)->update('tbl_languages', $data);
+        $default_active = $this->input->post('default_active');
+        $updateData = array('language' => $language, 'code' => $code, 'status' => $status);
+        $checkData = $this->db->where('id', $id)->get('tbl_languages')->row_array();
+        if ($default_active) {
+            $updateData['default_active'] = 1;
+            $updateData['status'] = 1;
+            $this->db->where('id !=', $id)->update('tbl_languages', ['default_active' => 0]);
+            if ($checkData['status'] == 0 && $checkData['default_active'] == 0) {
+                $message = lang('default_status_activated');
+            } else if ($status == 0) {
+                $message = lang('default_language_must_active');
             } else {
-                return array('error' => true, 'message' => 'Cannot update. One language have to enabled.');
+                $message = lang('data_updated_successfully');
             }
+        } elseif ($status == 0 && $checkData['default_active'] == 1) {
+            $updateData['status'] = 1;
+            $message = lang('default_language_must_active');
         } else {
-            $this->db->where('id', $id)->update('tbl_languages', $data);
+            $existingDefault = $this->db->where('default_active', 1)->where('id !=', $id)->get('tbl_languages')->row_array();
+            if (!$existingDefault) {
+                $updateData['default_active'] = 1;
+                $message = lang('default_language_require_set_as_default');
+            } else {
+                $updateData['default_active'] = 0;
+                $message = lang('data_updated_successfully');
+            }
         }
+        $this->db->where('id', $id)->update('tbl_languages', $updateData);
 
-        $this->db->where('id', $id)->update('tbl_languages', $data);
-        return array('error' => false, 'message' => 'Data udpated successfully');
+        return array('message' => $message);
     }
 
     public function delete_data($id)

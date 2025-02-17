@@ -18,26 +18,26 @@ class Slider extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'sliders')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Slider_model->add_data();
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_PNG_JPG_SVG_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_PNG_JPG_SVG_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Slider created successfully.! ');
+                        $this->session->set_flashdata('success', lang('slider_created_successfully'));
                     }
                 }
                 redirect('sliders');
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'sliders')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Slider_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_PNG_JPG_SVG_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_PNG_JPG_SVG_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Slider updated successfully.!');
+                        $this->session->set_flashdata('success', lang('slider_updated_successfully'));
                     }
                 }
                 redirect('sliders');

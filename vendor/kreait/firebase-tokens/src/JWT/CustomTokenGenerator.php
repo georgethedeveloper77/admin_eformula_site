@@ -15,15 +15,14 @@ use Kreait\Firebase\JWT\Value\Duration;
 
 final class CustomTokenGenerator
 {
-    private Handler $handler;
-
     private ?string $tenantId = null;
 
-    public function __construct(Handler $handler)
-    {
-        $this->handler = $handler;
-    }
+    public function __construct(private readonly Handler $handler) {}
 
+    /**
+     * @param non-empty-string $clientEmail
+     * @param non-empty-string $privateKey
+     */
     public static function withClientEmailAndPrivateKey(string $clientEmail, string $privateKey): self
     {
         $handler = new WithLcobucciJWT($clientEmail, $privateKey, SystemClock::create());
@@ -31,6 +30,9 @@ final class CustomTokenGenerator
         return new self($handler);
     }
 
+    /**
+     * @param non-empty-string $tenantId
+     */
     public function withTenantId(string $tenantId): self
     {
         $generator = clone $this;
@@ -49,12 +51,12 @@ final class CustomTokenGenerator
     }
 
     /**
-     * @param array<string, mixed> $claims
-     * @param Duration|DateInterval|string|int $timeToLive
+     * @param non-empty-string $uid
+     * @param array<non-empty-string, mixed> $claims
      *
      * @throws CustomTokenCreationFailed
      */
-    public function createCustomToken(string $uid, array $claims = null, $timeToLive = null): Token
+    public function createCustomToken(string $uid, ?array $claims = null, Duration|DateInterval|string|int $timeToLive = null): Token
     {
         $action = CreateCustomToken::forUid($uid);
 

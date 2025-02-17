@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create and Manage Contest Prize | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('create_and_manage_contest_prize'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Contest Prize</h1>
+                        <h1><?= lang('create_and_manage_contest_prize'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Contest Prize</h4>
+                                        <h4><?= lang('create_contest_prize'); ?></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -40,16 +40,16 @@
                                                     <?php
                                                     $max = ($max) ? ($max[0]->total + 1) : 1;
                                                     ?>
-                                                    <label class="control-label">Top Winner</label>
+                                                    <label class="control-label"><?= lang('top_winner'); ?></label>
                                                     <input type="number" name="winner" value="<?= $max ?>" required class="form-control" readonly>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12">
-                                                    <label class="control-label">Prize</label>
+                                                    <label class="control-label"><?= lang('prize'); ?></label>
                                                     <input type="number" name="points" min="0" required class="form-control">
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="control-label">&nbsp;</label>
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?> form-control" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?> form-control" />
                                                 </div>
                                             </div>
                                         </form>
@@ -61,7 +61,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Contest Prize <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('contest_prize'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -69,11 +69,11 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="name" data-sortable="false">Name</th>
-                                                    <th scope="col" data-field="top_winner" data-sortable="true">Top Winner</th>
-                                                    <th scope="col" data-field="points" data-sortable="true">Coins</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="name" data-sortable="false"><?= lang('name'); ?></th>
+                                                    <th scope="col" data-field="top_winner" data-sortable="true"><?= lang('top_winner'); ?></th>
+                                                    <th scope="col" data-field="points" data-sortable="true"><?= lang('coins'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -93,7 +93,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Contest Prize</h5>
+                    <h5 class="modal-title"><?= lang('edit_contest_prize'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -105,17 +105,17 @@
                             <input type='hidden' name="edit_id" id="edit_id" value="" />
 
                             <div class="form-group">
-                                <label for="winner">Top Winner</label>
+                                <label for="winner"><?= lang('top_winner'); ?></label>
                                 <input type="number" name="winner" id="winner" readonly class='form-control' required>
                             </div>
                             <div class="form-group">
-                                <label for="points">Prize</label>
+                                <label for="points"><?= lang('prize'); ?></label>
                                 <input type="number" name="points" id="points" class='form-control' min="0" required>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -139,7 +139,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete prize?')) {
+            if (confirm("<?= lang('sure_to_delete_prize'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 $.ajax({
@@ -151,7 +151,7 @@
                             $('#prize_list').bootstrapTable('refresh');
                             window.location.reload();
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }

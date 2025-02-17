@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Payment Requests | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('payment_requests'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Payment Requests <small> User's Payment Requests Details</small></h1>
+                        <h1><?= lang('payment_requests'); ?> <small> <?= lang('users_payment_requests_details'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -33,17 +33,17 @@
                                             <input type="hidden" name="multiple_ids" id="multiple_ids" />
                                             <div class="form-group row justify-content-center">
                                                 <div class="col-md-2 col-sm-12 text-right">
-                                                    <a href="javascript:void(0)" class="btn btn-warning" id="get_multiple_data_btn">Get Selected Requests</a>
+                                                    <a href="javascript:void(0)" class="btn btn-warning" id="get_multiple_data_btn"><?= lang('get_selected_requested'); ?></a>
                                                 </div>
                                                 <div class="col-md-3 col-sm-12">
                                                     <select id="multiple_status" name='status' class='form-control' required>
-                                                        <option value=''>Select Status</option>
-                                                        <option value='0'>Pending</option>
-                                                        <option value='1'>Completed</option>
+                                                        <option value=''><?= lang('select_status'); ?></option>
+                                                        <option value='0'><?= lang('pending'); ?></option>
+                                                        <option value='1'><?= lang('completed'); ?></option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -54,17 +54,17 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="name" data-sortable="true">Name</th>
-                                                    <th scope="col" data-field="uid" data-sortable="true" data-visible="false">UID</th>
-                                                    <th scope="col" data-field="payment_type" data-sortable="true">Payment Type</th>
-                                                    <th scope="col" data-field="payment_address" data-sortable="true">Payment Address</th>
-                                                    <th scope="col" data-field="payment_amount" data-sortable="true">Payment Amount</th>
-                                                    <th scope="col" data-field="coin_used" data-sortable="true">Coin Used</th>
-                                                    <th scope="col" data-field="details" data-sortable="false">Details</th>
-                                                    <th scope="col" data-field="status" data-sortable="false">Status</th>
-                                                    <th scope="col" data-field="date" data-sortable="true">Date</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="name" data-sortable="true"><?= lang('name'); ?></th>
+                                                    <th scope="col" data-field="uid" data-sortable="true" data-visible="false"><?= lang('uid'); ?></th>
+                                                    <th scope="col" data-field="payment_type" data-sortable="true"><?= lang('payment_type'); ?></th>
+                                                    <th scope="col" data-field="payment_address" data-sortable="true"><?= lang('payment_address'); ?></th>
+                                                    <th scope="col" data-field="payment_amount" data-sortable="true"><?= lang('payment_amount'); ?></th>
+                                                    <th scope="col" data-field="coin_used" data-sortable="true"><?= lang('coin_used'); ?></th>
+                                                    <th scope="col" data-field="details" data-sortable="false"><?= lang('details'); ?></th>
+                                                    <th scope="col" data-field="status" data-sortable="false"><?= lang('status'); ?></th>
+                                                    <th scope="col" data-field="date" data-sortable="true"><?= lang('date'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -84,7 +84,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit User</h5>
+                    <h5 class="modal-title"><?= lang('edit_user'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -99,31 +99,31 @@
                             <input type='hidden' name="coin_used" id="coin_used" value='' />
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Details</label>
+                                    <label class="control-label"><?= lang('details'); ?></label>
                                     <textarea id="details" name="details" class="form-control" required></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Status</label><br />
+                                    <label class="control-label"><?= lang('status'); ?></label><br />
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-warning">
-                                            <input type="radio" name="status" value="0"> Pending
+                                            <input type="radio" name="status" value="0"> <?= lang('pending'); ?>
                                         </label>
                                         <label class="btn btn-success">
-                                            <input type="radio" name="status" value="1"> Completed
+                                            <input type="radio" name="status" value="1"> <?= lang('completed'); ?>
                                         </label>
                                         <label class="btn btn-danger">
-                                            <input type="radio" name="status" value="2"> Invalid Details
+                                            <input type="radio" name="status" value="2"> <?= lang('invalid_details'); ?>
                                         </label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>

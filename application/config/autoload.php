@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
   | -------------------------------------------------------------------
@@ -134,22 +134,22 @@ $autoload['language'] = array();
   |	$autoload['model'] = array('first_model' => 'first');
  */
 $autoload['model'] = array(
-    'Login_model',
-    'Setting_model',
-    'Language_model',
-    'Category_model',
-    'Subcategory_model',
-    'Question_model',
-    'Notification_model',
-    'User_model',
-    'Contest_model',
-    'Fun_N_Learn_model',
-    'Guess_Word_model',
-    'Audio_model',
-    'Badges_model',
-    'Exam_Module_model',
-    'Maths_model',
-    'Slider_model',
-    'Upload_Languages_model',
-    'Coin_Store_model'
+  'Login_model',
+  'Setting_model',
+  'Language_model',
+  'Category_model',
+  'Subcategory_model',
+  'Question_model',
+  'Notification_model',
+  'User_model',
+  'Contest_model',
+  'Fun_N_Learn_model',
+  'Guess_Word_model',
+  'Audio_model',
+  'Badges_model',
+  'Exam_Module_model',
+  'Maths_model',
+  'Slider_model',
+  'System_Languages_model',
+  'Coin_Store_model'
 );

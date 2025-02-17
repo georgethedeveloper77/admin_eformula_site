@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Category Order | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('category_order'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Category Order Settings <small class="text-small">Update Category Order here</small></h1>
+                        <h1><?= lang('category_order_settings'); ?> <small class="text-small"><?= lang('update_category_order_here'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -31,7 +31,7 @@
                                         <?php if (is_language_mode_enabled()) { ?>
                                             <div class='col-md-10 offset-1'>
                                                 <select id='filter_language' class='form-control' required>
-                                                    <option value=''>Select language</option>
+                                                    <option value=''><?= lang('select_language'); ?></option>
                                                     <?php foreach ($language as $lang) { ?>
                                                         <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                     <?php } ?>
@@ -40,7 +40,7 @@
                                         <?php } ?>
                                     </div>
                                     <div class="card-header">
-                                        <h4>Main Category</h4>
+                                        <h4><?= lang('main_category'); ?></h4>
                                     </div>
                                     <div class="card-body">
 
@@ -66,7 +66,7 @@
                                             </div>
                                             <div class="form-group row float-right">
                                                 <div class="col-sm-12">
-                                                    <input type="submit" name="btnaddcategory" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnaddcategory" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -78,7 +78,7 @@
                                     <div class="row mt-4">
                                         <div class='col-md-10 offset-1'>
                                             <select id='filter_category' class='form-control' required>
-                                                <option value=''>Select Main Category</option>
+                                                <option value=''><?= lang('select_main_category'); ?></option>
                                                 <?php foreach ($category as $cat) { ?>
                                                     <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                                 <?php } ?>
@@ -86,7 +86,7 @@
                                         </div>
                                     </div>
                                     <div class="card-header">
-                                        <h4>Sub Category</h4>
+                                        <h4><?= lang('sub_category'); ?></h4>
                                     </div>
                                     <div class="card-body">
 
@@ -114,7 +114,7 @@
 
                                             <div class="form-group row float-right">
                                                 <div class="col-sm-12">
-                                                    <input type="submit" name="btnaddsubcategory" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnaddsubcategory" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>

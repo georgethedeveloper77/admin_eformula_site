@@ -26,13 +26,13 @@ class Audio extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'audio_question')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Audio_model->add_audio_data();
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', AUDIO_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(AUDIO_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Audio Question created successfully.! ');
+                        $this->session->set_flashdata('success', lang('audio_question_created_successfully'));
                     }
                 }
                 $type = $this->uri->segment(1);
@@ -46,16 +46,16 @@ class Audio extends CI_Controller
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'audio_question')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Audio_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', AUDIO_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(AUDIO_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Audio Question updated successfully.!');
+                        $this->session->set_flashdata('success', lang('audio_question_updated_successfully'));
                     }
-                    redirect('audio-question', 'refresh');
                 }
+                redirect('audio-question', 'refresh');
             }
             $this->result['language'] = $this->Language_model->get_data();
             $this->result['category'] = $this->Category_model->get_data($this->quiz_type);
@@ -66,8 +66,7 @@ class Audio extends CI_Controller
     public function delete_audio_question()
     {
         if (!has_permissions('delete', 'audio_question')) {
-            echo FALSE;
-        } else {
+            echo FALSE;        } else {
             $id = $this->input->post('id');
             $audio_url = $this->input->post('audio_url');
             $this->Audio_model->delete_data($id, $audio_url);

@@ -5,7 +5,7 @@
                 if (isset($footer_copyrights_text) && !empty($footer_copyrights_text['message'])) { ?>
                     <?= $footer_copyrights_text['message'] ?>
                 <?php } else { ?>
-                    Copyright &copy; <?= date('Y') ?> Made By <strong><a href="https://www.wrteam.in/" class="footer_dev_link" target="_blank">WRTeam</a></strong>
+                    <?= lang('copyright'); ?> &copy; <?= date('Y') ?> <?= lang('made_by'); ?> <strong><a href="https://www.wrteam.in/" class="footer_dev_link" target="_blank">WRTeam</a></strong>
                 <?php }
                 ?>
             </div>
@@ -18,7 +18,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title">Purchase Code</h5>
+                        <h5 class="modal-title"><?= lang('purchase_code'); ?></h5>
                     </div>
                     <div class="modal-body">
                         <div class="card-body">
@@ -31,13 +31,13 @@
 
                                 <div class="form-group row">
                                     <div class="col-md-12 col-sm-12">
-                                        <label>Purchase Code</label>
-                                        <input type="text" name="purchase_code" required placeholder="Enter Purchase Code" class="form-control" />
+                                        <label><?= lang('purchase_code'); ?></label>
+                                        <input type="text" name="purchase_code" required placeholder="<?= lang('enter_purchase_code'); ?>" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="float-right">
-                                    <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                    <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                                 </div>
                             </form>
                         </div>

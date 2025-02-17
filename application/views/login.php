@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Admin Login | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('admin_login'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -27,27 +27,27 @@
                                         <?php } ?>
                                     </div>
                                     <div class="login-welcome-text">
-                                        <h3>Sign In</h3>
-                                        <p>Welcome! Let's get started. Sign in to explore</p>
+                                        <h3><?= lang('sign_in'); ?></h3>
+                                        <p><?= lang('welcome_lets_get_started_sign_in_to_explore'); ?></p>
                                     </div>
                                     <div class="card-body">
                                         <form method="POST" action="<?= base_url() ?>loginMe" class="needs-validation" novalidate="">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
                                             <div class="form-group">
-                                                <label for="email">Username</label>
-                                                <input type="text" class="form-control" name="username" placeholder="Enter Username" required value="<?= isset($_COOKIE["elite_user_login"]) ? $_COOKIE["elite_user_login"] : '' ?>" autofocus>
+                                                <label for="email"><?= lang('username'); ?></label>
+                                                <input type="text" class="form-control" name="username" placeholder="<?= lang('enter_username'); ?>" required value="<?= isset($_COOKIE["elite_user_login"]) ? $_COOKIE["elite_user_login"] : '' ?>" autofocus>
                                                 <div class="invalid-feedback">
-                                                    Please fill in your Username
+                                                    <?= lang('please_fill_in_your_username'); ?>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <div class="d-block">
-                                                    <label for="password" class="control-label">Password</label>
+                                                    <label for="password" class="control-label"><?= lang('password'); ?></label>
                                                 </div>
                                                 <div class="input-group">
-                                                    <input type="password" id="password" class="form-control" name="password" placeholder="Enter Password" value="<?= isset($_COOKIE["elite_userpassword"]) ? $_COOKIE["elite_userpassword"] : '' ?>" required>
+                                                    <input type="password" id="password" class="form-control" name="password" placeholder="<?= lang('enter_password'); ?>" value="<?= isset($_COOKIE["elite_userpassword"]) ? $_COOKIE["elite_userpassword"] : '' ?>" required>
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">
                                                             <i class="fa fa-eye-slash" id="btnIcon"></i>
@@ -55,18 +55,18 @@
                                                     </div>
                                                 </div>
                                                 <div class="invalid-feedback">
-                                                    Please fill in your Password
+                                                    <?= lang('please_fill_in_your_password'); ?>
                                                 </div>
                                             </div>
 
                                             <label class="checkbox">
                                                 <input type="checkbox" name="rememberMe" id="rememberMe" <?php if (isset($_COOKIE["elite_user_login"])) { ?> checked <?php } ?> />
-                                                Remember me
+                                                <?= lang('remember_me'); ?>
                                             </label>
 
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary btn-lg btn-block">
-                                                    Login
+                                                    <?= lang('login'); ?>
                                                 </button>
                                             </div>
                                         </form>
@@ -77,7 +77,7 @@
                                             if (isset($footer_copyrights_text) && !empty($footer_copyrights_text['message'])) { ?>
                                                 <div class="text-muted"> <?= $footer_copyrights_text['message'] ?> </div>
                                             <?php } else { ?>
-                                                <div class="text-muted"> Copyright &copy; <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?> <?= date('Y') ?></div>
+                                                <div class="text-muted"> <?= lang('copyright'); ?> &copy; <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?> <?= date('Y') ?></div>
                                             <?php }
                                             ?>
                                         </div>

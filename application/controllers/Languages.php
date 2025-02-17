@@ -18,11 +18,11 @@ class Languages extends CI_Controller
     public function index()
     {
         if (!has_permissions('read', 'languages')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btncreate')) {
                 if (!has_permissions('create', 'languages')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $result = $this->Language_model->add_new_data();
 
@@ -38,30 +38,25 @@ class Languages extends CI_Controller
                         $this->session->set_flashdata('success', $result['message']);
                     }
                 }
-                redirect('languages', 'refresh');
-            }
-
-            if ($this->input->post('btnadd')) {
+                redirect('languages');
+            } else if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'languages')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Language_model->add_data();
-                    $this->session->set_flashdata('success', 'Language Added successfully.! ');
+                    $this->session->set_flashdata('success', lang('language_added_successfully'));
                 }
-                redirect('languages', 'refresh');
-            }
-            if ($this->input->post('btnupdate')) {
+                redirect('languages');
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'languages')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $result = $this->Language_model->update_data();
-                    if ($result['error']) {
-                        $this->session->set_flashdata('error', $result['message']);
-                    } else {
+                    if ($result && $result['message']) {
                         $this->session->set_flashdata('success', $result['message']);
                     }
                 }
-                redirect('languages', 'refresh');
+                redirect('languages');
             }
             $this->result['language'] = $this->Language_model->get_all_lang();
             $this->load->view('languages', $this->result);

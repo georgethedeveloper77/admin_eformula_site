@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>In App Setting | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('in_app_settings'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>In App Settings</h1>
+                        <h1><?= lang('in_app_settings'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -33,7 +33,7 @@
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <div class="row">
                                                 <div class="form-group col-md-3 col-sm-6">
-                                                    <label class="control-label">In App Purchase</label><br>
+                                                    <label class="control-label"><?= lang('in_app_purchase'); ?></label><br>
                                                     <input type="checkbox" id="in_app_purchase_mode_btn" data-plugin="switchery" <?php
                                                                                                                                     if (!empty($in_app_purchase_mode) && $in_app_purchase_mode['message'] == '1') {
                                                                                                                                         echo 'checked';
@@ -46,25 +46,25 @@
                                             <hr>
                                             <div class="row" id="settingData" style="display: none;">
                                                 <div class="form-group col-md-6 col-lg-6 col-sm-12 col-12">
-                                                    <h6>IOS</h6>
+                                                    <h6><?= lang('ios'); ?></h6>
                                                     <div class="row">
                                                         <div class="form-group col-md-12 col-lg-12 col-sm-12 col-12">
-                                                            <label class="control-label">iTunes Shared Secret</label><br>
+                                                            <label class="control-label"><?= lang('itune_shared_secret'); ?></label><br>
                                                             <input type="text" name="shared_secrets" class="form-control" value="<?= $shared_secrets['message'] ?? '' ?>">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-6 col-lg-6 col-sm-12 col-12">
-                                                    <h6>Android</h6>
+                                                    <h6><?= lang('android'); ?></h6>
                                                     <div class="row">
                                                         <div class="form-group col-md-4 col-lg-4 col-sm-12 col-12">
-                                                            <label class="control-label">App Package Name</label><br>
+                                                            <label class="control-label"><?= lang('app_package_name'); ?></label><br>
                                                             <input type="text" name="app_package_name" class="form-control" value="<?= $app_package_name['message'] ?? '' ?>">
 
                                                         </div>
 
                                                         <div class="form-group col-md-6 col-lg-6 col-sm-10 col-10">
-                                                            <label class="control-label">Client Email</label><br>
+                                                            <label class="control-label"><?= lang('client_email'); ?></label><br>
                                                             <input class="form-control" value="<?= $clientEmail ?>" disabled style="pointer-events: none;">
                                                         </div>
                                                         <div class="form-group col-md-2 col-lg-2 col-sm-2 col-2">
@@ -79,11 +79,11 @@
                                                     <?php
                                                     if ($is_validate) {
                                                     ?>
-                                                        <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                        <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                     <?php
                                                     } else {
                                                     ?>
-                                                        <h6 class="text-danger">Check Your Firebase Configuration file</h6>
+                                                        <h6 class="text-danger"><?= lang('check_your_firebase_configuration_file'); ?></h6>
                                                     <?php
                                                     }
                                                     ?>

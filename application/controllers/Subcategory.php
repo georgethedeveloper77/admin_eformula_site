@@ -25,17 +25,17 @@ class Subcategory extends CI_Controller
             if ($this->input->post('btnadd')) {
                 $type_name = $this->input->post('type');
                 if (!has_permissions('create', 'subcategories')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Subcategory_model->add_data();
                     if ($data == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else if ($data === 3) {
-                        $this->session->set_flashdata('error', 'Slug Already Exists');
+                        $this->session->set_flashdata('error', lang('slug_already_exists'));
                     } else if ($data === 4) {
-                        $this->session->set_flashdata('error', 'Slug is required');
+                        $this->session->set_flashdata('error', lang('slug_is_required'));
                     } else {
-                        $this->session->set_flashdata('success', 'Subcategory created successfully.! ');
+                        $this->session->set_flashdata('success', lang('subcategory_created_successfully'));
                     }
                 }
                 redirect($type_name, 'refresh');
@@ -43,17 +43,17 @@ class Subcategory extends CI_Controller
             if ($this->input->post('btnupdate')) {
                 $type_name = $this->input->post('type');
                 if (!has_permissions('update', 'subcategories')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Subcategory_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else if ($data1 === 3) {
-                        $this->session->set_flashdata('error', 'Slug Already Exists');
+                        $this->session->set_flashdata('error', lang('slug_already_exists'));
                     } else if ($data1 === 4) {
-                        $this->session->set_flashdata('error', 'Slug is required');
+                        $this->session->set_flashdata('error', lang('slug_is_required'));
                     } else {
-                        $this->session->set_flashdata('success', 'Subcategory updated successfully.!');
+                        $this->session->set_flashdata('success', lang('subcategory_updated_successfully'));
                     }
                 }
                 redirect($type_name, 'refresh');

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Terms Conditions | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('term_conditions'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -22,10 +22,10 @@
                 <section class="section">
                     <div class="section-header">
                         <div class="col-md-8">
-                            <h1>Terms Conditions <small> Terms for App Usage</small></h1>
+                            <h1><?= lang('term_conditions'); ?> <small> <?= lang('terms_for_app_usage'); ?></small></h1>
                         </div>
                         <div class="col-md-4 float-right">
-                            <a href='play-store-terms-conditions' target='_blank' class='<?= BUTTON_CLASS ?> btn-sm'>Terms & Conditions Page for Play Store</a>
+                            <a href='play-store-terms-conditions' target='_blank' class='<?= BUTTON_CLASS ?> btn-sm'><?= lang('terms_and_conditions_page_for_play_store'); ?></a>
                         </div>
                     </div>
                     <div class="section-body">
@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-10 offset-1">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>

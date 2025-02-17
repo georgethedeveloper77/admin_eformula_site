@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>User Statistics Details | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('user_statustics_details'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Statistics Details for <?= $battle_stat[0]->name ? $battle_stat[0]->name : 0; ?></h1>
+                        <h1><?= lang('statustics_details_for'); ?> <?= $battle_stat[0]->name ? $battle_stat[0]->name : 0; ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -31,28 +31,28 @@
                                         <div class="row">
                                             <?php if (!empty($general_stat)) { ?>
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <h5>General Statistics</h5>
+                                                    <h5><?= lang('general_statistics'); ?></h5>
                                                     <hr>
                                                     <div class="form-group row">
-                                                        <label class="control-label col-md-4">Questions Answered: <?= $general_stat[0]->questions_answered ? $general_stat[0]->questions_answered : 0; ?></label>
-                                                        <label class="control-label col-md-4">Correct Answers: <?= $general_stat[0]->correct_answers ? $general_stat[0]->correct_answers : 0; ?></label>
-                                                        <label class="control-label col-md-4">Best Position: <?= $general_stat[0]->best_position ? $general_stat[0]->best_position : 0; ?></label>
+                                                        <label class="control-label col-md-4"><?= lang('questions_answered'); ?>: <?= $general_stat[0]->questions_answered ? $general_stat[0]->questions_answered : 0; ?></label>
+                                                        <label class="control-label col-md-4"><?= lang('correct_answers'); ?>: <?= $general_stat[0]->correct_answers ? $general_stat[0]->correct_answers : 0; ?></label>
+                                                        <label class="control-label col-md-4"><?= lang('best_position'); ?>: <?= $general_stat[0]->best_position ? $general_stat[0]->best_position : 0; ?></label>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="control-label col-md-4">Strong Category: <?= $general_stat[0]->strong_category ? $general_stat[0]->strong_category : 0; ?></label>
-                                                        <label class="control-label col-md-4">Weak Category: <?= $general_stat[0]->weak_category ? $general_stat[0]->weak_category : 0; ?></label>
+                                                        <label class="control-label col-md-4"><?= lang('strong_category'); ?>: <?= $general_stat[0]->strong_category ? $general_stat[0]->strong_category : 0; ?></label>
+                                                        <label class="control-label col-md-4"><?= lang('weak_category'); ?>: <?= $general_stat[0]->weak_category ? $general_stat[0]->weak_category : 0; ?></label>
                                                     </div>
                                                     <hr>
                                                 </div>
 
                                             <?php } ?>
                                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <h5>Battle Statistics</h5>
+                                                <h5><?= lang('battle_statistics'); ?></h5>
                                                 <hr>
                                                 <div class="form-group row">
-                                                    <label class="control-label col-md-4">Victories: <?= $battle_stat[0]->Victories ? $battle_stat[0]->Victories : 0; ?></label>
-                                                    <label class="control-label col-md-4">Drawn: <?= $battle_stat[0]->Drawn ? $battle_stat[0]->Drawn : 0; ?></label>
-                                                    <label class="control-label col-md-4">Loose: <?= $battle_stat[0]->Loose ? $battle_stat[0]->Loose : 0; ?></label>
+                                                    <label class="control-label col-md-4"><?= lang('victories'); ?>: <?= $battle_stat[0]->Victories ? $battle_stat[0]->Victories : 0; ?></label>
+                                                    <label class="control-label col-md-4"><?= lang('drawn'); ?>: <?= $battle_stat[0]->Drawn ? $battle_stat[0]->Drawn : 0; ?></label>
+                                                    <label class="control-label col-md-4"><?= lang('loose'); ?>: <?= $battle_stat[0]->Loose ? $battle_stat[0]->Loose : 0; ?></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,10 +62,10 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="opponent_id" data-sortable="true" data-visible="false">Opponent ID</th>
-                                                    <th scope="col" data-field="opponent_name">Opponent Name</th>
-                                                    <th scope="col" data-field="mystatus">My Status</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="opponent_id" data-sortable="true" data-visible="false"><?= lang('opponent_id'); ?></th>
+                                                    <th scope="col" data-field="opponent_name"><?= lang('opponent_name'); ?></th>
+                                                    <th scope="col" data-field="mystatus"><?= lang('my_status'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>

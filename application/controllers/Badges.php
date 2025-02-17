@@ -22,16 +22,16 @@ class Badges extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'badges_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Badges_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Badges updated successfully.!');
+                        $this->session->set_flashdata('success', lang('badge_updated_successfully'));
                     }
                 }
-                redirect('badges-settings', 'refresh');
+                redirect('badges-settings');
             }
             $badges = [
                 'dashing_debut',
@@ -65,16 +65,16 @@ class Badges extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'badges_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Badges_model->update_data();
                     if ($data1 == FALSE) {
-                        $this->session->set_flashdata('error', IMAGE_ALLOW_MSG);
+                        $this->session->set_flashdata('error', lang(IMAGE_ALLOW_MSG));
                     } else {
-                        $this->session->set_flashdata('success', 'Badges updated successfully.!');
+                        $this->session->set_flashdata('success', lang('badge_updated_successfully'));
                     }
                 }
-                redirect('badges-settings/' . $id, 'refresh');
+                redirect('badges-settings/' . $id);
             }
             $badges = [
                 'dashing_debut',
@@ -94,12 +94,8 @@ class Badges extends CI_Controller
                 'streak'
             ];
             foreach ($badges as $row) {
-                $languageWiseBadgeData = $this->db->select('badge_label,badge_note')->where('type', $row)->where('language_id', $id)->get('tbl_badges')->row_array();
-                if (empty($languageWiseBadgeData)) {
-                    $languageWiseBadgeData = $this->db->select('badge_label,badge_note')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
-                }
                 $otherBadgeData = $this->db->select('badge_icon,badge_reward,badge_counter')->where('type', $row)->get('tbl_badges')->row_array();
-                $this->result[$row] = array_merge($languageWiseBadgeData, $otherBadgeData);
+                $this->result[$row] = $otherBadgeData;
             }
             $this->result['edit_data'] = 1;
             $this->result['notification_title'] = $this->db->where('type', 'notification_title')->where('language_id', $id)->get('tbl_web_settings')->row_array();

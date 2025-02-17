@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Questions for Exam Quiz | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('questions_for_exam_module'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -24,7 +24,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Manage Exam Questions</h1>
+                        <h1><?= lang('manage_exam_questions'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -35,20 +35,20 @@
                                         <table aria-describedby="mydesc" class='table-striped' id='question_list' data-toggle="table" data-url="<?= base_url() . 'Table/exam_module_questions' ?>" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "exam-questions-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="image" data-sortable="false">Image</th>
-                                                    <th scope="col" data-field="question" data-sortable="true">Question</th>
-                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false' data-formatter="questionTypeFormatter">Question Type</th>
-                                                    <th scope="col" data-field="optiona" data-sortable="true">Option A</th>
-                                                    <th scope="col" data-field="optionb" data-sortable="true">Option B</th>
-                                                    <th scope="col" data-field="optionc" data-sortable="true">Option C</th>
-                                                    <th scope="col" data-field="optiond" data-sortable="true">Option D</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="image" data-sortable="false"><?= lang('image'); ?></th>
+                                                    <th scope="col" data-field="question" data-sortable="true"><?= lang('question'); ?></th>
+                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false'><?= lang('question_type'); ?></th>
+                                                    <th scope="col" data-field="optiona" data-sortable="true"><?= lang('option_a'); ?></th>
+                                                    <th scope="col" data-field="optionb" data-sortable="true"><?= lang('option_b'); ?></th>
+                                                    <th scope="col" data-field="optionc" data-sortable="true"><?= lang('option_c'); ?></th>
+                                                    <th scope="col" data-field="optiond" data-sortable="true"><?= lang('option_d'); ?></th>
                                                     <?php if (is_option_e_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="optione" data-sortable="true">Option E</th>
+                                                        <th scope="col" data-field="optione" data-sortable="true"><?= lang('option_e'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="answer" data-sortable="true" data-visible='false'>Answer</th>
-                                                    <th scope="col" data-field="marks" data-sortable="true">Marks</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false">Operate</th>
+                                                    <th scope="col" data-field="answer" data-sortable="true" data-visible='false'><?= lang('answer'); ?></th>
+                                                    <th scope="col" data-field="marks" data-sortable="true"><?= lang('mark'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -74,7 +74,7 @@
     </script>
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete question? All related questions report will also be deleted')) {
+            if (confirm("<?= lang('sure_to_delete_questions'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 image = $(this).data("image");
@@ -86,7 +86,7 @@
                         if (result) {
                             $('#question_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }

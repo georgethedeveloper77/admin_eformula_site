@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>System Settings | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('system_settings'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -23,7 +23,7 @@
 
                 <section class="section">
                     <div class="section-header">
-                        <h1>System Settings for App <small class="text-small">Note that this will directly reflect the changes in App</small></h1>
+                        <h1><?= lang('system_settings_for_app'); ?> <small class="text-small"><?= lang('note_that_this_will_directly_reflect_the_changes_in_app'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -36,7 +36,7 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-12 col-sm-12">
-                                                    <label class="control-label">System Timezone</label>
+                                                    <label class="control-label"><?= lang('system_timezone'); ?></label>
                                                     <input type="hidden" id="system_timezone_gmt" name="system_timezone_gmt" value="<?php echo (!empty($system_timezone_gmt['message'])) ? $system_timezone_gmt['message'] : '-11:00'; ?>" aria-required="true">
                                                     <?php $options = getTimezoneOptions(); ?>
                                                     <select id="system_timezone" name="system_timezone" required class="form-control">
@@ -49,45 +49,45 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label">App Link</label>
+                                                    <label class="control-label"><?= lang('app_link'); ?></label>
                                                     <input type="url" id="app_link" name="app_link" class="form-control" value="<?php echo (!empty($app_link['message'])) ? $app_link['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label">More Apps Link ( Your Google Market place URL )</label>
+                                                    <label class="control-label"><?= lang('more_apps_link_your_google_ios_market_place_url'); ?></label>
                                                     <input type="url" id="more_apps" name="more_apps" class="form-control" value="<?php echo (!empty($more_apps['message'])) ? $more_apps['message'] : "" ?>">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label">iOS App Link</label>
+                                                    <label class="control-label"><?= lang('ios_app_link'); ?></label>
                                                     <input type="url" id="ios_app_link" name="ios_app_link" class="form-control" value="<?php echo (!empty($ios_app_link['message'])) ? $ios_app_link['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label">More Apps Link ( Your iOS Market place URL )</label>
+                                                    <label class="control-label"><?= lang('more_apps_link_your_ios_market_place_url'); ?></label>
                                                     <input type="url" id="ios_more_apps" name="ios_more_apps" class="form-control" value="<?php echo (!empty($ios_more_apps['message'])) ? $ios_more_apps['message'] : "" ?>">
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label">Refer Coin</label>
+                                                    <label class="control-label"><?= lang('refer_coin'); ?></label>
                                                     <input type="number" id="refer_coin" min="0" name="refer_coin" required class="form-control" value="<?php echo ($refer_coin) ? $refer_coin['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label">Earn Coin</label>
+                                                    <label class="control-label"><?= lang('earn_coin'); ?></label>
                                                     <input type="number" id="earn_coin" min="0" name="earn_coin" required class="form-control" value="<?php echo ($earn_coin) ? $earn_coin['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label">App Version (Android)</label>
+                                                    <label class="control-label"><?= lang('app_version_android'); ?></label>
                                                     <input type="text" id="app_version" name="app_version" required class="form-control" value="<?php echo (!empty($app_version['message'])) ? $app_version['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label">App Version (iOS)</label>
+                                                    <label class="control-label"><?= lang('app_version_ios'); ?></label>
                                                     <input type="text" id="app_version_ios" name="app_version_ios" required class="form-control" value="<?php echo (!empty($app_version_ios['message'])) ? $app_version_ios['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Force Update App</label><br>
+                                                    <label class="control-label"><?= lang('force_update_app'); ?></label><br>
                                                     <input type="checkbox" id="force_update_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($force_update) && $force_update['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -100,19 +100,19 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label">True Value</label>
+                                                    <label class="control-label"><?= lang('true_value'); ?></label>
                                                     <input type="text" id="true_value" name="true_value" required class="form-control" value="<?php echo ($true_value) ? $true_value['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label">False Value</label>
+                                                    <label class="control-label"><?= lang('false_value'); ?></label>
                                                     <input type="text" id="false_value" name="false_value" required class="form-control" value="<?php echo ($false_value) ? $false_value['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-xs-12">
-                                                    <label class="control-label">Share App Text</label>
+                                                    <label class="control-label"><?= lang('share_app_text'); ?></label>
                                                     <textarea id="shareapp_text" name="shareapp_text" required class="form-control"><?= (!empty($shareapp_text['message'])) ? $shareapp_text['message'] : '' ?></textarea>
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">App Maintenance</label><br>
+                                                    <label class="control-label"><?= lang('app_maintenance'); ?></label><br>
                                                     <input type="checkbox" id="app_maintenance_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($app_maintenance) && $app_maintenance['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -125,13 +125,13 @@
                                             <hr>
                                             <div class="row">
                                                 <div class="form-group col-md-12 col-xs-12">
-                                                    <h6 class="inner_heading"><strong>Quiz Mode</strong></h6>
+                                                    <h6 class="inner_heading"><strong><?= lang('quiz_mode'); ?></strong></h6>
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Language Mode</label><br>
+                                                    <label class="control-label"><?= lang('language_mode'); ?></label><br>
                                                     <input type="checkbox" id="language_mode_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($language_mode) && $language_mode['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -140,7 +140,7 @@
                                                     <input type="hidden" id="language_mode" name="language_mode" value="<?= ($language_mode) ? $language_mode['message'] : 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Option E Mode</label><br>
+                                                    <label class="control-label"><?= lang('option_e_mode'); ?></label><br>
                                                     <input type="checkbox" id="option_e_mode_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($option_e_mode) && $option_e_mode['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -151,7 +151,7 @@
                                                 </div>
 
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Daily Quiz Mode</label><br>
+                                                    <label class="control-label"><?= lang('daily_quiz_mode'); ?></label><br>
                                                     <input type="checkbox" id="daily_quiz_mode_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($daily_quiz_mode) && $daily_quiz_mode['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -162,7 +162,7 @@
                                                 </div>
 
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Latex Mode</label><br>
+                                                    <label class="control-label"><?= lang('latex_mode'); ?></label><br>
                                                     <input type="checkbox" id="latex_mode_btn" data-plugin="switchery" <?php
                                                                                                                         if (!empty($latex_mode) && $latex_mode['message'] == '1') {
                                                                                                                             echo 'checked';
@@ -173,7 +173,7 @@
                                                 </div>
 
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Exam Latex Mode</label><br>
+                                                    <label class="control-label"><?= lang('exam_latex_mode'); ?></label><br>
                                                     <input type="checkbox" id="exam_latex_mode_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($exam_latex_mode) && $exam_latex_mode['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -186,7 +186,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -277,13 +277,13 @@
                 if (!empty($latex_mode) && $latex_mode['message'] == '1') {
                 ?>
                     Swal.fire({
-                        title: "Are you sure you want to turn off LaTeX mode?",
-                        text: "Once disabled, any questions or content requiring LaTeX formatting for mathematical or technical notation will not be properly formatted, and this change cannot be undone!",
+                        title: "<?= lang('are_you_sure_want_to_turn_off_latex_mode'); ?>",
+                        text: "<?= lang('latex_off_message'); ?>",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, remove it!",
+                        confirmButtonText: "<?= lang('yes_remove_it'); ?>",
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#latex_mode').val(0);
@@ -317,13 +317,13 @@
                 if (!empty($exam_latex_mode) && $exam_latex_mode['message'] == '1') {
                 ?>
                     Swal.fire({
-                        title: "Are you sure you want to turn off LaTeX mode in Exam Module?",
-                        text: "Once disabled, any questions or content requiring LaTeX formatting for mathematical or technical notation will not be properly formatted, and this change cannot be undone!",
+                        title: "<?= lang('are_you_sure_want_to_turn_off_latex_mode_in_exam_module'); ?>",
+                        text: "<?= lang('latex_off_message'); ?>",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, remove it!",
+                        confirmButtonText: "<?= lang('yes_remove_it'); ?>",
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#exam_latex_mode').val(0);

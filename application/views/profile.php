@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Profile | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('profile'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Profile</h1>
+                        <h1><?= lang('profile'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -32,20 +32,20 @@
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Quiz Name</label>
-                                                    <input name="app_name" type="text" value="<?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?>" required class="form-control" placeholder="Enter Quiz Name" />
+                                                    <label class="control-label"><?= lang('quiz_name'); ?></label>
+                                                    <input name="app_name" type="text" value="<?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?>" required class="form-control" placeholder="<?= lang('enter_quiz_name'); ?>" />
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">JWT KEY</label>
-                                                    <i class="fa fa-question-circle ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="JWT enhances the security of user-generated tokens; refrain from recursive alterations to avoid invalidating registered users' tokens."></i>
-                                                    <input name="jwt_key" type="text" value="<?php echo ($jwt_key) ? $jwt_key['message'] : "" ?>" required class="form-control" placeholder="Enter JWT KEY" />
+                                                    <label class="control-label"><?= lang('jwt_key'); ?></label>
+                                                    <i class="fa fa-question-circle ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?= lang('jwt_key_instruction'); ?>"></i>
+                                                    <input name="jwt_key" type="text" value="<?php echo ($jwt_key) ? $jwt_key['message'] : "" ?>" required class="form-control" placeholder="<?= lang('enter_jwt_key'); ?>" />
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Full Logo <small class="text-danger">(460 * 115 Size Allowed)</small></label>
+                                                    <label class="control-label"><?= lang('full_log'); ?> <small class="text-danger"><?= lang('460_115_size_allowed'); ?></small></label>
                                                     <input id="full_file" name="full_file" type="file" accept="image/*" class="form-control">
-                                                    <small class="text-danger">Image type supported (png, jpg ,jpeg and svg)</small>
+                                                    <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
                                                     <input type="hidden" name="full_url" value="<?= LOGO_IMG_PATH . is_settings('full_logo'); ?>">
                                                     <?php if (is_settings('full_logo')) { ?>
                                                         <div class="m-2"><img src="<?= base_url() . LOGO_IMG_PATH . is_settings('full_logo'); ?>" alt="logo" width="250"></div>
@@ -53,9 +53,9 @@
                                                     <div style="display: none" id="msg_full_file" class="alert alert-danger"></div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Half Logo <small class="text-danger">(255 * 255 Size Allowed)</small></label>
+                                                    <label class="control-label"><?= lang('half_logo'); ?> <small class="text-danger"><?= lang('255_255_size_allowed'); ?></small></label>
                                                     <input id="half_file" name="half_file" type="file" accept="image/*" class="form-control">
-                                                    <small class="text-danger">Image type supported (png, jpg ,jpeg and svg)</small>
+                                                    <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
                                                     <input type="hidden" name="half_url" value="<?= LOGO_IMG_PATH . is_settings('half_logo'); ?>">
                                                     <?php if (is_settings('half_logo')) { ?>
                                                         <div class="m-2"><img src="<?= base_url() . LOGO_IMG_PATH . is_settings('half_logo'); ?>" alt="logo" height="60"></div>
@@ -66,18 +66,18 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Login Background Image<small class="text-danger">(1920 * 1080 Recommended)</small></label>
+                                                    <label class="control-label"><?= lang('login_background_image'); ?><small class="text-danger"><?= lang('1920_1080_recommended'); ?></small></label>
                                                     <input id="background_file" name="background_file" type="file" accept="image/*" class="form-control">
-                                                    <small class="text-danger">Image type supported (png, jpg, jpeg and svg)</small>
+                                                    <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
                                                     <input type="hidden" name="background_file" value="<?= isset($background_file['message']) && !empty($background_file['message']) ? LOGO_IMG_PATH . $background_file['message'] : "" ?>">
                                                     <div class="m-2"><img src="<?= isset($background_file['message']) && !empty($background_file['message']) ? base_url() . LOGO_IMG_PATH . $background_file['message'] : base_url() . LOGO_IMG_PATH . 'background-image-stock.png'; ?>" alt="logo" width="150" height="80"></div>
                                                     <div style="display: none" id="msg_background_file" class="alert alert-danger"></div>
                                                 </div>
 
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Bot Image<small class="text-danger">(102 * 102 Recommended)</small></label>
+                                                    <label class="control-label"><?= lang('bot_image'); ?><small class="text-danger"><?= lang('102_102_recommended'); ?></small></label>
                                                     <input id="bot_image" name="bot_image" type="file" accept="image/*" class="form-control">
-                                                    <small class="text-danger">Image type supported (png, jpg, jpeg and svg)</small>
+                                                    <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
                                                     <input type="hidden" name="bot_file" value="<?= isset($bot_image['message']) && !empty($bot_image['message']) ? LOGO_IMG_PATH . $bot_image['message']  : "" ?>">
                                                     <div class="m-2"><img src="<?= isset($bot_image['message']) && !empty($bot_image['message']) ? base_url() . LOGO_IMG_PATH . $bot_image['message'] : base_url() . LOGO_IMG_PATH . 'bot-stock.png'; ?>" alt="logo" width="80" height="80"></div>
                                                     <div style="display: none" id="msg_bot_image" class="alert alert-danger"></div>
@@ -86,31 +86,21 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-4">
-                                                    <label class="control-label">Theme Color</label>
+                                                    <label class="control-label"><?= lang('theme_color'); ?></label>
                                                     <input id="theme_color" name="theme_color" class="form-control" data-jscolor="{}" value="<?= isset($theme_color) && !empty($theme_color) ? $theme_color : "#f05387" ?>">
-                                                    <small class="text-danger">Note :- Avoid to use white like colors(#FFFFFF) text will not be visible</small>
+                                                    <small class="text-danger"><?= lang('note_avoid_to_use_white_like_color_text_will_not_be_visible'); ?></small>
                                                 </div>
-                                                <?php /*
-                                                        <div class="col-md-4">
-                                                            <label class="control-label">Navbar Color</label>
-                                                            <input id="navbar_color" name="navbar_color" class="form-control" data-jscolor="{hash:true, alphaChannel:true}" value="<?= isset($navbar_color) && !empty($navbar_color) ? $navbar_color : '#00000000' ?>">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label class="control-label">Navbar Text Color</label>
-                                                            <input id="navbar_text_color" name="navbar_text_color" data-jscolor="{hash:true, alphaChannel:true}" class="form-control" value="<?= isset($navbar_text_color) && !empty($navbar_text_color) ? $navbar_text_color : "#ffffff" ?>">
-                                                        </div>
-                                                     */ ?>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-12">
-                                                    <label class="control-label">Footer Copyright Text </label>
+                                                    <label class="control-label"><?= lang('footer_copyright_text'); ?> </label>
                                                     <textarea id="footer-copyrights-text" name="footer_copyrights_text" class="form-control"><?php echo ($footer_copyrights_text) ? $footer_copyrights_text['message'] : "" ?></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-sm-10">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -137,7 +127,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#full_file').val('');
-                    $('#msg_full_file').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#msg_full_file').html('<?= lang(INVALID_IMAGE_TYPE); ?>');
                     $('#msg_full_file').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);
@@ -151,7 +141,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#half_file').val('');
-                    $('#msg_half_file').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#msg_half_file').html('<?= lang(INVALID_IMAGE_TYPE); ?>');
                     $('#msg_half_file').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);
@@ -166,7 +156,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#background_file').val('');
-                    $('#msg_background_file').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#msg_background_file').html('<?= lang(INVALID_IMAGE_TYPE); ?>');
                     $('#msg_background_file').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);
@@ -181,7 +171,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#bot_image').val('');
-                    $('#msg_bot_image').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#msg_bot_image').html('<?= lang(INVALID_IMAGE_TYPE); ?>');
                     $('#msg_bot_image').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);

@@ -73,7 +73,7 @@ class Login extends CI_Controller
             $this->session->set_userdata($sessionArray);
             $this->isLoggedIn();
         } else {
-            $this->session->set_flashdata('error', 'Invalid Username or Password');
+            $this->session->set_flashdata('error', lang('invalid_username_or_password'));
             redirect('', 'refresh');
         }
         $this->load->view('login', $this->result);
@@ -100,7 +100,7 @@ class Login extends CI_Controller
         } else {
             if ($this->input->post('btnchange')) {
                 if (!has_permissions('create', 'resetpassword')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $newpass = $this->input->post('newpassword');
                     $confirmpass = $this->input->post('confirmpassword');
@@ -111,9 +111,9 @@ class Login extends CI_Controller
                         $adminpass = getHashedPassword($confirmpass);
                         //change password
                         $this->Login_model->change_password($adminId, $adminpass);
-                        $this->session->set_flashdata('success', 'Password Change Successfully..');
+                        $this->session->set_flashdata('success', lang('password_change_successfully'));
                     } else {
-                        $this->session->set_flashdata('error', 'New and Confirm Password not Match..');
+                        $this->session->set_flashdata('error', lang('new_and_confirm_password_not_match'));
                     }
                 }
                 redirect('resetpassword', 'refresh');

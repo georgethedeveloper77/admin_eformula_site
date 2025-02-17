@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 
-    <title>Dashboard | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('dashboard'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Categories</h4>
+                                                <h4><?= lang('categories'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_category; ?></div>
                                         </div>
@@ -46,7 +46,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Sub Categories</h4>
+                                                <h4><?= lang('sub_categories'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_subcategory; ?></div>
                                         </div>
@@ -61,7 +61,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Questions</h4>
+                                                <h4><?= lang('questions'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_question; ?></div>
                                         </div>
@@ -76,7 +76,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Registered Devices</h4>
+                                                <h4><?= lang('registered_device'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_user; ?></div>
                                         </div>
@@ -93,7 +93,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Live Contests</h4>
+                                                <h4><?= lang('live_contests'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_live_contest; ?></div>
                                         </div>
@@ -108,7 +108,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Fun 'N' Learn</h4>
+                                                <h4><?= lang('fun_n_learn'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_fun_n_learn; ?></div>
                                         </div>
@@ -123,7 +123,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>Guess The Word</h4>
+                                                <h4><?= lang('guess_the_word'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_guess_the_word; ?></div>
                                         </div>
@@ -138,7 +138,7 @@
                                         </div>
                                         <div class="card-wrap">
                                             <div class="card-header">
-                                                <h4>System Users</h4>
+                                                <h4><?= lang('system_users'); ?></h4>
                                             </div>
                                             <div class="card-body"><?= $count_system_user; ?></div>
                                         </div>
@@ -151,7 +151,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6>User Registrations</h6>
+                                            <h6><?= lang('user_registration'); ?></h6>
                                             <select id="yearDropdown" class="form-control" style="width: auto;">
                                                 <?php
                                                 if (isset($years) && !empty($years)) {
@@ -170,13 +170,13 @@
                                         </div>
                                         <ul class="nav nav-pills" id="myTab3" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link active" id="day-tab3" data-toggle="tab" href="#day3" role="tab" aria-controls="day" aria-selected="true">Day</a>
+                                                <a class="nav-link active" id="day-tab3" data-toggle="tab" href="#day3" role="tab" aria-controls="day" aria-selected="true"><?= lang('day'); ?></a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" id="week-tab3" data-toggle="tab" href="#week3" role="tab" aria-controls="week" aria-selected="false">Week</a>
+                                                <a class="nav-link" id="week-tab3" data-toggle="tab" href="#week3" role="tab" aria-controls="week" aria-selected="false"><?= lang('week'); ?></a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" id="month-tab3" data-toggle="tab" href="#month3" role="tab" aria-controls="month" aria-selected="false">Month</a>
+                                                <a class="nav-link" id="month-tab3" data-toggle="tab" href="#month3" role="tab" aria-controls="month" aria-selected="false"><?= lang('month'); ?></a>
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent2">

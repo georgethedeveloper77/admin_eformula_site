@@ -18,12 +18,12 @@ class CoinStore extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'coin_store_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Coin_Store_model->add_data();
                     if ($data == FALSE) {
                         $failedResponseData = array(
-                            'error' => 'Product ID Already Existed',
+                            'error' => lang('product_id_already_exists'),
                             'title' => $this->input->post('title'),
                             'coins' => $this->input->post('coins'),
                             'product_id' => $this->input->post('product_id'),
@@ -33,7 +33,7 @@ class CoinStore extends CI_Controller
                         redirect('coin-store-settings');
                     } else if ($data === 2) {
                         $failedResponseData = array(
-                            'error' => 'File Upload Failed',
+                            'error' => lang('file_upload_failed'),
                             'title' => $this->input->post('title'),
                             'coins' => $this->input->post('coins'),
                             'product_id' => $this->input->post('product_id'),
@@ -42,40 +42,40 @@ class CoinStore extends CI_Controller
                         $this->session->set_flashdata($failedResponseData);
                         redirect('coin-store-settings');
                     } else {
-                        $this->session->set_flashdata('success', 'Data created successfully.! ');
+                        $this->session->set_flashdata('success', lang('data_created_successfully'));
                         redirect('coin-store-settings', 'refresh');
                     }
                 }
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'coin_store_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Coin_Store_model->update_data();
                     if ($data1 == FALSE) {
                         $failedResponseData = array(
-                            'error' => 'Product ID Already Existed',
+                            'error' => lang('product_id_already_exists'),
                         );
                         $this->session->set_flashdata($failedResponseData);
                         redirect('coin-store-settings');
                     } else if ($data1 === 2) {
                         $failedResponseData = array(
-                            'error' => 'File Upload Failed',
+                            'error' => lang('file_upload_failed'),
                         );
                         $this->session->set_flashdata($failedResponseData);
                         redirect('coin-store-settings');
                     } else {
-                        $this->session->set_flashdata('success', 'Data updated successfully.! ');
+                        $this->session->set_flashdata('success', lang('data_updated_successfully'));
                         redirect('coin-store-settings', 'refresh');
                     }
                 }
             }
             if ($this->input->post('btnupdatestatus')) {
                 if (!has_permissions('update', 'coin_store_settings')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Coin_Store_model->update_status();
-                    $this->session->set_flashdata('success', 'Stauts updated successfully.! ');
+                    $this->session->set_flashdata('success', lang('status_updated_successfully'));
                     redirect('coin-store-settings', 'refresh');
                 }
             }

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Ads. Settings | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('ads_settings'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Ads. Settings for App <small class="text-small">Note that this will directly reflect the changes in App</small></h1>
+                        <h1><?= lang('ads_settings_for_app'); ?> <small class="text-small"><?= lang('note_that_this_will_directly_reflect_the_changes_in_app'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -34,7 +34,7 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">In App Ads.</label><br>
+                                                    <label class="control-label"><?= lang('in_app_ads'); ?></label><br>
                                                     <input type="checkbox" id="in_app_ads_mode_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($in_app_ads_mode) && $in_app_ads_mode['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -52,14 +52,14 @@
                                                                                                                                                 if (!empty($ads_type) && $ads_type['message'] == '1') {
                                                                                                                                                     echo 'checked';
                                                                                                                                                 }
-                                                                                                                                                ?>>Google AdMob
+                                                                                                                                                ?>><?= lang('google_admob'); ?>
                                                             </label>
                                                             <label class="form-check-label">
                                                                 <input type="radio" class="form-check-input" name="ads_type" value="3" required <?php
                                                                                                                                                 if (!empty($ads_type) && $ads_type['message'] == '3') {
                                                                                                                                                     echo 'checked';
                                                                                                                                                 }
-                                                                                                                                                ?>>Unity Ads.
+                                                                                                                                                ?>><?= lang('unity_ads'); ?>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -69,29 +69,29 @@
                                             <div class="adsgoogle">
                                                 <div class="row">
                                                     <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="control-label">Android Banner Id</label>
+                                                        <label class="control-label"><?= lang('android_banner_id'); ?></label>
                                                         <input type="text" id="android_banner_id" name="android_banner_id" class="form-control googleAtt" value="<?= (!empty($android_banner_id['message'])) ? $android_banner_id['message'] : "" ?>">
                                                     </div>
                                                     <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="control-label">Android Interstitial Id</label>
+                                                        <label class="control-label"><?= lang('android_interstitial_id'); ?></label>
                                                         <input type="text" id="android_interstitial_id" name="android_interstitial_id" class="form-control googleAtt" value="<?= (!empty($android_interstitial_id['message'])) ? $android_interstitial_id['message'] : "" ?>">
                                                     </div>
                                                     <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="control-label">Android Rewarded Id</label>
+                                                        <label class="control-label"><?= lang('android_reward_id'); ?></label>
                                                         <input type="text" id="android_rewarded_id" name="android_rewarded_id" class="form-control googleAtt" value="<?= (!empty($android_rewarded_id['message'])) ? $android_rewarded_id['message'] : "" ?>">
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="control-label">IOS Banner Id</label>
+                                                        <label class="control-label"><?= lang('ios_banner_id'); ?></label>
                                                         <input type="text" id="ios_banner_id" name="ios_banner_id" class="form-control googleAtt" value="<?= (!empty($ios_banner_id['message'])) ? $ios_banner_id['message'] : "" ?>">
                                                     </div>
                                                     <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="control-label">IOS Interstitial Id</label>
+                                                        <label class="control-label"><?= lang('ios_interstitial_id'); ?></label>
                                                         <input type="text" id="ios_interstitial_id" name="ios_interstitial_id" class="form-control googleAtt" value="<?= (!empty($ios_interstitial_id['message'])) ? $ios_interstitial_id['message'] : "" ?>">
                                                     </div>
                                                     <div class="form-group col-md-4 col-sm-12">
-                                                        <label class="control-label">IOS Rewarded Id</label>
+                                                        <label class="control-label"><?= lang('ios_reward_id'); ?></label>
                                                         <input type="text" id="ios_rewarded_id" name="ios_rewarded_id" class="form-control googleAtt" value="<?= (!empty($ios_rewarded_id['message'])) ? $ios_rewarded_id['message'] : "" ?>">
                                                     </div>
                                                 </div>
@@ -100,18 +100,18 @@
                                             <div class="adsunity">
                                                 <div class="row">
                                                     <div class="form-group col-md-6 col-sm-12">
-                                                        <label class="control-label">Android Game Id</label>
+                                                        <label class="control-label"><?= lang('android_game_id'); ?></label>
                                                         <input type="text" id="android_game_id" name="android_game_id" class="form-control unityAtt" value="<?= (!empty($android_game_id['message'])) ? $android_game_id['message'] : "" ?>">
                                                     </div>
                                                     <div class="form-group col-md-6 col-sm-12">
-                                                        <label class="control-label">IOS Game Id</label>
+                                                        <label class="control-label"><?= lang('ios_game_id'); ?></label>
                                                         <input type="text" id="ios_game_id" name="ios_game_id" class="form-control unityAtt" value="<?= (!empty($ios_game_id['message'])) ? $ios_game_id['message'] : "" ?>">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-sm-12 col-md-4">
-                                                    <label class="control-label">Rewards Ads Coins</label>
+                                                    <label class="control-label"><?= lang('reward_ads_coin'); ?></label>
                                                     <input type="number" id="reward_coin" min="0" name="reward_coin" required class="form-control" value="<?php echo ($reward_coin) ? $reward_coin['message'] : ""; ?>">
                                                 </div>
                                             </div>
@@ -119,10 +119,10 @@
                                             <div class="row daily-ads-div">
                                                 <hr class="col-12">
                                                 <div class="form-group col-md-12 col-sm-12 mb-4">
-                                                    <h5 class="font-weight-bold">Daily Watch Ads Settings</h6>
+                                                    <h5 class="font-weight-bold"><?= lang('daily_watch_ads_settings'); ?></h6>
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-12">
-                                                    <label class="control-label">Visibility</label><br>
+                                                    <label class="control-label"><?= lang('visibility'); ?></label><br>
                                                     <input type="checkbox" id="daily-ads-visibility-btn" data-plugin="switchery" <?php
                                                                                                                                     if (isset($daily_ads_visibility) && $daily_ads_visibility['message'] == '1') {
                                                                                                                                         echo 'checked';
@@ -132,11 +132,11 @@
                                                     <input type="hidden" id="daily-ads-visibility-mode" name="daily_ads_visibility" value="<?= (isset($daily_ads_visibility)) ? $daily_ads_visibility['message'] : 0; ?>">
                                                 </div>
                                                 <div class="form-group col-sm-12 col-md-2">
-                                                    <label class="control-label">Coins</label>
+                                                    <label class="control-label"><?= lang('coins'); ?></label>
                                                     <input type="number" name="daily_ads_coins" class="form-control" min="0" id="daily-ads-coins" placeholder="Enter Coins" value="<?= (isset($daily_ads_coins)) ? $daily_ads_coins['message'] : 5; ?>">
                                                 </div>
                                                 <div class="form-group col-sm-12 col-md-2">
-                                                    <label class="control-label">Total Counter<small class="text-danger"> (In 24 Hours)</small></label>
+                                                    <label class="control-label"><?= lang('total_counter'); ?><small class="text-danger"> <?= lang('in_24_hours'); ?></small></label>
                                                     <input type="number" placeholder="Enter number of hours" min="0" name="daily_ads_counter" class="form-control" id="daily-cool-off-time" value="<?= (isset($daily_ads_counter)) ? $daily_ads_counter['message'] : 24; ?>">
                                                 </div>
                                                 <hr class="col-12">
@@ -145,7 +145,7 @@
 
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>

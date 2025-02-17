@@ -158,8 +158,21 @@ class Category_model extends CI_Model
         //delete fun n learn of this category
         $compre = $this->db->where('category', $id)->get('tbl_fun_n_learn')->result();
         foreach ($compre as $compre1) {
+            $file_url = ($compre1->content_type == 2 && $compre1->content_data != '') ? (FUN_LEARN_IMG_PATH . $compre1->content_data) : '';
+
+            if (!empty($file_url) && file_exists($file_url)) {
+                unlink($file_url);
+            }
+
+            $question_data = $this->db->select('image')->where('fun_n_learn_id', $compre1->id)->get('tbl_fun_n_learn_question')->result_array();
+            foreach ($question_data as $que1) {
+                if (!empty($que1->image) && file_exists(FUN_LEARN_QUESTION_IMG_PATH . $que1->image)) {
+                    unlink(FUN_LEARN_QUESTION_IMG_PATH . $que1->image);
+                }
+            }
             $this->db->where('fun_n_learn_id', $compre1->id)->delete('tbl_fun_n_learn_question');
         }
+
         $this->db->where('category', $id)->delete('tbl_fun_n_learn');
 
         //delete guess the word of this category

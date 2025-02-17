@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Create and Manage Contest | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('create_and_manage_contest'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Contest</h1>
+                        <h1><?= lang('create_and_manage_contest'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Contest</h4>
+                                        <h4><?= lang('create_contest'); ?></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -38,55 +38,56 @@
                                             <div class="form-group row">
                                                 <?php if (is_language_mode_enabled()) { ?>
                                                     <div class="col-sm-12 col-md-4">
-                                                        <label class="control-label">Language</label>
+                                                        <label class="control-label"><?= lang('language'); ?></label>
                                                         <select id="language_id" name="language_id" class="form-control" required>
+                                                            <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
                                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-12 col-md-4">
-                                                        <label class="control-label">Name</label>
-                                                        <input name="name" type="text" class="form-control" placeholder="Enter Contest Name" required>
+                                                        <label class="control-label"><?= lang('name'); ?></label>
+                                                        <input name="name" type="text" class="form-control" placeholder="<?= lang('enter_contest_name'); ?>" required>
                                                     </div>
                                                     <div class="col-sm-12 col-md-4">
-                                                        <label class="control-label">Image</label>
+                                                        <label class="control-label"><?= lang('image'); ?></label>
                                                         <input id="file" name="file" type="file" accept="image/*" required class="form-control">
-                                                        <small class="text-danger">Image type supported (png, jpg and jpeg)</small>
+                                                        <small class="text-danger"><?= lang('image_type_supported'); ?></small>
                                                         <p style="display: none" id="img_error_msg" class="badge badge-danger"></p>
                                                     </div>
                                                 <?php } else { ?>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Name</label>
+                                                        <label class="control-label"><?= lang('name'); ?></label>
                                                         <input name="name" type="text" class="form-control" placeholder="Enter Contest Name" required>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Image</label>
+                                                        <label class="control-label"><?= lang('image'); ?></label>
                                                         <input id="file" name="file" type="file" accept="image/*" required class="form-control">
-                                                        <small class="text-danger">Image type supported (png, jpg and jpeg)</small>
+                                                        <small class="text-danger"><?= lang('image_type_supported'); ?></small>
                                                         <p style="display: none" id="img_error_msg" class="badge badge-danger"></p>
                                                     </div>
                                                 <?php } ?>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Contest Start & End Date</label>
+                                                    <label class="control-label"><?= lang('contest_start_and_end_date'); ?></label>
                                                     <input type="text" id="date" name="date" required class="form-control">
                                                     <input type="hidden" id="start_date" name="start_date" required="" value="">
                                                     <input type="hidden" id="end_date" name="end_date" required="" value="">
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label">Entry Fee Points</label>
-                                                    <input type="number" id="entry" name="entry" required class="form-control" placeholder="These points will be deducted from users wallet" min='0'>
+                                                    <label class="control-label"><?= lang('entry_fee_points'); ?></label>
+                                                    <input type="number" id="entry" name="entry" required class="form-control" placeholder="<?= lang('these_points_will_deducted_from_users_wallet'); ?>" min='0'>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label for="top_users">Distribute Prize to Top Users</label>
-                                                    <input type="number" id="top_users" name="top_users" required class="form-control" placeholder="For Instance Top 10 users will be getting prize" min='1'>
+                                                    <label for="top_users"><?= lang('distribute_prize_to_top_users'); ?></label>
+                                                    <input type="number" id="top_users" name="top_users" required class="form-control" placeholder="<?= lang('for_instance_top_users_will_gettong_prize'); ?>" min='1'>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label for="description">Description</label>
+                                                    <label for="description"><?= lang('description'); ?></label>
                                                     <textarea id="description" name="description" required class="form-control"></textarea>
                                                 </div>
                                             </div>
@@ -95,7 +96,7 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -107,7 +108,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Contests <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('contests'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
 
                                     <div class="card-body">
@@ -115,39 +116,39 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <select id="filter_language" class="form-control" required>
-                                                        <option value="">Select Language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
                                                 <div class='col-md-4'>
-                                                    <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'>Filter Data</button>
+                                                    <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                                 </div>
                                             </div>
                                         <?php } ?>
                                         <div id="toolbar">
                                             <?php if (has_permissions('delete', 'manage_contest')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_contests" title="Delete Selected Contests"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_contests" title="<?= lang('delete_selected_contests'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='contest_list' data-toggle="table" data-url="<?= base_url() . 'Table/contest' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "contest-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="status" data-sortable="false">Status</th>
-                                                    <th scope="col" data-field="name" data-sortable="true">Name</th>
-                                                    <th scope="col" data-field="start_date" data-sortable="true">Start Date</th>
-                                                    <th scope="col" data-field="end_date" data-sortable="true">End Date</th>
-                                                    <th scope="col" data-field="image" data-sortable="false">Image</th>
-                                                    <th scope="col" data-field="description" data-sortable="false" data-visible="false">Description</th>
-                                                    <th scope="col" data-field="entry" data-sortable="true">Entry</th>
-                                                    <th scope="col" data-field="top_users" data-sortable="true">Top Users</th>
-                                                    <th scope="col" data-field="participants" data-sortable="true">Participants</th>
-                                                    <th scope="col" data-field="total_question" data-sortable="true">Questions</th>
-                                                    <th scope="col" data-field="prize_status" data-sortable="false">Prize Status</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="status" data-sortable="false"><?= lang('status'); ?></th>
+                                                    <th scope="col" data-field="name" data-sortable="true"><?= lang('name'); ?></th>
+                                                    <th scope="col" data-field="start_date" data-sortable="true"><?= lang('start_date'); ?></th>
+                                                    <th scope="col" data-field="end_date" data-sortable="true"><?= lang('end_date'); ?></th>
+                                                    <th scope="col" data-field="image" data-sortable="false"><?= lang('image'); ?></th>
+                                                    <th scope="col" data-field="description" data-sortable="false" data-visible="false"><?= lang('description'); ?></th>
+                                                    <th scope="col" data-field="entry" data-sortable="true"><?= lang('entry'); ?></th>
+                                                    <th scope="col" data-field="top_users" data-sortable="true"><?= lang('top_users'); ?></th>
+                                                    <th scope="col" data-field="participants" data-sortable="true"><?= lang('participants'); ?></th>
+                                                    <th scope="col" data-field="total_question" data-sortable="true"><?= lang('questions'); ?></th>
+                                                    <th scope="col" data-field="prize_status" data-sortable="false"><?= lang('prize_status'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -166,7 +167,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Contest</h5>
+                    <h5 class="modal-title"><?= lang('edit_contest'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -190,30 +191,30 @@
                                 </div>
                             <?php } ?>
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="name" id="update_name" placeholder="Category Name" class='form-control' required>
+                                <label><?= lang('name'); ?></label>
+                                <input type="text" name="name" id="update_name" placeholder="<?= lang('enter_contest_name'); ?>" class='form-control' required>
                             </div>
                             <div class="form-group">
-                                <label for="update_date">Contest Start & End Date</label>
+                                <label for="update_date"><?= lang('contest_start_and_end_date'); ?></label>
                                 <input type="text" id="update_date" name="date" required class="form-control">
                                 <input type='hidden' name="start_date" id="update_start_date" value='' />
                                 <input type='hidden' name="end_date" id="update_end_date" value='' />
                             </div>
                             <div class="form-group">
-                                <label>Description</label>
-                                <textarea name="description" id="update_description" placeholder="Short Description" class='form-control' required></textarea>
+                                <label><?= lang('description'); ?></label>
+                                <textarea name="description" id="update_description" placeholder="<?= lang('short_description'); ?>" class='form-control' required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="image">Image <small>( Leave it blank for no change )</small></label>
+                                <label for="image"><?= lang('image'); ?> <small><?= lang('leave_it_blank'); ?></small></label>
                                 <input type="file" name="update_file" id="update_file" class="form-control" accept="image/*" aria-required="true">
                             </div>
                             <div class="form-group">
-                                <label for="entry">Entry Fee Points</label>
+                                <label for="entry"><?= lang('entry_fee_points'); ?></label>
                                 <input type="number" id="update_entry" name="entry" required class="form-control" placeholder="These points will be deducted from users wallet" min='0'>
                             </div>
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -226,7 +227,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update Status</h5>
+                    <h5 class="modal-title"><?= lang('update_status'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -239,21 +240,21 @@
 
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Status</label>
+                                    <label class="control-label"><?= lang('status'); ?></label>
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-default">
-                                            <input type="radio" name="status" value="1"> Active
+                                            <input type="radio" name="status" value="1"> <?= lang('active'); ?>
                                         </label>
                                         <label class="btn btn-danger">
-                                            <input type="radio" name="status" value="0"> Deactive
+                                            <input type="radio" name="status" value="0"> <?= lang('deactive'); ?>
                                         </label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdatestatus" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdatestatus" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                     </div>
@@ -278,9 +279,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some contest to delete!");
+                alert("<?= lang('please_select_contest_to_delete'); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected contests?")) {
+                if (confirm("<?= lang('sure_to_delete_all_contests'); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -290,9 +291,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("Contests deleted successfully");
+                                alert("<?= lang('contest_deleted_successfully'); ?>");
                             } else {
-                                alert("Could not delete contest. Try again!");
+                                alert("<?= lang('not_delete_contest_try_again'); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -305,7 +306,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete Contest? All related questions & leaderboard details will also be deleted')) {
+            if (confirm("<?= lang('sure_to_delete_contest_releated_data_deleted'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 image = $(this).data("image");
@@ -317,7 +318,7 @@
                         if (result) {
                             $('#contest_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }
@@ -358,7 +359,7 @@
             $('div#top_winner').empty();
             for (var i = 1; i <= no_of; i++) {
                 myHtml = "<div class='col-md-2 col-sm-4 col-xs-12'>";
-                myHtml += "<input name='points[]' type='number' placeholder='" + i + " winner Prize' min='0' required class='form-control'>";
+                myHtml += "<input name='points[]' type='number' placeholder='" + i + " <?= lang('winner_prize'); ?>' min='0' required class='form-control'>";
                 myHtml += "<input name='winner[]' type='hidden' value=" + i + ">";
                 myHtml += "<div>";
                 for (var j = 6; j <= no_of; j++) {
@@ -428,7 +429,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#file').val('');
-                    $('#img_error_msg').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#img_error_msg').html("<?= lang(INVALID_IMAGE_TYPE); ?>");
                     $('#img_error_msg').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);
@@ -440,7 +441,7 @@
                 img = new Image();
                 img.onerror = function() {
                     $('#update_file').val('');
-                    $('#up_img_error_msg').html('<?= INVALID_IMAGE_TYPE; ?>');
+                    $('#up_img_error_msg').html("<?= lang(INVALID_IMAGE_TYPE); ?>");
                     $('#up_img_error_msg').show().delay(3000).fadeOut();
                 };
                 img.src = _URL.createObjectURL(file);

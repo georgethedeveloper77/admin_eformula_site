@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Audio Questions for Quiz | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('audio_questions_for_quiz'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,14 +21,14 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Create and Manage Audio Questions</h1>
+                        <h1><?= lang('create_and_manage_audio_questions'); ?></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Create Audio Questions</h4>
+                                        <h4><?= lang('create_audio_questions'); ?></h4>
                                     </div>
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
@@ -50,109 +50,108 @@
                                             <div class="form-group row">
                                                 <?php if (is_language_mode_enabled()) { ?>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Language</label>
+                                                        <label class="control-label"><?= lang('language'); ?></label>
                                                         <select name="language_id" id="language_id" class="form-control" required>
-                                                            <option value="">Select Language</option>
+                                                            <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
                                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Main Category</label>
+                                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                                         <select id="category" name="category" class="form-control" required>
-                                                            <option value="">Select Main Category</option>
+                                                            <option value=""><?= lang('select_main_category'); ?></option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label">Sub Category</label>
+                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
-                                                            <option value="">Select Sub Category</option>
+                                                            <option value=""><?= lang('select_sub_category'); ?></option>
                                                         </select>
                                                     </div>
                                                 <?php } else { ?>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Main Category</label>
+                                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                                         <select id="category" name="category" class="form-control" required>
-                                                            <option value="">Select Main Category</option>
+                                                            <option value=""><?= lang('select_main_category'); ?></option>
                                                             <?php foreach ($category as $cat) { ?>
                                                                 <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label">Sub Category</label>
+                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
-                                                            <option value="">Select Sub Category</option>
+                                                            <option value=""><?= lang('select_sub_category'); ?></option>
                                                         </select>
                                                     </div>
                                                 <?php } ?>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label">Question</label>
+                                                    <label class="control-label"><?= lang('question'); ?></label>
                                                     <textarea id="question" name="question" class="form-control" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-3 col-sm-12">
-                                                    <label class="control-label">Question Type</label>
+                                                    <label class="control-label"><?= lang('question_type'); ?></label>
                                                     <div>
                                                         <div class="form-check-inline bg-light p-2">
                                                             <label class="form-check-label">
-                                                                <input type="radio" class="form-check-input" name="question_type" value="1" checked required>Options
+                                                                <input type="radio" class="form-check-input" name="question_type" value="1" checked required><?= lang('options'); ?>
                                                             </label>
                                                             <label class="form-check-label">
-                                                                <input type="radio" class="form-check-input" name="question_type" value="2">True / False
+                                                                <input type="radio" class="form-check-input" name="question_type" value="2"><?= lang('true_false'); ?>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-12">
-                                                    <label class="control-label">Audio Type</label>
+                                                    <label class="control-label"><?= lang('audio_type'); ?></label>
                                                     <select class="form-control" id="audio_type" name="audio_type" required>
-                                                        <option value="1">Audio (other url)</option>
-                                                        <option value="2">Audio Uploaded</option>
+                                                        <option value="1"><?= lang('audio_other_url'); ?></option>
+                                                        <option value="2"><?= lang('audio_uploaded'); ?></option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12" id="audio_upload">
-                                                    <label class="control-label">Audio for Question <small>( if any )</small></label>
+                                                    <label class="control-label"><?= lang('audio_for_question'); ?> <small><?= lang('if_any'); ?></small></label>
                                                     <input id="file" name="file" type="file" accept="audio/*" class="form-control">
-                                                    <small class="text-danger">Audio type supported (mp3,mp4,ogv,wav,aac,msv,wma,ogg)</small>
+                                                    <small class="text-danger"><?= lang('audio_type_supported'); ?></small>
                                                     <div style="display: none" id="audio_error_msg" class="alert alert-danger"></div>
-                                                    <!--Duration: <input type='text' name='f_du' id='f_du' size='5' /> seconds-->
                                                 </div>
                                                 <div class="col-md-6 col-sm-12" id="audio_link">
-                                                    <label class="control-label">Audio Link </label>
+                                                    <label class="control-label"><?= lang('audio_link'); ?> </label>
                                                     <input id="audio_type_url" name="audio_type_url" type="url" class="form-control">
 
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-6 col-sm-6">
-                                                    <label class="control-label">Option A</label>
+                                                    <label class="control-label"><?= lang('option_a'); ?></label>
                                                     <input class="form-control" type="text" id="a" name="a" required>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <label class="control-label">Option B</label>
+                                                    <label class="control-label"><?= lang('option_b'); ?></label>
                                                     <input class="form-control" type="text" id="b" name="b" required>
                                                 </div>
                                             </div>
                                             <div id="tf">
                                                 <div class="form-group row">
                                                     <div class="col-md-6 col-sm-6">
-                                                        <label class="control-label">Option C</label>
+                                                        <label class="control-label"><?= lang('option_c'); ?></label>
                                                         <input class="form-control" type="text" id="c" name="c" required>
                                                     </div>
                                                     <div class="col-md-6 col-sm-6">
-                                                        <label class="control-label">Option D</label>
+                                                        <label class="control-label"><?= lang('option_d'); ?></label>
                                                         <input class="form-control" type="text" id="d" name="d" required>
                                                     </div>
                                                 </div>
                                                 <?php if (is_option_e_mode_enabled()) { ?>
                                                     <div class="form-group row">
                                                         <div class="col-md-6 col-sm-12">
-                                                            <label class="control-label">Option E</label>
+                                                            <label class="control-label"><?= lang('option_e'); ?></label>
                                                             <input class="form-control" type="text" id="e" name="e" required>
                                                         </div>
                                                     </div>
@@ -160,29 +159,29 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label">Answer</label>
+                                                    <label class="control-label"><?= lang('answer'); ?></label>
                                                     <select name='answer' id='answer' class='form-control' required>
-                                                        <option value=''>Select Right Answer</option>
-                                                        <option value='a'>A</option>
-                                                        <option value='b'>B</option>
-                                                        <option class='ntf' value='c'>C</option>
-                                                        <option class='ntf' value='d'>D</option>
+                                                        <option value=''><?= lang('select_right_answer'); ?></option>
+                                                        <option value='a'><?= lang('a'); ?></option>
+                                                        <option value='b'><?= lang('b'); ?></option>
+                                                        <option class='ntf' value='c'><?= lang('c'); ?></option>
+                                                        <option class='ntf' value='d'><?= lang('d'); ?></option>
                                                         <?php if (is_option_e_mode_enabled()) { ?>
-                                                            <option class='ntf' value='e'>E</option>
+                                                            <option class='ntf' value='e'><?= lang('e'); ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label">Note</label>
-                                                    <small>(this will be showing with review section only)</small>
+                                                    <label class="control-label"><?= lang('note'); ?></label>
+                                                    <small><?= lang('this_will_be_showing_with_review_selection_only'); ?></small>
                                                     <textarea name='note' class='form-control'></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
@@ -195,14 +194,14 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Questions of Quiz <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('questions_for_quiz'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class="col-md-3">
                                                     <select id="filter_language" class="form-control" required>
-                                                        <option value="">Select Language</option>
+                                                        <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                                         <?php } ?>
@@ -210,14 +209,14 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <select id="filter_category" class="form-control" required>
-                                                        <option value="">Select Main Category</option>
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
 
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
                                                 <div class="col-md-3">
                                                     <select id="filter_category" class="form-control" required>
-                                                        <option value="">Select Main Category</option>
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) { ?>
                                                             <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                                         <?php } ?>
@@ -226,43 +225,43 @@
                                             <?php } ?>
                                             <div class='col-md-3'>
                                                 <select id='filter_subcategory' class='form-control' required>
-                                                    <option value=''>Select Sub Category</option>
+                                                    <option value=''><?= lang('select_sub_category'); ?></option>
                                                 </select>
                                             </div>
                                             <div class='col-md-3'>
-                                                <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'>Filter Data</button>
+                                                <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>
                                         <div id="toolbar">
                                             <?php if (has_permissions('delete', 'audio_question')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_questions" title="Delete Selected Questions"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_questions" title="<?= lang('delete_selected_questions'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='question_list' data-toggle="table" data-url="<?= base_url() . 'Table/audio_question' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "audio-question-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="category" data-sortable="true" data-visible='false'>Category</th>
-                                                    <th scope="col" data-field="subcategory" data-sortable="true" data-visible='false'>Sub Category</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="category" data-sortable="true" data-visible='false'><?= lang('main_category'); ?></th>
+                                                    <th scope="col" data-field="subcategory" data-sortable="true" data-visible='false'><?= lang('sub_category'); ?></th>
                                                     <?php if (is_language_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible='false'>Language ID</th>
-                                                        <th scope="col" data-field="language" data-sortable="true" data-visible='true'>Language</th>
+                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible='false'><?= lang('language_id'); ?></th>
+                                                        <th scope="col" data-field="language" data-sortable="true" data-visible='true'><?= lang('language'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="audio_type" data-sortable="false" data-visible='false'>Audio Type</th>
-                                                    <th scope="col" data-field="audio" data-align="center" data-sortable="false">Audio</th>
-                                                    <th scope="col" data-field="question" data-sortable="true">Question</th>
-                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false' data-formatter="questionTypeFormatter">Question Type</th>
-                                                    <th scope="col" data-field="optiona" data-sortable="true">Option A</th>
-                                                    <th scope="col" data-field="optionb" data-sortable="true">Option B</th>
-                                                    <th scope="col" data-field="optionc" data-sortable="true">Option C</th>
-                                                    <th scope="col" data-field="optiond" data-sortable="true">Option D</th>
+                                                    <th scope="col" data-field="audio_type" data-sortable="false" data-visible='false'><?= lang('audio_type'); ?></th>
+                                                    <th scope="col" data-field="audio" data-align="center" data-sortable="false"><?= lang('audio'); ?></th>
+                                                    <th scope="col" data-field="question" data-sortable="true"><?= lang('question'); ?></th>
+                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false'><?= lang('question_type'); ?></th>
+                                                    <th scope="col" data-field="optiona" data-sortable="true"><?= lang('option_a'); ?></th>
+                                                    <th scope="col" data-field="optionb" data-sortable="true"><?= lang('option_b'); ?></th>
+                                                    <th scope="col" data-field="optionc" data-sortable="true"><?= lang('option_c'); ?></th>
+                                                    <th scope="col" data-field="optiond" data-sortable="true"><?= lang('option_d'); ?></th>
                                                     <?php if (is_option_e_mode_enabled()) { ?>
-                                                        <th scope="col" data-field="optione" data-sortable="true">Option E</th>
+                                                        <th scope="col" data-field="optione" data-sortable="true"><?= lang('option_e'); ?></th>
                                                     <?php } ?>
-                                                    <th scope="col" data-field="answer" data-sortable="true" data-visible='false'>Answer</th>
-                                                    <th scope="col" data-field="note" data-sortable="true" data-visible='false'>Note</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="answer" data-sortable="true" data-visible='false'><?= lang('answer'); ?></th>
+                                                    <th scope="col" data-field="note" data-sortable="true" data-visible='false'><?= lang('note'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -282,7 +281,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Audio Question</h5>
+                    <h5 class="modal-title"><?= lang('edit_audio_question'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -297,80 +296,80 @@
                             <div class="form-group row">
                                 <?php if (is_language_mode_enabled()) { ?>
                                     <div class="col-md-4 col-sm-12">
-                                        <label class="control-label">Language</label>
+                                        <label class="control-label"><?= lang('language'); ?></label>
                                         <select name="language_id" id="update_language_id" class="form-control" required>
-                                            <option value="">Select Language</option>
+                                            <option value=""><?= lang('select_language'); ?></option>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
                                     <div class="col-md-4 col-sm-12">
-                                        <label class="control-label">Main Category</label>
+                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                         <select id="edit_category" name="category" class="form-control" required>
-                                            <option value="">Select Main Category</option>
+                                            <option value=""><?= lang('select_main_category'); ?></option>
                                         </select>
                                     </div>
                                     <div class="col-md-4 col-sm-12">
-                                        <label class="control-label">Sub Category</label>
+                                        <label class="control-label"><?= lang('sub_category'); ?></label>
                                         <select id="edit_subcategory" name="subcategory" class="form-control">
-                                            <option value="">Select Sub Category</option>
+                                            <option value=""><?= lang('select_sub_category'); ?></option>
                                         </select>
                                     </div>
                                 <?php } else { ?>
                                     <div class="col-md-6 col-sm-12">
-                                        <label class="control-label">Main Category</label>
+                                        <label class="control-label"><?= lang('main_category'); ?></label>
                                         <select id="edit_category" name="category" class="form-control" required>
-                                            <option value="">Select Main Category</option>
+                                            <option value=""><?= lang('select_main_category'); ?></option>
                                             <?php foreach ($category as $cat) { ?>
                                                 <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
-                                        <label class="control-label">Sub Category</label>
+                                        <label class="control-label"><?= lang('sub_category'); ?></label>
                                         <select id="edit_subcategory" name="subcategory" class="form-control">
-                                            <option value="">Select Sub Category</option>
+                                            <option value=""><?= lang('select_sub_category'); ?></option>
                                         </select>
                                     </div>
                                 <?php } ?>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Question</label>
+                                    <label class="control-label"><?= lang('question'); ?></label>
                                     <textarea id="edit_question" name="question" class="form-control" required></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6 col-sm-12">
-                                    <label class="control-label">Audio Type</label>
+                                    <label class="control-label"><?= lang('audio_type'); ?></label>
                                     <select class="form-control" id="up_audio_type" name="audio_type" required>
-                                        <option value="1">Audio (other url)</option>
-                                        <option value="2">Audio Uploaded</option>
+                                        <option value="1"><?= lang('audio_other_url'); ?></option>
+                                        <option value="2"><?= lang('audio_uploaded'); ?></option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-sm-12" id="up_audio_upload">
-                                    <label class="control-label">Audio for Question <small>( if any )</small></label>
+                                    <label class="control-label"><?= lang('audio_for_question'); ?> <small><?= lang('if_any'); ?></small></label>
                                     <input id="up_file" name="update_file" type="file" accept="audio/*" class="form-control">
-                                    <small class="text-danger">Audio type supported (mp3,mp4,ogv,wav,aac,msv,wav,wma,ogg)</small>
+                                    <small class="text-danger"><?= lang('audio_type_supported'); ?></small>
                                     <p style="display: none" id="up_audio_error_msg" class="badge badge-danger"></p>
                                 </div>
                                 <div class="col-md-6 col-sm-12" id="up_audio_link">
-                                    <label class="control-label">Audio Link </label>
+                                    <label class="control-label"><?= lang('audio_link'); ?> </label>
                                     <input id="up_audio_type_url" name="audio_type_url" type="url" class="form-control">
                                 </div>
                             </div>
                             <!-- <div class="form-group row">
                                     <div class="col-md-12 col-sm-12">  
-                                        <label class="control-label">Question Type</label>
+                                        <label class="control-label"><?= lang('question_type'); ?></label>
                                         <div>
                                             <div class="form-check-inline bg-light p-2">
                                                 <label class="form-check-label">
-                                                    <input type="radio" class="form-check-input" name="edit_question_type" value="1" checked required>Options
+                                                    <input type="radio" class="form-check-input" name="edit_question_type" value="1" checked required><?= lang('options'); ?>
                                                 </label>
 
                                                 <label class="form-check-label">
-                                                    <input type="radio" class="form-check-input" name="edit_question_type" value="2">True / False
+                                                    <input type="radio" class="form-check-input" name="edit_question_type" value="2"><?= lang('true_false'); ?>
                                                 </label>
                                             </div>
                                         </div>                                                             
@@ -378,29 +377,29 @@
                                 </div> -->
                             <div class="form-group row">
                                 <div class="col-md-6 col-sm-6">
-                                    <label class="control-label">Option A</label>
+                                    <label class="control-label"><?= lang('option_a'); ?></label>
                                     <input class="form-control" type="text" id="edit_a" name="a" required>
                                 </div>
                                 <div class="col-md-6 col-sm-6">
-                                    <label class="control-label">Option B</label>
+                                    <label class="control-label"><?= lang('option_b'); ?></label>
                                     <input class="form-control" type="text" id="edit_b" name="b" required>
                                 </div>
                             </div>
                             <div id="edit_tf">
                                 <div class="form-group row">
                                     <div class="col-md-6 col-sm-6">
-                                        <label class="control-label">Option C</label>
+                                        <label class="control-label"><?= lang('option_c'); ?></label>
                                         <input class="form-control" type="text" id="edit_c" name="c" required>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
-                                        <label class="control-label">Option D</label>
+                                        <label class="control-label"><?= lang('option_d'); ?></label>
                                         <input class="form-control" type="text" id="edit_d" name="d" required>
                                     </div>
                                 </div>
                                 <?php if (is_option_e_mode_enabled()) { ?>
                                     <div class="form-group row">
                                         <div class="col-md-6 col-sm-12">
-                                            <label class="control-label">Option E</label>
+                                            <label class="control-label"><?= lang('option_e'); ?></label>
                                             <input class="form-control" type="text" id="edit_e" name="e" required>
                                         </div>
                                     </div>
@@ -408,28 +407,28 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Answer</label>
+                                    <label class="control-label"><?= lang('answer'); ?></label>
                                     <select name='answer' id='edit_answer' class='form-control' required>
-                                        <option value=''>Select Right Answer</option>
-                                        <option value='a'>A</option>
-                                        <option value='b'>B</option>
-                                        <option class='edit_ntf' value='c'>C</option>
-                                        <option class='edit_ntf' value='d'>D</option>
+                                        <option value=''><?= lang('select_right_answer'); ?></option>
+                                        <option value='a'><?= lang('a'); ?></option>
+                                        <option value='b'><?= lang('b'); ?></option>
+                                        <option class='edit_ntf' value='c'><?= lang('c'); ?></option>
+                                        <option class='edit_ntf' value='d'><?= lang('d'); ?></option>
                                         <?php if (is_option_e_mode_enabled()) { ?>
-                                            <option class='edit_ntf' value='e'>E</option>
+                                            <option class='edit_ntf' value='e'><?= lang('e'); ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label">Note</label>
+                                    <label class="control-label"><?= lang('note'); ?></label>
                                     <textarea name='note' id="edit_note" class='form-control'></textarea>
                                 </div>
                             </div>
                             <div class="float-right">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input name="btnupdate" type="submit" value="Save changes" class="<?= BUTTON_CLASS ?>">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('close'); ?></button>
+                                <input name="btnupdate" type="submit" value="<?= lang('save_changes'); ?>" class="<?= BUTTON_CLASS ?>">
                             </div>
                         </form>
                         <audio id="up_audio"></audio>
@@ -589,9 +588,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some questions to delete!");
+                alert("<?= lang('please_select_questions_to_delete'); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected questions?")) {
+                if (confirm("<?= lang('sure_to_delete_all_questions'); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -601,9 +600,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("Audio Questions deleted successfully");
+                                alert("<?= lang('audio_question_deleted_successfully'); ?>");
                             } else {
-                                alert("Could not delete Audio Questions. Try again!");
+                                alert("<?= lang('not_delete_audio_question_try_again'); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -616,7 +615,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete question? All related questions report will also be deleted')) {
+            if (confirm("<?= lang('sure_to_delete_questions_releated_data_deleted'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 audio = $(this).attr("data-audio");
@@ -628,7 +627,7 @@
                         if (result) {
                             $('#question_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }
@@ -661,7 +660,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#category').html('<option value="">Please wait..</option>');
+                    $('#category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#category').html(result).trigger("change");
@@ -678,7 +677,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#edit_category').html('<option value="">Please wait..</option>');
+                    $('#edit_category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#edit_category').html(result).trigger("change");
@@ -695,7 +694,7 @@
                 url: base_url + 'get_categories_of_language',
                 data: 'language_id=' + language_id + '&type=' + type,
                 beforeSend: function() {
-                    $('#filter_category').html('<option value="">Please wait..</option>');
+                    $('#filter_category').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#filter_category').html(result);
@@ -705,7 +704,7 @@
 
         category_options = '';
         <?php
-        $category_options = "<option value=''>Select Category</option>";
+        $category_options = "<option value=''>" . lang('select_main_category') . "</option>";
         foreach ($category as $cat) {
             $category_options .= "<option value=" . $cat->id . ">" . $cat->category_name . "</option>";
         }
@@ -719,7 +718,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#subcategory').html('<option value="">Please wait..</option>');
+                    $('#subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#subcategory').html(result);
@@ -736,7 +735,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#edit_subcategory').html('<option value="">Please wait..</option>');
+                    $('#edit_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#edit_subcategory').html(result);
@@ -753,7 +752,7 @@
                 url: base_url + 'get_subcategories_of_category',
                 data: 'category_id=' + category_id,
                 beforeSend: function() {
-                    $('#filter_subcategory').html('<option value="">Please wait..</option>');
+                    $('#filter_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
                 },
                 success: function(result) {
                     $('#filter_subcategory').html(result);
@@ -831,7 +830,7 @@
             URL.revokeObjectURL(obUrl);
             if (f_duration > limit) {
                 $('#file').val('');
-                $('#audio_error_msg').html('<?= AUDIO_TIME_ERROR; ?>');
+                $('#audio_error_msg').html("<?= lang(AUDIO_TIME_ERROR); ?>");
                 $('#audio_error_msg').show().delay(3000).fadeOut();
             }
         });

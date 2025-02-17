@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>How to Play | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('how_to_play'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>How to Play <small class="text-small">Update How to Play here</small></h1>
+                        <h1><?= lang('how_to_play'); ?> <small class="text-small"><?= lang('update_how_to_play_here'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -39,7 +39,7 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-10 offset-1">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>

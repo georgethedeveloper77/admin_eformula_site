@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Send Notifications | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('send_notifications'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Send Notifications to Users <small>To all or selected</small></h1>
+                        <h1><?= lang('send_notifications_for_users'); ?> <small><?= lang('to_all_or_selected'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -34,32 +34,32 @@
                                                     <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                                     <textarea id="selected_list" name="selected_list" style='display:none'></textarea>
                                                     <div class="form-group">
-                                                        <label class="control-label">Select Users</label>
+                                                        <label class="control-label"><?= lang('select_users'); ?></label>
                                                         <select name='users' id='users' class='form-control'>
-                                                            <option value='all'>All</option>
-                                                            <option value='selected'>Selected only</option>
+                                                            <option value='all'><?= lang('all'); ?></option>
+                                                            <option value='selected'><?= lang('selected_only'); ?></option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Type</label>
+                                                        <label class="control-label"><?= lang('type'); ?></label>
                                                         <select name="type" id="type" class="form-control" required>
-                                                            <option value="default">Default</option>
-                                                            <option value="main-category">Quiz Zone Category</option>
-                                                            <option value="fun-n-learn-category">Fun 'N' Learn Category</option>
-                                                            <option value="guess-the-word-category">Guess The Word Category</option>
-                                                            <option value="audio-question-category">Audio Questions Category</option>
+                                                            <option value="default"><?= lang('default'); ?></option>
+                                                            <option value="main-category"><?= lang('quiz_zone_category'); ?></option>
+                                                            <option value="fun-n-learn-category"><?= lang('fun_n_learn_category'); ?></option>
+                                                            <option value="guess-the-word-category"><?= lang('guess_the_word_category'); ?></option>
+                                                            <option value="audio-question-category"><?= lang('audio_questions_category'); ?></option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Title</label>
+                                                        <label class="control-label"><?= lang('title'); ?></label>
                                                         <input type="text" name="title" required class="form-control">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Message</label>
+                                                        <label class="control-label"><?= lang('message'); ?></label>
                                                         <textarea id="message" name="message" required class="form-control"></textarea>
                                                     </div>
                                                     <div class="form-group">
-                                                        <input name="include_image" id="include_image" type="checkbox"> Include image
+                                                        <input name="include_image" id="include_image" type="checkbox"> <?= lang('include_image'); ?>
                                                     </div>
                                                     <div class="form-group">
                                                         <input type="file" name="file" id="file" accept="image/*" style='display:none;' class="form-control">
@@ -67,7 +67,7 @@
 
                                                     <div class="form-group row float-right">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="submit" name="btnadd" class="<?= BUTTON_CLASS ?> btn-block" value="Submit" />
+                                                            <input type="submit" name="btnadd" class="<?= BUTTON_CLASS ?> btn-block" value="<?= lang('submit'); ?>" />
                                                         </div>
                                                     </div>
                                                 </form>
@@ -75,22 +75,22 @@
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <div class="card-body">
-                                                <button type='button' id='get_selections' class='<?= BUTTON_CLASS ?>'>Get Selected Users</button>
+                                                <button type='button' id='get_selections' class='<?= BUTTON_CLASS ?>'><?= lang('get_selected_users'); ?></button>
                                                 <div id="toolbar">
                                                     <select name="filter_status" id="filter_status" class="form-control">
-                                                        <option value="">All</option>
-                                                        <option value="1">Active</option>
-                                                        <option value="0">De-active</option>
+                                                        <option value=""><?= lang('all'); ?></option>
+                                                        <option value="1"><?= lang('active'); ?></option>
+                                                        <option value="0"><?= lang('deactive'); ?></option>
                                                     </select>
                                                 </div>
                                                 <table aria-describedby="mydesc" class='table-striped' id='users_list' data-toggle="table" data-url="<?= base_url() . 'Table/users' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-fixed-columns="true" data-fixed-number="1" data-fixed-right-number="1" data-trim-on-search="false" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-mobile-responsive="true" data-maintain-selected="true" data-show-export="false" data-export-types='["txt","excel"]' data-export-options='{ "fileName": "user-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams_1">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" data-field="state" data-events="inputEvent" data-checkbox="true"></th>
-                                                            <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                            <th scope="col" data-field="name" data-sortable="true">Name</th>
-                                                            <th scope="col" data-field="email" data-sortable="true">Email</th>
-                                                            <th scope="col" data-field="status" data-sortable="false">Status</th>
+                                                            <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                            <th scope="col" data-field="name" data-sortable="true"><?= lang('name'); ?></th>
+                                                            <th scope="col" data-field="email" data-sortable="true"><?= lang('email'); ?></th>
+                                                            <th scope="col" data-field="status" data-sortable="false"><?= lang('status'); ?></th>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -105,27 +105,27 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Notifications <small>View / Update / Delete</small></h4>
+                                        <h4><?= lang('notifications'); ?> <small><?= lang('view_update_delete'); ?></small></h4>
                                     </div>
                                     <div class="card-body">
                                         <div id="toolbar1">
                                             <?php if (has_permissions('delete', 'send_notification')) { ?>
-                                                <button class="btn btn-danger" id="delete_multiple_notifications" title="Delete Selected Notifications"><em class='fa fa-trash'></em></button>
+                                                <button class="btn btn-danger" id="delete_multiple_notifications" title="<?= lang('delete_selected_notifications'); ?>"><em class='fa fa-trash'></em></button>
                                             <?php } ?>
                                         </div>
                                         <table aria-describedby="mydesc" class='table-striped' id='notification_list' data-toggle="table" data-url="<?= base_url() . 'Table/notification' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar1" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-sort-name="id" data-sort-order="desc" data-mobile-responsive="true" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "notification-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" data-field="state" data-checkbox="true"></th>
-                                                    <th scope="col" data-field="id" data-sortable="true">ID</th>
-                                                    <th scope="col" data-field="title" data-sortable="true">Title</th>
-                                                    <th scope="col" data-field="message" data-sortable="true">Message</th>
-                                                    <th scope="col" data-field="image" data-sortable="false">Image</th>
-                                                    <th scope="col" data-field="users" data-sortable="true" data-visible="false">Users</th>
-                                                    <th scope="col" data-field="type" data-sortable="true">Type</th>
-                                                    <th scope="col" data-field="type_id" data-sortable="true">Main Category ID</th>
-                                                    <th scope="col" data-field="date_sent" data-sortable="true">Date Sent</th>
-                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents">Operate</th>
+                                                    <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
+                                                    <th scope="col" data-field="title" data-sortable="true"><?= lang('title'); ?></th>
+                                                    <th scope="col" data-field="message" data-sortable="true"><?= lang('message'); ?></th>
+                                                    <th scope="col" data-field="image" data-sortable="false"><?= lang('image'); ?></th>
+                                                    <th scope="col" data-field="users" data-sortable="true" data-visible="false"><?= lang('users'); ?></th>
+                                                    <th scope="col" data-field="type" data-sortable="true"><?= lang('type'); ?></th>
+                                                    <th scope="col" data-field="type_id" data-sortable="true"><?= lang('main_category_id'); ?></th>
+                                                    <th scope="col" data-field="date_sent" data-sortable="true"><?= lang('date_sent'); ?></th>
+                                                    <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -231,9 +231,9 @@
             });
             ids = ids.slice(0, -1);
             if (ids == "") {
-                alert("Please select some languages to delete!");
+                alert("<?= lang('please_select_notification_to_delete'); ?>");
             } else {
-                if (confirm("Are you sure you want to delete all selected notifications?")) {
+                if (confirm("<?= lang('sure_to_delete_all_notification'); ?>")) {
                     $.ajax({
                         type: "POST",
                         url: base_url + 'delete_multiple',
@@ -243,9 +243,9 @@
                         },
                         success: function(result) {
                             if (result == 1) {
-                                alert("Languages deleted successfully");
+                                alert("<?= lang('notification_deleted_successfully'); ?>");
                             } else {
-                                alert("Could not delete languages. Try again!");
+                                alert("<?= lang('not_delete_notification_try_again'); ?>");
                             }
                             delete_button.html('<i class="fa fa-trash"></i>');
                             table.bootstrapTable('refresh');
@@ -262,7 +262,7 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-data', function() {
-            if (confirm('Are you sure? Want to delete notification')) {
+            if (confirm("<?= lang('sure_to_delete_notification'); ?>")) {
                 var base_url = "<?php echo base_url(); ?>";
                 id = $(this).data("id");
                 image = $(this).data("image");
@@ -274,7 +274,7 @@
                         if (result) {
                             $('#notification_list').bootstrapTable('refresh');
                         } else {
-                            var PERMISSION_ERROR_MSG = "<?= PERMISSION_ERROR_MSG; ?>";
+                            var PERMISSION_ERROR_MSG = "<?= lang(PERMISSION_ERROR_MSG); ?>";
                             ErrorMsg(PERMISSION_ERROR_MSG);
                         }
                     }

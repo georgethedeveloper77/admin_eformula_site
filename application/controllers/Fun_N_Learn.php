@@ -23,10 +23,10 @@ class Fun_N_Learn extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'fun_n_learn')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Fun_N_Learn_model->add_data();
-                    $this->session->set_flashdata('success', 'Fun N Learn created successfully.! ');
+                    $this->session->set_flashdata('success', lang('fun_n_learn_created_successfully'));
                 }
                 $type = $this->uri->segment(1);
                 $setData["$type"] = [
@@ -39,24 +39,24 @@ class Fun_N_Learn extends CI_Controller
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'fun_n_learn')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Fun_N_Learn_model->update_data();
-                    $this->session->set_flashdata('success', 'Fun N Learn updated successfully.!');
+                    $this->session->set_flashdata('success', lang('fun_n_learn_updated_successfully'));
                 }
                 redirect('fun-n-learn', 'refresh');
             }
             if ($this->input->post('btnupdatestatus')) {
                 if (!has_permissions('update', 'fun_n_learn')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $contest_id = $this->input->post('update_id');
                     $res = $this->db->where('fun_n_learn_id', $contest_id)->get('tbl_fun_n_learn_question')->result();
                     if (empty($res)) {
-                        $this->session->set_flashdata('error', 'No enought question for active fun n learn.!');
+                        $this->session->set_flashdata('error', lang('not_enought_question_for_active_fun_n_learn'));
                     } else {
                         $this->Fun_N_Learn_model->update_fun_n_learn_status();
-                        $this->session->set_flashdata('success', 'Fun N Learn updated successfully.!');
+                        $this->session->set_flashdata('success', lang('fun_n_learn_updated_successfully'));
                     }
                 }
                 redirect('fun-n-learn', 'refresh');
@@ -86,19 +86,19 @@ class Fun_N_Learn extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'fun_n_learn')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Fun_N_Learn_model->add_fun_n_learn_question();
-                    $this->session->set_flashdata('success', 'Question created successfully.! ');
+                    $this->session->set_flashdata('success', lang('question_created_successfully'));
                 }
                 redirect('fun-n-learn-questions/' . $id, 'refresh');
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'fun_n_learn')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Fun_N_Learn_model->update_fun_n_learn_question();
-                    $this->session->set_flashdata('success', 'Question updated successfully.!');
+                    $this->session->set_flashdata('success', lang('question_updated_successfully'));
                 }
                 redirect('fun-n-learn-questions/' . $id, 'refresh');
             }

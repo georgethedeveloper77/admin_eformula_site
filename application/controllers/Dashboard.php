@@ -67,25 +67,25 @@ class Dashboard extends CI_Controller
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'users_accounts_rights')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $username = $this->input->post('username');
                     $data = $this->db->where('auth_username', $username)->get('tbl_authenticate')->result();
                     if (!empty($data)) {
-                        $this->session->set_flashdata('error', $username . ' is already exists.!');
+                        $this->session->set_flashdata('error', $username . ' ' . lang('is_already_exists'));
                     } else {
                         $this->User_model->add_user_rights();
-                        $this->session->set_flashdata('success', 'User created successfully.! ');
+                        $this->session->set_flashdata('success', lang('user_created_successfully'));
                     }
                 }
                 redirect('user-accounts-rights');
             }
             if ($this->input->post('btnupdate')) {
-                if (!has_permissions('create', 'users_accounts_rights')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                if (!has_permissions('update', 'users_accounts_rights')) {
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->User_model->update_user_rights();
-                    $this->session->set_flashdata('success', 'User updated  successfully.!');
+                    $this->session->set_flashdata('success', lang('user_updated_successfully'));
                 }
                 redirect('user-accounts-rights');
             }
@@ -132,7 +132,7 @@ class Dashboard extends CI_Controller
                 }
             }
         } else {
-            $options = '<option value="">Select Sub Category</option>';
+            $options = '<option value="">' . lang('select_sub_category') . '</option>';
             foreach ($data as $option) {
                 $optionName = $option->is_premium == 1 ? $option->subcategory_name . ' - Premium' : $option->subcategory_name;
                 $options .= "<option value=" . $option->id . " data-is-premium='" . $option->is_premium . "'>" . $optionName . "</option>";
@@ -161,7 +161,7 @@ class Dashboard extends CI_Controller
                 }
             }
         } else {
-            $options = '<option value="">Select Main Category</option>';
+            $options = '<option value="">' . lang('select_main_category') . '</option>';
             foreach ($data as $option) {
                 $optionName = $option->is_premium == 1 ? $option->category_name . ' - Premium' : $option->category_name;
                 $options .= "<option value=" . $option->id . " data-is-premium='" . $option->is_premium . "'>" . $optionName . "</option>";
@@ -186,19 +186,19 @@ class Dashboard extends CI_Controller
         } else {
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'users')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->User_model->update_user();
-                    $this->session->set_flashdata('success', 'User updated successfully.!');
+                    $this->session->set_flashdata('success', lang('user_updated_successfully'));
                 }
                 redirect('users');
             }
             if ($this->input->post('btnupdateCoins')) {
                 if (!has_permissions('update', 'users')) {
-                    $this->session->set_flashdata('error', PERMISSION_ERROR_MSG);
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->User_model->update_user_coin();
-                    $this->session->set_flashdata('success', 'User Coins Added successfully.!');
+                    $this->session->set_flashdata('success', lang('user_coins_added_successfully'));
                 }
                 redirect('users');
             }
@@ -208,7 +208,7 @@ class Dashboard extends CI_Controller
 
     public function delete_accounts_rights()
     {
-        if (!has_permissions('delete', 'delete_accounts_rights')) {
+        if (!has_permissions('delete', 'users_accounts_rights')) {
             echo FALSE;
         } else {
             $id = $this->input->post('id');
@@ -253,7 +253,7 @@ class Dashboard extends CI_Controller
                     $options .= "<li id='" . $option->id . "'><img src='" . $this->NO_IMAGE . "' height=30 > " . $option->subcategory_name . "</li>";
                 }
             } else {
-                $options = '<option value="">Select Main Category</option>';
+                $options = '<option value="">' . lang('select_main_category') . '</option>';
                 foreach ($data as $option) {
                     $options .= "<option value=" . $option->id . ">" . $option->subcategory_name . "</option>";
                 }

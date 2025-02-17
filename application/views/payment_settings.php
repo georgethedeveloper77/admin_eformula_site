@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Payment Settings | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
+    <title><?= lang('payment_settings'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
 </head>
@@ -21,7 +21,7 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Payment Settings <small class="text-small">Upadate payment settings here</small></h1>
+                        <h1><?= lang('payment_settings'); ?> <small class="text-small"><?= lang('update_payment_setting_here'); ?></small></h1>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -34,7 +34,7 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-6">
-                                                    <label class="control-label">Payment <small>Enable/Disable</small></label><br>
+                                                    <label class="control-label"><?= lang('payment'); ?> <small><?= lang('enable_disable'); ?></small></label><br>
                                                     <input type="checkbox" id="payment_mode_btn" data-plugin="switchery" <?php
                                                                                                                             if (!empty($payment_mode) && $payment_mode['message'] == '1') {
                                                                                                                                 echo 'checked';
@@ -48,35 +48,35 @@
                                             <hr class="row">
                                             <div class="text-danger text-small">
                                                 <p>
-                                                    <li>All coins should be minimum 0 and hour minimum 1 value</li>
+                                                    <li><?= lang('all_coins_should_be_minimum_0_and_hour_minimum_1_value'); ?></li>
                                                 </p>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Per Coin</label>
+                                                    <label class="control-label"><?= lang('per_coin'); ?></label>
                                                     <input type="number" min=1 name="per_coin" value="<?= (!empty($per_coin)) ? $per_coin['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Per Amount</label>
+                                                    <label class="control-label"><?= lang('per_amount'); ?></label>
                                                     <input type="number" min=1 name="coin_amount" value="<?= (!empty($coin_amount)) ? $coin_amount['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Currency Symbol</label>
+                                                    <label class="control-label"><?= lang('currency_symbol'); ?></label>
                                                     <input type="text" name="currency_symbol" value="<?= (!empty($currency_symbol)) ? $currency_symbol['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label">Minimum Coins for Request</label>
+                                                    <label class="control-label"><?= lang('minimum_coins_for_request'); ?></label>
                                                     <input type="number" min=1 name="coin_limit" value="<?= (!empty($coin_limit)) ? $coin_limit['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-6">
-                                                    <label class="control-label">Difference in hours between consecutive payment request</label>
+                                                    <label class="control-label"><?= lang('difference_in_hours_between_consecutive_payment_request'); ?></label>
                                                     <input type="number" min=1 name="difference_hours" value="<?= (!empty($difference_hours)) ? $difference_hours['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
-                                                    <input type="submit" name="btnadd" value="Submit" class="<?= BUTTON_CLASS ?>" />
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
                                         </form>
