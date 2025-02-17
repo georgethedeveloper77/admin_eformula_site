@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.mindberzerk.eformula",
+      "sha256_cert_fingerprints":
+        ["2C:C4:E8:1B:5B:3A:A7:AE:C0:6A:74:2B:0A:8A:1A:4F:14:C7:23:8B:9E:B6:F6:E3:C0:5E:D7:E7:25:30:2F:98"]
+    }
+  }
+]
