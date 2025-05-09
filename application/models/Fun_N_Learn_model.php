@@ -102,6 +102,9 @@ class Fun_N_Learn_model extends CI_Model
                     $frm_data['content_type'] = 2;
                     $frm_data['content_data'] = $filedata;
                 }
+            } else {
+                $frm_data['content_type'] = 0;
+                $frm_data['content_data'] = '';
             }
         }
         $this->db->where('id', $id)->update('tbl_fun_n_learn', $frm_data);

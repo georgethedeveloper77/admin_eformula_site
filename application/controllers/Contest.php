@@ -1,5 +1,10 @@
 <?php
 
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+
+require FCPATH . 'vendor/autoload.php';
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Contest extends CI_Controller
@@ -109,7 +114,6 @@ class Contest extends CI_Controller
                     $contest_name = $contest->name;
                     if ($prize_status == 0) {
                         $contest_id = $contest->id;
-                        // $type = "Contest Winner - $contest_name ";
                         $type = "wonContest";
                         $res1 = $this->db->where('contest_id', $contest_id)->order_by('top_winner', 'ASC')->get('tbl_contest_prize')->result();
                         if (!empty($res1)) {
@@ -122,6 +126,7 @@ class Contest extends CI_Controller
                                 $res2 = $query2->result();
 
                                 for ($i = 0; $i < count($res2); $i++) {
+                                    $winner_userId = $res2[$i]->user_id;
                                     $frm_data = array(
                                         'user_id' => $res2[$i]->user_id,
                                         'uid' => $res2[$i]->firebase_id,
@@ -135,23 +140,136 @@ class Contest extends CI_Controller
                                     $coins = ($res2[$i]->coins + $winner_points);
                                     $frm_data1 = array('coins' => $coins);
                                     $this->db->where('id', $res2[$i]->user_id)->update('tbl_users', $frm_data1);
+                                    if ($winner_userId) {
+                                        $this->set_badges($winner_userId, 'most_wanted_winner');
+                                    }
                                 }
                             }
                             $frm_data2 = array('prize_status' => '1');
                             $this->db->where('id', $contest_id)->update('tbl_contest', $frm_data2);
 
-                            $this->session->set_flashdata('success', lang('successfully_prize_distributed_for') . $contest_name . '..!');
+                            $this->session->set_flashdata('success', lang('successfully_prize_distributed_for') . ' ' . $contest_name . '..!');
                         } else {
-                            $this->session->set_flashdata('error', lang('prize_can_not_distributed_for') . $contest_name . '..!');
+                            $this->session->set_flashdata('error', lang('prize_can_not_distributed_for') . ' ' . $contest_name . '..!');
                         }
                     } else {
-                        $this->session->set_flashdata('error', lang('prize_already_distributed_for') . $contest_name . '..!');
+                        $this->session->set_flashdata('error', lang('prize_already_distributed_for') . ' ' . $contest_name . '..!');
                     }
                 }
             } else {
                 $this->session->set_flashdata('error', lang('prize_distribution_is_currently_not_available_check_contest_end_date'));
             }
             redirect('contest');
+        }
+    }
+
+    function set_badges($user_id, $type)
+    {
+        $res = $this->db->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
+        $counter_name = $type . '_counter';
+        if (!empty($res)) {
+            if ($res[$type] == 0 || $res[$type] == '0') {
+                $res1 = $this->db->where('type', $type)->get('tbl_badges')->row_array();
+                if (!empty($res1)) {
+                    $counter = $res1['badge_counter'];
+                    $user_conter = $res[$counter_name];
+                    $user_conter = $user_conter + 1;
+                    if ($user_conter < $counter) {
+                        $data = [$counter_name => $user_conter];
+                        $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data);
+                    } else if ($counter == $user_conter) {
+                        $power_elite_counter = $res['power_elite_counter'] + 1;
+                        $this->set_power_elite_badge($user_id, $power_elite_counter);
+                        $data1 = [
+                            $counter_name => $user_conter,
+                            $type => 1,
+                        ];
+                        $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data1);
+                        $this->send_badges_notification($user_id, $type);
+                    }
+                }
+            }
+        }
+    }
+
+    function set_power_elite_badge($user_id, $counter)
+    {
+        $type = 'power_elite';
+        $res = $this->db->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
+        $user_conter = $type . '_counter';
+        if (!empty($res)) {
+            if ($res[$type] == 0 || $res[$type] == '0') {
+                $res1 = $this->db->where('type', $type)->get('tbl_badges')->row_array();
+                if (!empty($res1)) {
+                    $badge_counter = $res1['badge_counter'];
+                    if ($counter < $badge_counter) {
+                        $data = [$user_conter => $counter];
+                        $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data);
+                    } else if ($counter == $badge_counter) {
+                        $data1 = [
+                            $type . '_counter' => $counter,
+                            $type => 1,
+                        ];
+                        $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data1);
+                        $this->send_badges_notification($user_id, $type);
+                    }
+                }
+            }
+        }
+    }
+
+    function getBadgeNotificationData($language, $type, $path, $sampleFile, $defaultFile)
+    {
+        $file = $path . $language . '.json';
+
+        if (!file_exists($file)) {
+            $file = $path . $defaultFile;
+            if (!file_exists($file)) {
+                $file = $path . $sampleFile;
+            }
+        }
+
+        $content = file_get_contents($file);
+        $dataArray = json_decode($content, true);
+
+        $badge_label = $type . '_label';
+        $badge_note = $type . '_note';
+
+        return [
+            'notification_title' => $dataArray[$badge_label] ?? 'Congratulations!!',
+            'notification_body' => $dataArray[$badge_note] ?? 'You have unlocked new badge.'
+        ];
+    }
+
+    function send_badges_notification($user_id, $type)
+    {
+        $res = $this->db->select('id,fcm_id,app_language')->where('id', $user_id)->get('tbl_users')->row_array();
+        $fcm_id = $res['fcm_id'];
+
+        $user_app_language = $res['app_language'];
+
+        $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
+        $default_app_language = $get_app_default_language['name'];
+
+        $notificationData = $this->getBadgeNotificationData($user_app_language, $type, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
+
+        $notification_title_message = $notificationData['notification_title'] ?? 'Congratulations!!';
+        $notification_body_message = $notificationData['notification_body'] ?? 'You have unlocked new badge.';
+        $fcmMsg = array(
+            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+            'type' => 'badges',
+            'badge_type' => $type,
+            'title' => $notification_title_message,
+            'body' => $notification_body_message,
+        );
+
+        if ($fcm_id && $fcm_id != '' && $fcm_id != 'empty') {
+            $registrationID = explode(',', $fcm_id);
+            $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
+            $messaging = $factory->createMessaging();
+            $message = CloudMessage::new();
+            $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
+            $messaging->sendMulticast($message, $registrationID);
         }
     }
 

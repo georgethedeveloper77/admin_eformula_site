@@ -52,7 +52,6 @@ class Badges extends CI_Controller
             foreach ($badges as $row) {
                 $this->result[$row] = $this->db->select('badge_icon,badge_reward,badge_counter')->where('type', $row)->get('tbl_badges')->row_array();
             }
-            $this->result['language'] = $this->Language_model->get_data();
             $this->load->view('badges_settings', $this->result);
         }
     }
@@ -96,10 +95,6 @@ class Badges extends CI_Controller
                 $otherBadgeData = $this->db->select('badge_icon,badge_reward,badge_counter')->where('type', $row)->get('tbl_badges')->row_array();
                 $this->result[$row] = $otherBadgeData;
             }
-            $this->result['edit_data'] = 1;
-            $this->result['notification_title'] = $this->db->where('type', 'notification_title')->where('language_id', $id)->get('tbl_web_settings')->row_array();
-            $this->result['notification_body'] = $this->db->where('type', 'notification_body')->where('language_id', $id)->get('tbl_web_settings')->row_array();
-            $this->result['language'] = $this->Language_model->get_data();
             $this->load->view('badges_settings', $this->result);
         }
     }

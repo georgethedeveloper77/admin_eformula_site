@@ -69,8 +69,10 @@
                                                     <label class="control-label"><?= lang('login_background_image'); ?><small class="text-danger"><?= lang('1920_1080_recommended'); ?></small></label>
                                                     <input id="background_file" name="background_file" type="file" accept="image/*" class="form-control">
                                                     <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
-                                                    <input type="hidden" name="background_file" value="<?= isset($background_file['message']) && !empty($background_file['message']) ? LOGO_IMG_PATH . $background_file['message'] : "" ?>">
-                                                    <div class="m-2"><img src="<?= isset($background_file['message']) && !empty($background_file['message']) ? base_url() . LOGO_IMG_PATH . $background_file['message'] : base_url() . LOGO_IMG_PATH . 'background-image-stock.png'; ?>" alt="logo" width="150" height="80"></div>
+                                                    <input type="hidden" name="background_file_url" value="<?= !empty(is_settings('background_file')) ? LOGO_IMG_PATH . is_settings('background_file') : "" ?>">
+                                                    <?php if (is_settings('background_file')) { ?>
+                                                        <div class="m-2"><img src="<?= base_url() . LOGO_IMG_PATH . is_settings('background_file'); ?>" alt="background_file" width="150" height="80"></div>
+                                                    <?php } ?>
                                                     <div style="display: none" id="msg_background_file" class="alert alert-danger"></div>
                                                 </div>
 
@@ -78,8 +80,10 @@
                                                     <label class="control-label"><?= lang('bot_image'); ?><small class="text-danger"><?= lang('102_102_recommended'); ?></small></label>
                                                     <input id="bot_image" name="bot_image" type="file" accept="image/*" class="form-control">
                                                     <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
-                                                    <input type="hidden" name="bot_file" value="<?= isset($bot_image['message']) && !empty($bot_image['message']) ? LOGO_IMG_PATH . $bot_image['message']  : "" ?>">
-                                                    <div class="m-2"><img src="<?= isset($bot_image['message']) && !empty($bot_image['message']) ? base_url() . LOGO_IMG_PATH . $bot_image['message'] : base_url() . LOGO_IMG_PATH . 'bot-stock.png'; ?>" alt="logo" width="80" height="80"></div>
+                                                    <input type="hidden" name="bot_file_url" value="<?= !empty(is_settings('bot_image')) ? LOGO_IMG_PATH . is_settings('bot_image')  : "" ?>">
+                                                    <?php if (is_settings('bot_image')) { ?>
+                                                        <div class="m-2"><img src="<?= base_url() . LOGO_IMG_PATH . is_settings('bot_image'); ?>" alt="bot_image" width="80" height="80"></div>
+                                                    <?php } ?>
                                                     <div style="display: none" id="msg_bot_image" class="alert alert-danger"></div>
                                                 </div>
 

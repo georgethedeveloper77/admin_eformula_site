@@ -82,7 +82,7 @@
                                                     <?php } ?>
                                                     <th scope="col" data-field="image" data-sortable="false"><?= lang('image'); ?></th>
                                                     <th scope="col" data-field="question" data-sortable="true"><?= lang('question'); ?></th>
-                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false'><?= lang('quesion_type'); ?></th>
+                                                    <th scope="col" data-field="question_type" data-sortable="true" data-visible='false'><?= lang('question_type'); ?></th>
                                                     <th scope="col" data-field="optiona" data-sortable="true"><?= lang('option_a'); ?></th>
                                                     <th scope="col" data-field="optionb" data-sortable="true"><?= lang('option_b'); ?></th>
                                                     <th scope="col" data-field="optionc" data-sortable="true"><?= lang('option_c'); ?></th>

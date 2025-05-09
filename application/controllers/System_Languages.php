@@ -167,6 +167,8 @@ class System_Languages extends CI_Controller
         $file_name = $language_name . '_lang.php';
         $existing_file = $folder_path . $file_name;
         $missing_keys = [];
+        $set_label = 0;
+
         // Load the language helper
         if (file_exists($existing_file)) {
             if ($this->input->post('btnadd')) {
@@ -193,13 +195,16 @@ class System_Languages extends CI_Controller
             foreach ($sample_file_lang as $key => $value) {
                 if (!array_key_exists($key, $get_lang)) {
                     $missing_keys[$key] = $value;
+                    $set_label = 1;
                 }
             }
             if (empty($missing_keys)) {
                 $missing_keys = $get_lang;
+                $set_label = 2;
             }
             $this->lang->language = $current_lang;
         }
+        $this->result['set_label'] = $set_label ?? 0;
         $this->result['missing_keys'] = $missing_keys;
         $this->result['language_name'] = $title;
         $this->load->view('new_label_file', $this->result);
@@ -211,6 +216,7 @@ class System_Languages extends CI_Controller
         $folder = $this->uri->segment(2);
         $language_name = $this->uri->segment(3);
         $path = '';
+        $set_label = 0;
         if ($folder == 'app') {
             $path = APP_LANGUAGE_FILE_PATH;
         } else if ($folder == 'web') {
@@ -248,17 +254,15 @@ class System_Languages extends CI_Controller
                 if (is_array($sampleArray) && is_array($getArray)) {
                     // Find the missing keys
                     $missingKeys = array_diff_key($sampleArray, $getArray);
+                    $set_label = 1;
                 }
 
                 if (!$missingKeys) {
-                    if (is_array($sampleArray) && is_array($getArray)) {
-                        // Find the missing keys
-                        $missingKeys = array_intersect_key($sampleArray, $getArray);
-                    } else {
-                        $missingKeys = ($getArray);
-                    }
+                    $missingKeys = ($getArray);
+                    $set_label = 2;
                 }
             }
+            $this->result['set_label'] = $set_label ?? 0;
             $this->result['missing_keys'] = $missingKeys;
             $this->result['language_name'] = $language_name;
             $this->load->view('new_label_file', $this->result);

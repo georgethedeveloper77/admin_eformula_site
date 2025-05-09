@@ -210,6 +210,11 @@
                                                     <input type="number" min=1 id="guess_the_word_correct_answer_credit_score" min="1" name="guess_the_word_correct_answer_credit_score" required class="form-control" value="<?php echo isset($guess_the_word_correct_answer_credit_score) ? $guess_the_word_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
+                                                <!-- Guess The Word Max Hints Per Quiz's Question -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2">
+                                                    <label class="control-label"><?= lang('hint_deduct_coin'); ?></label>
+                                                    <input type="number" min=1 id="guess_the_word_hint_deduct_coin" min="1" name="guess_the_word_hint_deduct_coin" required class="form-control" value="<?php echo isset($guess_the_word_hint_deduct_coin) ? $guess_the_word_hint_deduct_coin['message'] : "" ?>">
+                                                </div>
                                             </div>
 
 

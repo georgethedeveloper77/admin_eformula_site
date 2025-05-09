@@ -77,6 +77,7 @@ class Settings extends CI_Controller
                 'guess_the_word_max_winning_coin',
                 'guess_the_word_wrong_answer_deduct_score',
                 'guess_the_word_correct_answer_credit_score',
+                'guess_the_word_hint_deduct_coin',
                 'audio_mode_question',
                 'audio_quiz_fix_question',
                 'audio_quiz_total_question',
@@ -471,12 +472,12 @@ class Settings extends CI_Controller
 
     public function upload_img()
     {
-        $accepted_origins = array("http://" . $_SERVER['HTTP_HOST']);
+        $accepted_origins = array((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST']);
 
-        if (!is_dir('images/instruction')) {
-            mkdir('images/instruction', 0777, true);
+        if (!is_dir(INSTRACTION_IMG_PATH)) {
+            mkdir(INSTRACTION_IMG_PATH, 0777, true);
         }
-        $imageFolder = "images/instruction/";
+        $imageFolder = INSTRACTION_IMG_PATH;
 
         reset($_FILES);
         $temp = current($_FILES);
@@ -500,15 +501,15 @@ class Settings extends CI_Controller
             // Accept upload if there was no origin, or if it is an accepted origin
             $filename = $temp['name'];
 
-            $filetype = $temp['type']; // file type
+            $filetype = $_POST['filetype']; // file type
             // Valid extension
-            if ($filetype == 'image/jpg' || $filetype == 'image/jpeg' || $filetype == 'image/png') {
+            if ($filetype == 'image') {
                 $valid_ext = array('png', 'jpeg', 'jpg');
-            } else if ($filetype == 'media/mp3' || $filetype == 'media/mp4') {
+            } else if ($filetype == 'media') {
                 $valid_ext = array('mp4', 'mp3');
             }
 
-            $location = $imageFolder . $temp['name']; // Location
+            $location = $imageFolder . $temp['name'];   // Location
 
             $file_extension = pathinfo($location, PATHINFO_EXTENSION); // file extension
             $file_extension = strtolower($file_extension);
@@ -525,7 +526,7 @@ class Settings extends CI_Controller
 
             echo $return_filename;
         } else {
-            header("HTTP/1.1 500 Server Error"); // Notify editor that the upload failed
+            header("HTTP/1.1 500 Server Error");  // Notify editor that the upload failed
         }
     }
 
@@ -548,7 +549,6 @@ class Settings extends CI_Controller
                 }
 
                 $settings = [
-                    // 'data_ad_client','data_ad_slot',
                     'firebase_api_key',
                     'firebase_auth_domain',
                     'firebase_database_url',
@@ -557,15 +557,12 @@ class Settings extends CI_Controller
                     'firebase_messager_sender_id',
                     'firebase_app_id',
                     'firebase_measurement_id',
-                    // 'meta_description', 'meta_keywords',
-                    'rtl_support',
                     'company_name_footer',
                     'email_footer',
                     'phone_number_footer',
                     'web_link_footer',
                     'company_text',
                     'address_text',
-                    // 'favicon', 
                     'header_logo',
                     'footer_logo',
                     'sticky_header_logo',

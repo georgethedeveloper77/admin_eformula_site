@@ -88,7 +88,7 @@ defined('EXIT__AUTO_MAX') or define('EXIT__AUTO_MAX', 125); // highest automatic
 /* * ************************ Application Configuration ******************* */
 define('ALLOW_MODIFICATION', 1);
 //define('PERMISSION_ERROR_MSG', 'You are not authorize to operate on the module');
-define('PERMISSION_ERROR_MSG', 'Modification in demo version is not allowed.');
+define('PERMISSION_ERROR_MSG', 'Modification_in_demo_version_is_not_allowed');
 
 //Image paths
 define('FILE_ALLOWED_TYPES', 'pdf|PDF');
@@ -120,6 +120,7 @@ define('COIN_STORE_IMG_PATH', 'images/coin-store/');
 define('LANGUAGE_PATH', 'application/language/');
 define('LANGUAGE_ALLOWED_TYPES', 'PHP|php');
 define('MULTIMATCH_QUESTION_IMG_PATH', 'images/multimatch-questions/');
+define('INSTRACTION_IMG_PATH', 'images/instruction/');
 
 //audio path
 define('QUESTION_AUDIO_PATH', 'images/audio/');
@@ -131,15 +132,15 @@ define('SUCCESS_MSG_CLASS', 'alert alert-success');
 define('ERROR_MSG_CLASS', 'alert alert-danger');
 
 //constant messgae
-define('IMAGE_ALLOW_MSG', 'Only png, jpg and jpeg or webp image allow..!');
-define('IMAGE_ALLOW_PNG_JPG_MSG', 'Only png, jpg or jpeg image allow..!');
-define('IMAGE_ALLOW_PNG_JPG_SVG_MSG', 'Only png, jpg ,jpeg or svg image allow..!');
-define('INVALID_IMAGE_TYPE', 'Invalid Image Type');
-define('AUDIO_ALLOW_MSG', 'Only Audio allow..!');
-define('INVALID_AUDIO_TYPE', 'Invalid Audio Type');
-define('INVALID_FILE_TYPE', 'Invalid File Type');
-define('AUDIO_TIME_ERROR', 'Audio file length is too long to upload');
-define('FILE_SIZE_EXCEEDED', 'file length is long to upload');
+define('IMAGE_ALLOW_MSG', 'Only_png_jpg_and_jpeg_or_webp_image_allow');
+define('IMAGE_ALLOW_PNG_JPG_MSG', 'Only_png_jpg_or_jpeg_image_allow');
+define('IMAGE_ALLOW_PNG_JPG_SVG_MSG', 'Only_png_jpg_jpeg_or_svg_image_allow');
+define('INVALID_IMAGE_TYPE', 'Invalid_Image_Type');
+define('AUDIO_ALLOW_MSG', 'Only_Audio_allow');
+define('INVALID_AUDIO_TYPE', 'Invalid_Audio_Type');
+define('INVALID_FILE_TYPE', 'Invalid_File_Type');
+define('AUDIO_TIME_ERROR', 'Audio_file_length_is_too_long_to_upload');
+define('FILE_SIZE_EXCEEDED', 'file_length_is_long_to_upload');
 
 //API constant messgae
 define('INVALID_KEY_MSG', 'invalid access key');

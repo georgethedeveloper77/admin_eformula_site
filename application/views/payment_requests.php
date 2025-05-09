@@ -64,6 +64,7 @@
                                                     <th scope="col" data-field="details" data-sortable="false"><?= lang('details'); ?></th>
                                                     <th scope="col" data-field="status" data-sortable="false"><?= lang('status'); ?></th>
                                                     <th scope="col" data-field="date" data-sortable="true"><?= lang('date'); ?></th>
+                                                    <th scope="col" data-field="status_date" data-sortable="true"><?= lang('status_date'); ?></th>
                                                     <th scope="col" data-field="operate" data-sortable="false" data-events="actionEvents"><?= lang('operate'); ?></th>
                                                 </tr>
                                             </thead>

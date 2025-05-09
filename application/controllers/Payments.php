@@ -9,7 +9,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Payments extends CI_Controller
 {
-    public $utc_date;
+    public $toDate;
+    public $toDateTime;
     public function __construct()
     {
         parent::__construct();
@@ -21,8 +22,8 @@ class Payments extends CI_Controller
         $this->category_type = $this->config->item('category_type');
 
         date_default_timezone_set(get_system_timezone());
-        $toDate = date('Y-m-d');
-        $this->utc_date = gmdate('Y-m-d', strtotime($toDate));
+        $this->toDate = date('Y-m-d');
+        $this->toDateTime = date('Y-m-d H:i:s');
         $this->NO_IMAGE = base_url() . LOGO_IMG_PATH . is_settings('half_logo');
     }
 
@@ -30,7 +31,7 @@ class Payments extends CI_Controller
     public function activity_tracker()
     {
         if (!has_permissions('read', 'activity_tracker')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             $this->load->view('activity_tracker');
         }
@@ -39,7 +40,7 @@ class Payments extends CI_Controller
     public function payment_settings()
     {
         if (!has_permissions('read', 'payment_settings')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             $settings = [
                 'payment_mode',
@@ -69,7 +70,7 @@ class Payments extends CI_Controller
                         }
                     }
                     $this->session->set_flashdata('success', lang('settings_updated_successfully'));
-                    redirect('payment-settings', 'refresh');
+                    redirect('payment-settings');
                 }
             }
 
@@ -84,7 +85,7 @@ class Payments extends CI_Controller
     public function payment_requests()
     {
         if (!has_permissions('read', 'payment_requests')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             $pathToServiceAccountJsonFile = 'assets/firebase_config.json';
             if (!file_exists($pathToServiceAccountJsonFile)) {
@@ -92,7 +93,6 @@ class Payments extends CI_Controller
             }
             if ($this->input->post('btnadd')) {
                 $multiple_ids = $this->input->post('multiple_ids');
-                // $multiple_ids = explode(',', $multiple_ids);
                 if (!has_permissions('create', 'payment_settings')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -100,11 +100,11 @@ class Payments extends CI_Controller
                         $this->session->set_flashdata('error', lang('please_select_some_records'));
                     } else {
                         $status = $this->input->post('status');
-                        $this->db->query("UPDATE tbl_payment_request SET `status`='$status' WHERE id in ( " . $multiple_ids . " ) ");
+                        $this->db->query("UPDATE tbl_payment_request SET `status`='$status',`status_date`='$this->toDateTime' WHERE id in ( " . $multiple_ids . " ) ");
                         $this->session->set_flashdata('success', lang('data_updated_successfully'));
                     }
                 }
-                redirect('payment-requests', 'refresh');
+                redirect('payment-requests');
             }
             if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'payment_settings')) {
@@ -136,13 +136,14 @@ class Payments extends CI_Controller
                                 'points' => $coins,
                                 'type' => 'redeemedAmount',
                                 'status' => 0,
-                                'date' => $this->utc_date
+                                'date' => $this->toDate
                             ];
                             $this->db->insert('tbl_tracker', $tracker_data);
                         }
                         $data = [
                             'details' => $details,
-                            'status' => $status
+                            'status' => $status,
+                            'status_date' => $this->toDateTime
                         ];
                         $this->db->where('id', $edit_id)->update('tbl_payment_request', $data);
 
@@ -165,29 +166,20 @@ class Payments extends CI_Controller
                                 'coins' => $coins
                             );
                             if ($fcm_id != '') {
-                                $fcm_ids = array();
-                                array_push($fcm_ids, $fcm_id);
-                                $this->send_notification($fcm_ids, $fcmMsg);
+                                $registrationID = explode(',', $fcm_id);
+                                $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
+                                $messaging = $factory->createMessaging();
+                                $message = CloudMessage::new();
+                                $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
+                                $messaging->sendMulticast($message, $registrationID);
                             }
                         }
                         $this->session->set_flashdata('success', lang('data_updated_successfully'));
                     }
-                    redirect('payment-requests', 'refresh');
+                    redirect('payment-requests');
                 }
             }
             $this->load->view('payment_requests');
-        }
-    }
-
-    public function send_notification($registrationIDs, $fcmMsg)
-    {
-        $registrationIDs_chunks = array_chunk($registrationIDs, 500);
-        $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
-        $messaging = $factory->createMessaging();
-        foreach ($registrationIDs_chunks as $registrationIDs) {
-            $message = CloudMessage::new();
-            $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
-            $messaging->sendMulticast($message, $registrationIDs);
         }
     }
 }

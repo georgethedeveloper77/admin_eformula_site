@@ -46,7 +46,7 @@ class Api extends REST_Controller
         $this->DASHING_DEBUT = 'dashing_debut';
         $this->COMBAT_WINNER = 'combat_winner';
         $this->CLASH_WINNER = 'clash_winner';
-        $this->MOST_WANTED_WINNER = 'most_wanted_winner';
+        // $this->MOST_WANTED_WINNER = 'most_wanted_winner';
         $this->ULTIMATE_PLAYER = 'ultimate_player';
         $this->QUIZ_WARRIOR = 'quiz_warrior';
         $this->SUPER_SONIC = 'super_sonic';
@@ -150,6 +150,12 @@ class Api extends REST_Controller
                         $response['message'] = "126";
                     }
                 } else {
+                    $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
+                    $default_app_language = $get_app_default_language['name'];
+
+                    $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
+                    $default_web_language = $get_web_default_language['name'];
+
                     $data = array(
                         'firebase_id' => $firebase_id,
                         'name' => $name,
@@ -162,6 +168,8 @@ class Api extends REST_Controller
                         'coins' => '0',
                         'status' => $status,
                         'date_registered' => $this->toDateTime,
+                        'app_language' => $default_app_language ?? 'english',
+                        'web_language' => $default_web_language ?? 'english'
                     );
                     $this->db->insert('tbl_users', $data);
                     $insert_id = $this->db->insert_id();
@@ -702,7 +710,7 @@ class Api extends REST_Controller
                         $dailyAdsAvailable = 1;
                     }
                 }
-                $res = $this->db->select('id, firebase_id, name, email, mobile, type, profile, fcm_id, coins, refer_code, friends_code, status, date_registered,remove_ads')->where('firebase_id', $firebase_id)->get('tbl_users')->row_array();
+                $res = $this->db->select('id, firebase_id, name, email, mobile, type, profile, fcm_id, coins, refer_code, friends_code, status, date_registered,remove_ads,app_language,web_language')->where('firebase_id', $firebase_id)->get('tbl_users')->row_array();
                 if ($res) {
                     $res1 = $this->db->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
                     if (empty($res1)) {
@@ -932,6 +940,12 @@ class Api extends REST_Controller
             }
             if ($this->post('mobile')) {
                 $data['mobile'] = $this->post('mobile');
+            }
+            if ($this->post('app_language')) {
+                $data['app_language'] = $this->post('app_language');
+            }
+            if ($this->post('web_language')) {
+                $data['web_language'] = $this->post('web_language');
             }
             if ($this->post('remove_ads')) {
                 if ($this->post('remove_ads') <= 1 && $this->post('remove_ads') > -1) {
@@ -1789,7 +1803,7 @@ class Api extends REST_Controller
             }
             $this->set_monthly_leaderboard($user_id, $score);
 
-            $this->set_badges($user_id, $this->MOST_WANTED_WINNER);
+            // $this->set_badges($user_id, $this->MOST_WANTED_WINNER);
 
             $response['error'] = false;
             $response['message'] = "111";
@@ -2360,6 +2374,7 @@ class Api extends REST_Controller
             'guess_the_word_max_winning_coin',
             'guess_the_word_wrong_answer_deduct_score',
             'guess_the_word_correct_answer_credit_score',
+            'guess_the_word_hint_deduct_coin',
             'audio_mode_question',
             'audio_quiz_seconds',
             'audio_quiz_wrong_answer_deduct_score',
@@ -2627,7 +2642,7 @@ class Api extends REST_Controller
             return false;
         }
 
-        if ($this->post('fcm_id') && $firebase_id) {
+        if ($firebase_id) {
             $fcm_id = $this->post('fcm_id');
             $data = array(
                 'fcm_id' => $fcm_id,
@@ -2725,15 +2740,32 @@ class Api extends REST_Controller
                 if (empty($res[$key])) {
                     $res[$key] = $this->db->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
                 } else {
-                    // Check if label is empty then take label of english language
-                    if (empty($res[$key]['badge_label'])) {
-                        $res[$key]['badge_label'] = $this->db->select('badge_label')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
-                    }
-                    // Check if note is empty then take note of english language
-                    if (empty($res[$key]['badge_note'])) {
-                        $res[$key]['badge_note'] = $this->db->select('badge_note')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
-                    }
+                    // // Check if label is empty then take label of english language
+                    // if (empty($res[$key]['badge_label'])) {
+                    //     $res[$key]['badge_label'] = $this->db->select('badge_label')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
+                    // }
+                    // // Check if note is empty then take note of english language
+                    // if (empty($res[$key]['badge_note'])) {
+                    //     $res[$key]['badge_note'] = $this->db->select('badge_note')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
+                    // }
                 }
+                $get_user_language = $this->db->select('id,app_language,web_language')->where('id', $user_id)->get('tbl_users')->row_array();
+                $user_app_language = $get_user_language['app_language'];
+                $user_web_language = $get_user_language['web_language'];
+
+                $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
+                $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
+                $default_app_language = $get_app_default_language['name'];
+                $default_web_language = $get_web_default_language['name'];
+
+                $app_data = $this->getBadgeNotificationData($user_app_language, $row, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
+                $web_data = $this->getBadgeNotificationData($user_web_language, $row, WEB_LANGUAGE_FILE_PATH, 'web_sample_file.json', $default_web_language);
+
+                $res[$key]['badge_label'] = $web_data['notification_title'] ?? 'Congratulations!';
+                $res[$key]['badge_note'] = $web_data['notification_body'] ?? 'You have unlocked new badge.';
+
+                $res[$key]['app_badge_label'] = $app_data['notification_title'] ?? 'Congratulations!';
+                $res[$key]['app_badge_note'] = $app_data['notification_body'] ?? 'You have unlocked new badge.';
                 $res[$key]['badge_icon'] = (isset($res[$key]['badge_icon']) && !empty($res[$key]['badge_icon'])) ? base_url() . BADGE_IMG_PATH . $res[$key]['badge_icon'] : "";
                 $res1 = $this->db->select($row)->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
                 $res[$key]['status'] = $res1[$row];
@@ -2767,14 +2799,25 @@ class Api extends REST_Controller
                 'flashback',
                 'brainiac',
                 'combat_winner',
-                'most_wanted_winner',
+                // 'most_wanted_winner',
                 'big_thing',
                 'elite',
                 'quiz_warrior',
-                'thirsty',
+                // 'thirsty',
                 'power_elite',
                 'sharing_caring'
             ];
+            $get_user_language = $this->db->select('id,app_language,web_language')->where('id', $user_id)->get('tbl_users')->row_array();
+            $user_app_language = $get_user_language['app_language'];
+            $user_web_language = $get_user_language['web_language'];
+
+            $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
+            $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
+            $default_app_language = $get_app_default_language['name'];
+            $default_web_language = $get_web_default_language['name'];
+
+            $app_data = $this->getBadgeNotificationData($user_app_language, $type, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
+            $web_data = $this->getBadgeNotificationData($user_web_language, $type, WEB_LANGUAGE_FILE_PATH, 'web_sample_file.json', $default_web_language);
 
             foreach ($badges_types as $value) {
                 if ($type == $value) {
@@ -2790,16 +2833,9 @@ class Api extends REST_Controller
                 $this->set_badges($user_id, $type, 0, $language_id);
             }
 
-            $data1 = $this->db->where_in('type', ['notification_title', 'notification_body'])->where('language_id', $language_id)->get('tbl_web_settings')->result_array();
-            $result1 = array_column($data1, 'message', 'type');
-            $notificationTitleMessage = $result1['notification_title'] ?? '';
-            $notificationBodyMessage = $result1['notification_body'] ?? '';
-            $data = array(
-                'notification_title' => !empty($notificationTitleMessage) ? $notificationTitleMessage : "Congratulations",
-                'notification_body' => !empty($notificationBodyMessage) ? $notificationBodyMessage : "You have unlocked new badge",
-            );
             $response['error'] = false;
-            $response['data'] = $data;
+            $response['app_data'] = $app_data;
+            $response['data'] = $web_data;
             $response['message'] = "111";
         } else {
             $response['error'] = true;
@@ -2854,15 +2890,13 @@ class Api extends REST_Controller
 
                                     $data1 = [$counter_name => 0];
                                     $this->db->where('user_id', $user_id2)->update('tbl_users_badges', $data1);
-                                }
-                                if ($counter == $user_conter) {
+                                } else if ($counter == $user_conter) {
                                     $this->set_badges($user_id1, $type, $counter = 0);
                                 }
                             }
                         }
                     }
-                }
-                if ($user_id2 == $winner_id) {
+                } else if ($user_id2 == $winner_id) {
                     $res = $this->db->where('user_id', $user_id2)->get('tbl_users_badges')->row_array();
                     if (!empty($res)) {
                         $counter_name = $type . '_counter';
@@ -2878,8 +2912,7 @@ class Api extends REST_Controller
 
                                     $data1 = [$counter_name => 0];
                                     $this->db->where('user_id', $user_id1)->update('tbl_users_badges', $data1);
-                                }
-                                if ($counter == $user_conter) {
+                                } else if ($counter == $user_conter) {
                                     $this->set_badges($user_id2, $type, $counter = 0);
                                 }
                             }
@@ -3309,6 +3342,7 @@ class Api extends REST_Controller
                                 'details' => $details,
                                 'status' => $status,
                                 'date' => $this->toDateTime,
+                                'status_date' => $this->toDateTime,
                             );
                             $this->db->insert('tbl_payment_request', $frm_data);
 
@@ -3773,7 +3807,6 @@ class Api extends REST_Controller
             'firebase_messager_sender_id',
             'firebase_app_id',
             'firebase_measurement_id',
-            'rtl_support',
             'company_name_footer',
             'email_footer',
             'phone_number_footer',
@@ -4467,6 +4500,29 @@ class Api extends REST_Controller
         return $res['fcm_id'];
     }
 
+    public function getBadgeNotificationData($language, $type, $path, $sampleFile, $defaultFile)
+    {
+        $file = $path . $language . '.json';
+
+        if (!file_exists($file)) {
+            $file = $path . $defaultFile;
+            if (!file_exists($file)) {
+                $file = $path . $sampleFile;
+            }
+        }
+
+        $content = file_get_contents($file);
+        $dataArray = json_decode($content, true);
+
+        $badge_label = $type . '_label';
+        $badge_note = $type . '_note';
+
+        return [
+            'notification_title' => $dataArray[$badge_label] ?? 'Congratulations!!',
+            'notification_body' => $dataArray[$badge_note] ?? 'You have unlocked new badge.'
+        ];
+    }
+
     public function set_badges($user_id, $type, $counter = 0, $language_id = 14)
     {
         $res = $this->db->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
@@ -4493,7 +4549,7 @@ class Api extends REST_Controller
                             ];
                             $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data1);
                             //send notification
-                            $this->send_badges_notification($user_id, $type, $language_id);
+                            $this->send_badges_notification($user_id, $type);
                         }
                     } else {
                         $power_elite_counter = $res['power_elite_counter'] + 1;
@@ -4503,7 +4559,7 @@ class Api extends REST_Controller
                         ];
                         $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data1);
                         //send notification
-                        $this->send_badges_notification($user_id, $type, $language_id);
+                        $this->send_badges_notification($user_id, $type);
                     }
                 }
             }
@@ -4533,7 +4589,7 @@ class Api extends REST_Controller
                         ];
                         $this->db->where('user_id', $user_id)->update('tbl_users_badges', $data1);
                         //send notification
-                        $this->send_badges_notification($user_id, $type, $language_id);
+                        $this->send_badges_notification($user_id, $type);
                     }
                 }
             }
@@ -4634,37 +4690,36 @@ class Api extends REST_Controller
         }
     }
 
-    public function send_badges_notification($user_id, $type, $language_id = 14)
+    public function send_badges_notification($user_id, $type)
     {
-        $res = $this->db->where('id', $user_id)->get('tbl_users')->row_array();
+        $res = $this->db->select('id,fcm_id,app_language')->where('id', $user_id)->get('tbl_users')->row_array();
         $fcm_id = $res['fcm_id'];
 
-        $data1 = $this->db->where_in('type', ['notification_title', 'notification_body'])->where('language_id', $language_id)->get('tbl_web_settings')->result_array();
-        $result1 = array_column($data1, 'message', 'type');
+        $user_app_language = $res['app_language'];
 
-        $notification_title_message = $result1['notification_title'] ?? '';
-        $notification_body_message = $result1['notification_body'] ?? '';
+        $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
+        $default_app_language = $get_app_default_language['name'];
 
+        $notificationData = $this->getBadgeNotificationData($user_app_language, $type, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
+
+        $notification_title_message = $notificationData['notification_title'] ?? 'Congratulations!!';
+        $notification_body_message = $notificationData['notification_body'] ?? 'You have unlocked new badge.';
         $fcmMsg = array(
             'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
             'type' => 'badges',
             'badge_type' => $type,
-            'title' => !empty($notification_title_message) ? $notification_title_message : 'Congratulations!!',
-            'body' => !empty($notification_body_message) ? $notification_body_message : 'You have unlocked new badge.',
+            'title' => $notification_title_message,
+            'body' => $notification_body_message,
         );
 
-        $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
-        $messaging = $factory->createMessaging();
-        $message = CloudMessage::withTarget('token', $fcm_id)
-            ->withNotification($fcmMsg)
-            ->withData($fcmMsg);
-
-        $message = CloudMessage::fromArray([
-            'token' => $fcm_id,
-            'data' => $fcmMsg, // optional
-        ]);
-
-        $messaging->send($message);
+        if ($fcm_id && $fcm_id != '' && $fcm_id != 'empty') {
+            $registrationID = explode(',', $fcm_id);
+            $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
+            $messaging = $factory->createMessaging();
+            $message = CloudMessage::new();
+            $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
+            $messaging->sendMulticast($message, $registrationID);
+        }
     }
 
     public function set_tracker_data($user_id, $points, $type, $status)
@@ -4834,7 +4889,6 @@ class Api extends REST_Controller
                         if (isset($payload->user_id) && isset($payload->firebase_id)) {
                             $response['error'] = false;
                             $response['user_id'] = $payload->user_id;
-                            $response['firebase_id'] = $payload->firebase_id;
                             $response['firebase_id'] = $payload->firebase_id;
                             $response['status'] = $res['status'];
                             return $response;

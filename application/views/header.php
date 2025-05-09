@@ -7,7 +7,7 @@
                 <?php
                 if (!ALLOW_MODIFICATION) {
                 ?>
-                    <span class="right badge badge-danger"><?= lang('Modification in demo version is not allowed.'); ?></span>
+                    <span class="right badge badge-danger"><?= lang('Modification_in_demo_version_is_not_allowed'); ?></span>
                 <?php } ?>
             </li>
         </ul>

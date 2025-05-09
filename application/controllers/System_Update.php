@@ -207,63 +207,11 @@ class System_Update extends CI_Controller
         }
 
         $keys = [
-            "Battle with one on one",
-            "Boost your knowledge",
-            "Challenge Your Mind",
-            "Challenge Yourself",
-            "Choice your answers",
-            "Daily basic new quiz game",
-            "Fun and Play Quiz Win",
-            "Fun vocabulary game",
-            "invalid_room_code",
-            "It's a group quiz battle",
-            "It's like a comprehension game",
-            "Play quiz contest",
-            "Quiz Zone Win",
-            "Select your favorite Zone to play",
-            "Used Hint Lifeline",
-            "Quiz Zone",
-            "Daily Quiz",
-            "True & False",
-            "Fun & Learn",
-            "Guess The Word",
-            "Self Challenge",
-            "Contest Play",
-            "1 v/s 1 Battle",
-            "Group Battle",
-            "Audio Questions",
-            "Math Mania",
-            "You have unlocked new badge"
+            "t&c"
         ];
 
         $change_with_keys = [
-            "battle_with_one_on_one",
-            "boost_your_knowledge",
-            "challenge_your_mind",
-            "challenge_yourself",
-            "choice_your_answers",
-            "daily_basic_new_quiz_game",
-            "fun_and_play_quiz_win",
-            "fun_vocabulary_game",
-            "invalid_room_code",
-            "its_a_group_quiz_battle",
-            "its_like_a_comprehension_game",
-            "play_quiz_contest",
-            "quiz_zone_win",
-            "select_your_favorite_zone_to_play",
-            "used_hint_lifeline",
-            "quiz_zone",
-            "daily_quiz",
-            "true_false",
-            "fun_learn",
-            "guess_the_word",
-            "self_challenge",
-            "contest_play",
-            "1_vs_1_battle",
-            "group_battle",
-            "audio_questions",
-            "math_mania",
-            "you_have_unlocked_new_badge"
+            "t_c"
         ];
 
         foreach ($json_files as $file_path) {

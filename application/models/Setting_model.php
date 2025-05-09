@@ -60,6 +60,7 @@ class Setting_model extends CI_Model
             'guess_the_word_max_winning_coin',
             'guess_the_word_wrong_answer_deduct_score',
             'guess_the_word_correct_answer_credit_score',
+            'guess_the_word_hint_deduct_coin',
             'audio_mode_question',
             'audio_quiz_fix_question',
             'audio_quiz_total_question',
@@ -350,201 +351,6 @@ class Setting_model extends CI_Model
             $this->db->insert('tbl_settings', $frm_jwt_key);
         }
 
-        $full_url = $this->input->post('full_url');
-        $half_url = $this->input->post('half_url');
-        $background_file = $this->input->post('background_file');
-        $bot_image = $this->input->post('bot_file');
-
-        if ($_FILES['full_file']['name'] != '' && $_FILES['half_file']['name'] != '') {
-            //Full logo upload
-            $config = array();
-            $config['upload_path'] = LOGO_IMG_PATH;
-            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
-            $config['file_name'] = time();
-            $this->load->library('upload', $config, 'fullupload'); // Create custom object for cover upload
-            $this->fullupload->initialize($config);
-
-            // half logo upload
-            $config1 = array();
-            $config1['upload_path'] = LOGO_IMG_PATH;
-            $config1['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
-            $config1['file_name'] = time();
-            $this->load->library('upload', $config1, 'halfupload');  // Create custom object for catalog upload
-            $this->halfupload->initialize($config1);
-
-            // Check uploads success
-            if ($this->fullupload->do_upload('full_file') && $this->halfupload->do_upload('half_file')) {
-
-                // Data of your full logo file
-                $full_data = $this->fullupload->data();
-                $full_file = $full_data['file_name'];
-
-                if (file_exists($full_url)) {
-                    unlink($full_url);
-                }
-
-                // Data of your half logo file
-                $half_data = $this->halfupload->data();
-                $half_file = $half_data['file_name'];
-
-                if (file_exists($half_url)) {
-                    unlink($half_url);
-                }
-
-                $Flogo = $this->db->where('type', 'full_logo')->get('tbl_settings')->row_array();
-                if ($Flogo) {
-                    $frm_Flogo = ['message' => $full_file];
-                    $this->db->where('type', 'full_logo')->update('tbl_settings', $frm_Flogo);
-                } else {
-                    $frm_Flogo = array(
-                        'type' => 'full_logo',
-                        'message' => $full_file
-                    );
-                    $this->db->insert('tbl_settings', $frm_Flogo);
-                }
-
-                $Hlogo = $this->db->where('type', 'half_logo')->get('tbl_settings')->row_array();
-                if ($Hlogo) {
-                    $frm_Hlogo = ['message' => $half_file];
-                    $this->db->where('type', 'half_logo')->update('tbl_settings', $frm_Hlogo);
-                } else {
-                    $frm_Hlogo = array(
-                        'type' => 'half_logo',
-                        'message' => $half_file
-                    );
-                    $this->db->insert('tbl_settings', $frm_Hlogo);
-                }
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        }
-
-        if ($_FILES['full_file']['name'] != '' && $_FILES['half_file']['name'] == '') {
-            $config['upload_path'] = LOGO_IMG_PATH;
-            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
-            $config['file_name'] = time();
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-
-            if (!$this->upload->do_upload('full_file')) {
-                return FALSE;
-            } else {
-                if (file_exists($full_url)) {
-                    unlink($full_url);
-                }
-
-                $data = $this->upload->data();
-                $img = $data['file_name'];
-                $logo = $this->db->where('type', 'full_logo')->get('tbl_settings')->row_array();
-                if ($logo) {
-                    $frm_logo = ['message' => $img];
-                    $this->db->where('type', 'full_logo')->update('tbl_settings', $frm_logo);
-                } else {
-                    $frm_logo = array(
-                        'type' => 'full_logo',
-                        'message' => $img
-                    );
-                    $this->db->insert('tbl_settings', $frm_logo);
-                }
-                return TRUE;
-            }
-        }
-
-        if ($_FILES['half_file']['name'] != '' && $_FILES['full_file']['name'] == '') {
-            $config['upload_path'] = LOGO_IMG_PATH;
-            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
-            $config['file_name'] = time();
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-
-            if (!$this->upload->do_upload('half_file')) {
-                return FALSE;
-            } else {
-                if (file_exists($half_url)) {
-                    unlink($half_url);
-                }
-                $data = $this->upload->data();
-                $img = $data['file_name'];
-                $logo = $this->db->where('type', 'half_logo')->get('tbl_settings')->row_array();
-                if ($logo) {
-                    $frm_logo = ['message' => $img];
-                    $this->db->where('type', 'half_logo')->update('tbl_settings', $frm_logo);
-                } else {
-                    $frm_logo = array(
-                        'type' => 'half_logo',
-                        'message' => $img
-                    );
-                    $this->db->insert('tbl_settings', $frm_logo);
-                }
-                return TRUE;
-            }
-        }
-
-
-        if ($_FILES['background_file']['name'] != '') {
-            $config['upload_path'] = LOGO_IMG_PATH;
-            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
-            $config['file_name'] = "background-image";
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-
-            if (!$this->upload->do_upload('background_file')) {
-                return FALSE;
-            } else {
-                if (file_exists($background_file)) {
-                    unlink($background_file);
-                }
-
-                $data = $this->upload->data();
-                $img = $data['file_name'];
-                $logo = $this->db->where('type', 'background_file')->get('tbl_settings')->row_array();
-                if ($logo) {
-                    $frm_logo = ['message' => $img];
-                    $this->db->where('type', 'background_file')->update('tbl_settings', $frm_logo);
-                } else {
-                    $frm_logo = array(
-                        'type' => 'background_file',
-                        'message' => $img
-                    );
-                    $this->db->insert('tbl_settings', $frm_logo);
-                }
-                return TRUE;
-            }
-        }
-
-
-        if ($_FILES['bot_image']['name'] != '') {
-            $config['upload_path'] = LOGO_IMG_PATH;
-            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
-            $config['file_name'] = "bot-image";
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-
-            if (!$this->upload->do_upload('bot_image')) {
-                return FALSE;
-            } else {
-                if (file_exists($bot_image)) {
-                    unlink($bot_image);
-                }
-
-                $data = $this->upload->data();
-                $img = $data['file_name'];
-                $logo = $this->db->where('type', 'bot_image')->get('tbl_settings')->row_array();
-                if ($logo) {
-                    $frm_logo = ['message' => $img];
-                    $this->db->where('type', 'bot_image')->update('tbl_settings', $frm_logo);
-                } else {
-                    $frm_logo = array(
-                        'type' => 'bot_image',
-                        'message' => $img
-                    );
-                    $this->db->insert('tbl_settings', $frm_logo);
-                }
-                return TRUE;
-            }
-        }
-
         $footer_copyrights_text = $this->input->post('footer_copyrights_text');
         $footer_text = $this->db->where('type', 'footer_copyrights_text')->get('tbl_settings')->row_array();
         if ($footer_text) {
@@ -598,6 +404,135 @@ class Setting_model extends CI_Model
                     'message' => $navbar_text_color
                 );
                 $this->db->insert('tbl_settings', $navbar_text_color_change);
+            }
+        }
+
+
+        $full_url = $this->input->post('full_url');
+        $half_url = $this->input->post('half_url');
+        $background_file_url = $this->input->post('background_file_url');
+        $bot_file_url = $this->input->post('bot_file_url');
+
+        if ($_FILES['full_file']['name'] != '') {
+            $config['upload_path'] = LOGO_IMG_PATH;
+            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
+            $config['file_name'] = microtime(true) * 10000;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('full_file')) {
+                return FALSE;
+            } else {
+                if (file_exists($full_url)) {
+                    unlink($full_url);
+                }
+
+                $data = $this->upload->data();
+                $img = $data['file_name'];
+                $logo = $this->db->where('type', 'full_logo')->get('tbl_settings')->row_array();
+                if ($logo) {
+                    $frm_logo = ['message' => $img];
+                    $this->db->where('type', 'full_logo')->update('tbl_settings', $frm_logo);
+                } else {
+                    $frm_logo = array(
+                        'type' => 'full_logo',
+                        'message' => $img
+                    );
+                    $this->db->insert('tbl_settings', $frm_logo);
+                }
+                // return TRUE;
+            }
+        }
+
+        if ($_FILES['half_file']['name'] != '') {
+            $config['upload_path'] = LOGO_IMG_PATH;
+            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
+            $config['file_name'] = microtime(true) * 10000;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('half_file')) {
+                return FALSE;
+            } else {
+                if (file_exists($half_url)) {
+                    unlink($half_url);
+                }
+                $data = $this->upload->data();
+                $img = $data['file_name'];
+                $logo = $this->db->where('type', 'half_logo')->get('tbl_settings')->row_array();
+                if ($logo) {
+                    $frm_logo = ['message' => $img];
+                    $this->db->where('type', 'half_logo')->update('tbl_settings', $frm_logo);
+                } else {
+                    $frm_logo = array(
+                        'type' => 'half_logo',
+                        'message' => $img
+                    );
+                    $this->db->insert('tbl_settings', $frm_logo);
+                }
+                // return TRUE;
+            }
+        }
+
+
+        if ($_FILES['background_file']['name'] != '') {
+            $config['upload_path'] = LOGO_IMG_PATH;
+            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
+            $config['file_name'] = microtime(true) * 10000;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('background_file')) {
+                return FALSE;
+            } else {
+                if (file_exists($background_file_url)) {
+                    unlink($background_file_url);
+                }
+                $data = $this->upload->data();
+                $img = $data['file_name'];
+                $logo = $this->db->where('type', 'background_file')->get('tbl_settings')->row_array();
+                if ($logo) {
+                    $frm_logo = ['message' => $img];
+                    $this->db->where('type', 'background_file')->update('tbl_settings', $frm_logo);
+                } else {
+                    $frm_logo = array(
+                        'type' => 'background_file',
+                        'message' => $img
+                    );
+                    $this->db->insert('tbl_settings', $frm_logo);
+                }
+                // return TRUE;
+            }
+        }
+
+        if ($_FILES['bot_image']['name'] != '') {
+            $config['upload_path'] = LOGO_IMG_PATH;
+            $config['allowed_types'] = IMG_ALLOWED_WITH_SVG_TYPES;
+            $config['file_name'] = microtime(true) * 10000;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if (!$this->upload->do_upload('bot_image')) {
+                return FALSE;
+            } else {
+                if (file_exists($bot_file_url)) {
+                    unlink($bot_file_url);
+                }
+
+                $data = $this->upload->data();
+                $img = $data['file_name'];
+                $logo = $this->db->where('type', 'bot_image')->get('tbl_settings')->row_array();
+                if ($logo) {
+                    $frm_logo = ['message' => $img];
+                    $this->db->where('type', 'bot_image')->update('tbl_settings', $frm_logo);
+                } else {
+                    $frm_logo = array(
+                        'type' => 'bot_image',
+                        'message' => $img
+                    );
+                    $this->db->insert('tbl_settings', $frm_logo);
+                }
+                // return TRUE;
             }
         }
 
@@ -747,7 +682,6 @@ class Setting_model extends CI_Model
             mkdir(WEB_SETTINGS_LOGO_PATH, 0777, TRUE);
         }
         $settings = [
-            // 'data_ad_client','data_ad_slot',
             'firebase_api_key',
             'firebase_auth_domain',
             'firebase_database_url',
@@ -756,15 +690,12 @@ class Setting_model extends CI_Model
             'firebase_messager_sender_id',
             'firebase_app_id',
             'firebase_measurement_id',
-            // 'meta_description', 'meta_keywords',
-            'rtl_support',
             'company_name_footer',
             'email_footer',
             'phone_number_footer',
             'web_link_footer',
             'company_text',
             'address_text',
-            // 'favicon', 
             'header_logo',
             'footer_logo',
             'sticky_header_logo',

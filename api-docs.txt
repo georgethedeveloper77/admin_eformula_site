@@ -115,8 +115,11 @@ a. For Sign Up:-
 	Optionals :-
 	email:abc@yahoo.com
 	name:Abc
-	Mobile: xxxxxxxxxxxx
+	mobile: xxxxxxxxxxxx
 	remove_ads : 0 - no , 1 - yes
+	app_language : english
+	web_language : english
+
 
 5. upload_profile_image
 	image: image file
@@ -232,6 +235,8 @@ a. For Sign Up:-
 
 31. get_daily_quiz
 	language_id:2   // {optional}
+	timezone:Asia/Kolkata
+    gmt_format:+5:30
 
 32. set_user_coin_score
 	coins:10      //if deduct coin than set with minus sign -2
@@ -244,6 +249,8 @@ a. For Sign Up:-
 
 34. get_contest
 	language_id // optional
+	timezone:Asia/Kolkata
+    gmt_format:+5:30
 
 35. get_questions_by_contest
       contest_id:5
@@ -306,6 +313,8 @@ a. For Sign Up:-
 	type:1          //1-today, 2-completed
 	offset:0    // {optional} - Starting position
 	limit:10    // {optional} - number of records per page
+	timezone:Asia/Kolkata
+    gmt_format:+5:30
 
 48. get_exam_module_questions
 	Exam_module_id:1
@@ -394,7 +403,7 @@ a. For Sign Up:-
 	category:5
 	subcategory:9  // {optional}
 
-71. set_multi_match_level_data
+71. get_multi_match_level_data
     category:5 {or}
 	category_slug:slug
 

@@ -24,6 +24,12 @@ class Multi_Match_model extends CI_Model
             $filename = $_FILES['file']['tmp_name'];
             $file = fopen($filename, "r");
             $count = $count1 = 0;
+            $type1_valid_values = ['a', 'b', 'c', 'd', 'e', '']; // Allowed values
+            $type1_keys_to_check = [11, 12, 13, 14, 15]; // Only check these keys
+
+            $type2_valid_values = ['a', 'b', '']; // Allowed values
+            $type2_keys_to_check = [11, 12]; // Only check these keys
+
 
             while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE) {
                 if (count($emapData) > 2) {
@@ -38,25 +44,57 @@ class Multi_Match_model extends CI_Model
                     $emapData[8] = $emapData[8];    // optiond
                     $emapData[9] = (empty($emapData[9])) ? "" : $emapData[9];  // optione
                     $emapData[10] = trim($emapData[10]);  //answer_type
-                    $emapData[11] = trim(strtolower($emapData[11]));  //answer
-                    $emapData[12] = $emapData[12];       //level
-                    $emapData[13] = $emapData[13];      // note
+                    $emapData[11] = trim(strtolower($emapData[11]));  //answer1
+                    $emapData[12] = trim(strtolower($emapData[12]));  //answer2
+                    $emapData[13] = trim(strtolower($emapData[13]));  //answer3
+                    $emapData[14] = trim(strtolower($emapData[14]));  //answer4
+                    $emapData[15] = trim(strtolower($emapData[15]));  //answer5
+                    $emapData[16] = $emapData[16];       //level
+                    $emapData[17] = $emapData[17];      // note
                     $count++;
                     if ($count > 1) {
-                        if ($emapData[3] == '1') {
-                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && $emapData[7] != '' && $emapData[8] != '' && !empty($emapData[10]) && $emapData[11] != '' && $emapData[12]) {
-                                $empty_value_found = true;
-                            } else {
+                        $keys_to_check = ($emapData[3] == '1') ? $type1_keys_to_check : $type2_keys_to_check;
+                        $valid_values = ($emapData[3] == '1') ? $type1_valid_values : $type2_valid_values;
+                        $row_values = [];
+                        foreach ($keys_to_check as $key) {
+                            $value = trim(strtolower($emapData[$key])); // Normalize value
+                            if (!in_array($emapData[$key], $valid_values, true)) {
                                 $empty_value_found = false;
-                                $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
+                                $error .= lang('invalid_value') . "&nbsp;<b>" . $emapData[$key] . "</b>&nbsp;" . lang('found_at_row') . "&nbsp;" . $count . "&nbsp;" . lang('of_index') . "&nbsp;" .  $key;
                                 break;
-                            }
-                        } else if ($emapData[3] == '2') {
-                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && !empty($emapData[10]) && $emapData[11] != '' && $emapData[12]) {
+                            } else {
                                 $empty_value_found = true;
+                            }
+
+                            // // Check for duplicate values (except empty strings)
+                            if ($value && $value !== '' && isset($row_values[$value])) {
+                                $empty_value_found = false;
+                                $error .= lang('duplicate_value') . "&nbsp;<b>" . $emapData[$key] . "</b>&nbsp;" . lang('found_at_row') . "&nbsp;" .  $count . "&nbsp;" . lang('of_index') . "&nbsp;" .  $key;
+                                break;
+                            } else {
+                                $empty_value_found = true;
+                            }
+                            $row_values[$value] = true;
+                        }
+                        if ($empty_value_found) {
+                            if ($emapData[3] == '1') {
+                                if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && $emapData[7] != '' && $emapData[8] != '' && !empty($emapData[10]) && $emapData[11] != '' && $emapData[12] != '' && $emapData[13] != '' && $emapData[14] != '' && $emapData[16]) {
+                                    $empty_value_found = true;
+                                } else {
+                                    $empty_value_found = false;
+                                    $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
+                                    break;
+                                }
+                            } else if ($emapData[3] == '2') {
+                                if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && !empty($emapData[10]) && $emapData[11] != '' && $emapData[12] != '' && $emapData[16]) {
+                                    $empty_value_found = true;
+                                } else {
+                                    $empty_value_found = false;
+                                    $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
+                                    break;
+                                }
                             } else {
                                 $empty_value_found = false;
-                                $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else {
@@ -82,9 +120,19 @@ class Multi_Match_model extends CI_Model
                         $emapData1[8] = $emapData1[8];    // optiond
                         $emapData1[9] = (empty($emapData1[9])) ? "" : $emapData1[9];  // optione
                         $emapData1[10] = trim($emapData1[10]);   //answer_type
-                        $emapData1[11] = trim(strtolower($emapData1[11]));  //answer
-                        $emapData1[12] = $emapData1[12];       //level
-                        $emapData1[13] = $emapData1[13];      // note
+                        $emapData1[11] = trim(strtolower($emapData1[11]));  //answer1
+                        $emapData1[12] = trim(strtolower($emapData1[12]));  //answer2
+                        $emapData1[13] = trim(strtolower($emapData1[13]));  //answer3
+                        $emapData1[14] = trim(strtolower($emapData1[14]));  //answer4
+                        $emapData1[15] = trim(strtolower($emapData1[15]));  //answer5
+                        $emapData1[16] = $emapData1[16];       //level
+                        $emapData1[17] = $emapData1[17];      // note
+                        $answer = '';
+                        if ($emapData1[3] == 1) {
+                            $answer = implode(',', array_filter([$emapData1[11], $emapData1[12], $emapData1[13], $emapData1[14], $emapData1[15]]));
+                        } else if ($emapData1[3] == 2) {
+                            $answer = implode(',', array_filter([$emapData1[11], $emapData1[12]]));
+                        }
                         $count1++;
                         if ($count1 > 1) {
                             if (count($emapData1) > 2) {
@@ -101,9 +149,9 @@ class Multi_Match_model extends CI_Model
                                     'optiond' => $emapData1[8],
                                     'optione' => $emapData1[9],
                                     'answer_type' => $emapData1[10],
-                                    'answer' => $emapData1[11],
-                                    'level' => $emapData1[12],
-                                    'note' => $emapData1[13]
+                                    'answer' => $answer,
+                                    'level' => $emapData1[16],
+                                    'note' => $emapData1[17]
                                 );
                                 $this->db->insert('tbl_multi_match', $frm_data);
                             }

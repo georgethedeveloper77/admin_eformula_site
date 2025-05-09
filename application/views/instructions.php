@@ -76,7 +76,6 @@
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image preview | forecolor backcolor emoticons",
                 image_advtab: true,
-                images_upload_url: base_url + "upload_img",
                 relative_urls: false,
                 remove_script_host: false,
                 file_picker_callback: function(callback, value, meta) {

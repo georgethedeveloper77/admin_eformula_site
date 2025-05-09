@@ -268,6 +268,7 @@ class Table extends REST_Controller
             $tempRow['status1'] = $row->status;
             $tempRow['status'] = ($row->status) ? (($row->status == 1) ? "<label class='badge badge-success'>" . lang('completed') . "</label>" : "<label class='badge badge-danger'>" . lang('invalid_details') . "</label>") : "<label class='badge badge-warning'>" . lang('pending') . "</label>";
             $tempRow['date'] = $row->date;
+            $tempRow['status_date'] = $row->status_date;
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;

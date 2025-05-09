@@ -456,15 +456,6 @@
                                                 <label class="control-label"><b><?= lang('other_configuration'); ?></b></label>
                                             </h4>
                                             <div class="row">
-                                                <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label"><?= lang('rtl_support'); ?></label><br>
-                                                    <input type="checkbox" id="rtl_support_btn" data-plugin="switchery" <?php if (!empty($rtl_support) && $rtl_support['message'] == '1') {
-                                                                                                                            echo 'checked';
-                                                                                                                        } ?>>
-
-                                                    <input type="hidden" id="rtl_support" name="rtl_support" value="<?= ($rtl_support) ? $rtl_support['message'] : 0; ?>">
-                                                </div>
-
                                                 <div class="form-group col-sm-6 col-md-4 col-lg-3">
                                                     <label class="control-label"><?= lang('primary_color'); ?></label>
                                                     <input id="primary_color" name="primary_color" class="form-control" data-jscolor="{}" value="<?= isset($primary_color) && !empty($primary_color['message']) ? $primary_color['message'] : "#EF5388" ?>">
@@ -611,14 +602,6 @@
                 secondaryColor: '#f1556c'
             });
         });
-
-        var changeCheckbox2 = document.querySelector('#rtl_support_btn');
-        changeCheckbox2.onchange = function() {
-            if (changeCheckbox2.checked)
-                $('#rtl_support').val(1);
-            else
-                $('#rtl_support').val(0);
-        };
     </script>
 
     <script type="text/javascript">

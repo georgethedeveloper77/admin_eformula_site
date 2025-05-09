@@ -31,53 +31,6 @@
 
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-
-                                            <table aria-describedby="mydesc" class='table-striped' id='badges_settings_list' data-toggle="table" data-url="<?= base_url() . 'Table/badge_settings' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200, All]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-fixed-columns="true" data-fixed-number="2" data-fixed-right-number="1" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="asc" data-pagination-successively-size="3" data-maintain-selected="true" data-show-export="true" data-export-types='["csv","excel","pdf"]' data-export-options='{ "fileName": "badges-home-settings-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams" data-escape="false">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" data-field="id" data-sortable="true" data-visible="false"><?= lang('id'); ?></th>
-                                                        <th scope="col" data-field="no"><?= lang('sr_no'); ?></th>
-                                                        <th scope="col" data-field="language_id" data-sortable="true" data-visible="false"><?= lang('language_id'); ?></th>
-                                                        <th scope="col" data-field="language" data-sortable="true"><?= lang('language'); ?></th>
-                                                        <th scope="col" data-field="operate" data-sortable="false" data-force-hide="true"><?= lang('operate'); ?></th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                            <hr>
-
-                                            <ul>
-                                                <h5><?= lang('note'); ?> :- </h5>
-                                                <div class="text-danger text-small">
-                                                    <li> <?= lang('notification_title_body_label_note_according_to_language'); ?></li>
-                                                </div>
-                                                <div class="text-danger text-small">
-                                                    <li> <?= lang('other_data_same_for_same_type_or_different_language'); ?> <br> <?= lang('any_change_then_changes_will_affect_in_all_language_data_having_same_type_badge'); ?></li>
-                                                </div>
-                                            </ul>
-
-                                            <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                                            <div class="form-group row">
-                                                <?php if (is_language_mode_enabled()) { ?>
-                                                    <div class="col-md-3 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
-                                                        <select name="language_id" class="form-control" required>
-                                                            <option value=""><?= lang('select_language'); ?></option>
-                                                            <?php foreach ($language as $lang) { ?>
-                                                                <option value="<?= $lang->id ?>" <?= ($this->uri->segment(2) == $lang->id) ? 'selected' : '' ?>><?= $lang->language ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                <?php } ?>
-                                            </div>
-
-
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <h6 class="font-weight-bold"><?= lang('notification_settings'); ?></h6>
-                                                </div>
-                                            </div>
-
-                                            <!-- Dashing Debut -->
                                             <div class="form-group row">
                                                 <div class="col-12">
                                                     <h6 class="font-weight-bold"><?= lang('dashing_debut'); ?></h6>

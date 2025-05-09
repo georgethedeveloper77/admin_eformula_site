@@ -36,7 +36,20 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4><?= lang('the_lable_has_not_been_added_in') . ' ' . $language_name . '. ' . lang('please_update_it') ?></h4>
+                                        <?php
+                                        if ($set_label == 1) {
+                                        ?>
+                                            <h4><?= lang('the_lable_has_not_been_added_in') . ' ' . $language_name . '. ' . lang('please_update_it') ?></h4>
+                                        <?php
+                                        } else if ($set_label == 2) { ?>
+                                            <h4><?= lang('you_can_change_label_in') . ' ' . $language_name ?></h4>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <h4><?= lang('please_update_it') ?></h4>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="">
@@ -44,6 +57,7 @@
                                             <div class="row">
                                                 <?php
                                                 foreach ($missing_keys as $key => $value) {
+
                                                 ?>
                                                     <div class="form-group col-md-4 col-sm-6">
                                                         <label class="control-label"><?= $value ?></label><br>

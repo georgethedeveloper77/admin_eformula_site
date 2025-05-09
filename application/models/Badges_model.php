@@ -7,11 +7,6 @@ class Badges_model extends CI_Model
 
     public function get_set_data($language_id, $type, $data)
     {
-        // Update badge_label and badge_note according to the language
-        if (isset($data['badge_label']) && isset($data['badge_note'])) {
-            $this->db->where('language_id', $language_id)->where('type', $type)->update('tbl_badges', array('badge_label' => $data['badge_label'], 'badge_note' => $data['badge_note']));
-        }
-
         // Update badge_icon, badge_reward, and badge_counter for all languages
         if (isset($data['badge_icon']) && isset($data['badge_reward']) && isset($data['badge_counter'])) {
             $this->db->where('type', $type)->update('tbl_badges', array('badge_icon' => $data['badge_icon'], 'badge_reward' => $data['badge_reward'], 'badge_counter' => $data['badge_counter']));
