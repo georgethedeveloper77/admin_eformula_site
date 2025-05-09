@@ -4,6 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Exam_Module_model extends CI_Model
 {
+    public function __construct()
+    {
+        parent::__construct();
+        date_default_timezone_set(get_system_timezone());
+    }
 
     public function get_data()
     {
@@ -140,7 +145,7 @@ class Exam_Module_model extends CI_Model
             'answer' => $answer,
         );
 
-        if ($_FILES && $_FILES['file']['name']) {
+        if ($_FILES && $_FILES['file']['name'] && $_FILES['file']['name'] != '') {
             $config['upload_path'] = EXAM_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
@@ -175,7 +180,7 @@ class Exam_Module_model extends CI_Model
     {
         $name = explode(".", $_FILES['file']['name']);
         $file_extension = end($name);
-
+        $error = '';
         if ($_FILES['file']['tmp_name'] != "" && $file_extension == "csv") {
             $filename = $_FILES['file']['tmp_name'];
             $file = fopen($filename, "r");
@@ -200,7 +205,7 @@ class Exam_Module_model extends CI_Model
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo lang('please_check') . $count . ' ' . lang('row');
+                                $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else if ($emapData[2] == '2') {
@@ -208,7 +213,7 @@ class Exam_Module_model extends CI_Model
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo lang('please_check') . $count . ' ' . lang('row');
+                                $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else {
@@ -254,12 +259,12 @@ class Exam_Module_model extends CI_Model
                     }
                 }
                 fclose($file);
-                return "1";
+                return ['error' => $error, 'error_code' => 1];
             } else {
-                return "2";
+                return ['error' => $error, 'error_code' => 2];
             }
         } else {
-            return "0";
+            return ['error' => $error, 'error_code' => 0];
         }
     }
 }

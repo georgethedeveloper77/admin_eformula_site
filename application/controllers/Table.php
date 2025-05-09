@@ -354,7 +354,11 @@ class Table extends REST_Controller
             "referredCodeToFriend" => lang('referredCodeToFriend'),
             "usedReferCode" => lang('usedReferCode'),
             "reviewAnswers" => lang('reviewAnswers'),
-            "wonMathQuiz" => lang('wonMathQuiz')
+            "wonMathQuiz" => lang('wonMathQuiz'),
+            "adminAdded" => lang('adminAdded'),
+            "watchedAds" => lang('watchedAds'),
+            "reviewAnswerLbl" => lang('reviewAnswerLbl'),
+            "referCodeToFriend" => lang('referCodeToFriend')
         );
 
         foreach ($res1 as $row) {
@@ -1980,6 +1984,8 @@ class Table extends REST_Controller
             $no_of_que = ', (select count(id) from tbl_audio_question q where q.subcategory = s.id ) as no_of_que';
         } else if ($type == 5) {
             $no_of_que = ', (select count(id) from tbl_maths_question q where q.subcategory = s.id ) as no_of_que';
+        } else if ($type == 6) {
+            $no_of_que = ', (select count(id) from tbl_multi_match q where q.subcategory = s.id ) as no_of_que';
         } else {
             $no_of_que = ',(select count(id) from tbl_question q where q.subcategory=s.id ) as no_of_que';
         }
@@ -2076,6 +2082,8 @@ class Table extends REST_Controller
             $no_of_que = ', (select count(id) from tbl_audio_question q where q.category = c.id ) as no_of_que';
         } else if ($type == 5) {
             $no_of_que = ', (select count(id) from tbl_maths_question q where q.category = c.id ) as no_of_que';
+        } else if ($type == 6) {
+            $no_of_que = ', (select count(id) from tbl_multi_match q where q.category = c.id ) as no_of_que';
         } else {
             $no_of_que = ', (select count(id) from tbl_question q where q.category = c.id ) as no_of_que';
         }
@@ -2750,6 +2758,170 @@ class Table extends REST_Controller
             $tempRow['web_version'] = $row->web_version;
             $tempRow['web_status'] = $row->web_status;
             $tempRow['web_rtl_support'] = $row->web_rtl_support;
+            $tempRow['operate'] = $operate;
+            $rows[] = $tempRow;
+            $count++;
+        }
+
+        $bulkData['rows'] = $rows;
+        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
+    }
+
+
+    public function multi_match_question_get()
+    {
+        $sort = $this->get('sort') ?? 'id';
+        $order = $this->get('order') ?? 'DESC';
+
+        $this->db->select('ms.*, l.language');
+        $this->db->from('tbl_multi_match ms');
+        $this->db->join('tbl_languages l', 'l.id = ms.language_id', 'left');
+
+        if ($this->get('language') && $this->get('language') != '') {
+            $language_id = $this->get('language');
+            $this->db->where('ms.language_id', $language_id);
+        }
+        if ($this->get('category') && $this->get('category') != '') {
+            $this->db->where('ms.category', $this->get('category'));
+        }
+        if ($this->get('subcategory') && $this->get('subcategory') != '') {
+            $this->db->where('ms.subcategory', $this->get('subcategory'));
+        }
+
+        if ($this->get('search')) {
+            $search = $this->get('search');
+            $this->db->group_start()->like('ms.id', $search)
+                ->or_like('question', $search)
+                ->or_like('optiona', $search)
+                ->or_like('optionb', $search)
+                ->or_like('optionc', $search)
+                ->or_like('optiond', $search)
+                ->or_like('optione', $search)
+                ->or_like('l.language', $search)
+                ->group_end();
+        }
+
+        $total = $this->db->count_all_results('', false);
+        $this->db->order_by($sort, $order);
+        if ($this->get('limit')) {
+            $offset = $this->get('offset');
+            $limit = $this->get('limit');
+            $this->db->limit($limit, $offset);
+        }
+        $query = $this->db->get();
+        $res1 = $query->result();
+
+        $bulkData = array();
+        $bulkData['total'] = $total;
+        $rows = array();
+        $count = 1;
+        $tempRow = array();
+        foreach ($res1 as $row) {
+            $image = (!empty($row->image)) ? MULTIMATCH_QUESTION_IMG_PATH . $row->image : '';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "multi-match/" . $row->id . '" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' data-image="' . $image . '"><i class="fa fa-trash"></i></a>';
+
+            $tempRow['image_url'] = $image;
+            $tempRow['id'] = $row->id;
+            $tempRow['category'] = $row->category;
+            $tempRow['subcategory'] = $row->subcategory;
+            $tempRow['language_id'] = $row->language_id;
+            $tempRow['language'] = $row->language;
+            $tempRow['image'] = (!empty($row->image)) ? '<a href=' . base_url() . $image . ' data-lightbox="' . lang('question_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 >' : lang('no_image');
+            $tempRow['question_type'] = $row->question_type;
+            $tempRow['answer_type'] = $row->answer_type;
+
+            $question = $row->question;
+            $optiona = $row->optiona;
+            $optionb = $row->optionb;
+            $optionc = $row->optionc ? $row->optionc : "-";
+            $optiond = $row->optiond ? $row->optiond : "-";
+            $optione = $row->optione ? $row->optione : "-";
+            $note = $row->note ? $row->note : "-";
+
+            $tempRow['question'] = $question ?? '';
+            $tempRow['optiona'] = $optiona;
+            $tempRow['optionb'] = $optionb;
+            $tempRow['optionc'] = $optionc;
+            $tempRow['optiond'] = $optiond;
+            $tempRow['optione'] = $optione;
+            $tempRow['note'] = $note;
+            $tempRow['level'] = $row->level;
+            $tempRow['answer'] = $row->answer;
+            $tempRow['operate'] = $operate;
+            $tempRow['operate'] = $operate;
+            $rows[] = $tempRow;
+            $count++;
+        }
+
+        $bulkData['rows'] = $rows;
+        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function multi_match_question_reports_get()
+    {
+        $sort = $this->get('sort') ?? 'id';
+        $order = $this->get('order') ?? 'DESC';
+
+        $this->db->select('qr.*, u.name, q.category, q.subcategory, q.language_id, q.image, q.question, q.question_type, q.optiona, q.optionb, q.optionc, q.optiond, q.optione, q.answer, q.level, q.note');
+        $this->db->from('tbl_multi_match_question_reports qr');
+        $this->db->join('tbl_users u', 'u.id = qr.user_id');
+        $this->db->join('tbl_multi_match q', 'q.id = qr.question_id');
+
+        if ($this->get('search')) {
+            $search = $this->get('search');
+            $this->db->group_start()->like('qr.id', $search)
+                ->or_like('u.name', $search)
+                ->or_like('q.question', $search)
+                ->or_like('q.optiona', $search)
+                ->or_like('q.optionb', $search)
+                ->or_like('q.optionc', $search)
+                ->or_like('q.optiond', $search)
+                ->or_like('q.optione', $search)
+                ->or_like('l.language', $search)
+                ->group_end();
+        }
+
+        $total = $this->db->count_all_results('', false);
+        $this->db->order_by($sort, $order);
+        if ($this->get('limit')) {
+            $offset = $this->get('offset');
+            $limit = $this->get('limit');
+            $this->db->limit($limit, $offset);
+        }
+        $query = $this->db->get();
+        $res1 = $query->result();
+
+        $bulkData = array();
+        $bulkData['total'] = $total;
+        $rows = array();
+        $count = 1;
+        $tempRow = array();
+
+        foreach ($res1 as $row) {
+            $image = (!empty($row->image)) ? MULTIMATCH_QUESTION_IMG_PATH . $row->image : '';
+            $operate = '<a class="btn btn-icon btn-sm btn-primary edit-data" href="' . base_url() . "multi-match-question-reports/" . $row->question_id . '" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . '><i class="fa fa-trash"></i></a>';
+
+            $tempRow['id'] = $row->id;
+            $tempRow['question_id'] = $row->question_id;
+            $tempRow['question'] = $row->question;
+            $tempRow['user_id'] = $row->user_id;
+            $tempRow['name'] = $row->name;
+            $tempRow['message'] = $row->message;
+            $tempRow['date'] = date('d-M-Y h:i A', strtotime($row->date));
+
+            $tempRow['image_url'] = $image;
+            $tempRow['category'] = $row->category;
+            $tempRow['subcategory'] = $row->subcategory;
+            $tempRow['language_id'] = $row->language_id;
+            $tempRow['question_type'] = $row->question_type;
+            $question = $row->question;
+            $tempRow['question'] = $question ?? '';
+            $tempRow['level'] = $row->level;
+            $tempRow['answer'] = $row->answer;
+            $tempRow['operate'] = $operate;
+
             $tempRow['operate'] = $operate;
             $rows[] = $tempRow;
             $count++;

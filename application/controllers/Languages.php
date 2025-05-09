@@ -12,7 +12,6 @@ class Languages extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
     }
 
     public function index()

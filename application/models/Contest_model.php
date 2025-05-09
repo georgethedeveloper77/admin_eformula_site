@@ -4,13 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Contest_model extends CI_Model
 {
-
-    public $toDate;
     public $toDateTime;
     public function __construct()
     {
         parent::__construct();
-        $this->toDate = date('Y-m-d');
+        date_default_timezone_set(get_system_timezone());
         $this->toDateTime = date('Y-m-d H:i:s');
     }
 
@@ -23,7 +21,7 @@ class Contest_model extends CI_Model
     {
         $name = explode(".", $_FILES['file']['name']);
         $file_extension = end($name);
-
+        $error = '';
         if ($_FILES['file']['tmp_name'] != "" && $file_extension == "csv") {
             $filename = $_FILES['file']['tmp_name'];
             $file = fopen($filename, "r");
@@ -48,7 +46,7 @@ class Contest_model extends CI_Model
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo 'Please Check ' . $count . ' row';
+                                $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else if ($emapData[1] == '2') {
@@ -56,7 +54,7 @@ class Contest_model extends CI_Model
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
-                                echo 'Please Check ' . $count . ' row';
+                                $error .= lang('please_check') . ' ' . $count . ' ' . lang('row');
                                 break;
                             }
                         } else {
@@ -103,12 +101,12 @@ class Contest_model extends CI_Model
                     }
                 }
                 fclose($file);
-                return "1";
+                return ['error' => $error, 'error_code' => 1];
             } else {
-                return "2";
+                return ['error' => $error, 'error_code' => 2];
             }
         } else {
-            return "0";
+            return ['error' => $error, 'error_code' => 0];
         }
     }
 
@@ -128,22 +126,20 @@ class Contest_model extends CI_Model
         $answer = $this->input->post('answer');
         $note = $this->input->post('note');
 
-        if ($_FILES['file']['name'] == '') {
-            $frm_data = array(
-                'contest_id' => $contest_id,
-                'question' => $question,
-                'question_type' => $question_type,
-                'optiona' => $a,
-                'optionb' => $b,
-                'optionc' => $c,
-                'optiond' => $d,
-                'optione' => $e,
-                'answer' => $answer,
-                'note' => $note
-            );
-            $this->db->insert('tbl_contest_question', $frm_data);
-            return TRUE;
-        } else {
+        $frm_data = array(
+            'contest_id' => $contest_id,
+            'question' => $question,
+            'question_type' => $question_type,
+            'optiona' => $a,
+            'optionb' => $b,
+            'optionc' => $c,
+            'optiond' => $d,
+            'optione' => $e,
+            'answer' => $answer,
+            'note' => $note,
+            'image' => ''
+        );
+        if ($_FILES['file']['name'] != '') {
             $config['upload_path'] = CONTEST_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
@@ -155,23 +151,11 @@ class Contest_model extends CI_Model
             } else {
                 $data = $this->upload->data();
                 $img = $data['file_name'];
-                $frm_data = array(
-                    'contest_id' => $contest_id,
-                    'image' => $img,
-                    'question' => $question,
-                    'question_type' => $question_type,
-                    'optiona' => $a,
-                    'optionb' => $b,
-                    'optionc' => $c,
-                    'optiond' => $d,
-                    'optione' => $e,
-                    'answer' => $answer,
-                    'note' => $note
-                );
-                $this->db->insert('tbl_contest_question', $frm_data);
-                return TRUE;
+                $frm_data['image'] = $img;
             }
         }
+        $this->db->insert('tbl_contest_question', $frm_data);
+        return TRUE;
     }
 
     public function update_contest_question()
@@ -191,22 +175,20 @@ class Contest_model extends CI_Model
         $answer = $this->input->post('answer');
         $note = $this->input->post('note');
 
-        if ($_FILES['update_file']['name'] == '') {
-            $frm_data = array(
-                'contest_id' => $contest_id,
-                'question' => $question,
-                'question_type' => $question_type,
-                'optiona' => $a,
-                'optionb' => $b,
-                'optionc' => $c,
-                'optiond' => $d,
-                'optione' => $e,
-                'answer' => $answer,
-                'note' => $note
-            );
-            $this->db->where('id', $id)->update('tbl_contest_question', $frm_data);
-            return TRUE;
-        } else {
+        $frm_data = array(
+            'contest_id' => $contest_id,
+            'question' => $question,
+            'question_type' => $question_type,
+            'optiona' => $a,
+            'optionb' => $b,
+            'optionc' => $c,
+            'optiond' => $d,
+            'optione' => $e,
+            'answer' => $answer,
+            'note' => $note
+        );
+
+        if ($_FILES['update_file']['name'] != '') {
             $config['upload_path'] = CONTEST_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
@@ -223,23 +205,11 @@ class Contest_model extends CI_Model
 
                 $data = $this->upload->data();
                 $img = $data['file_name'];
-                $frm_data = array(
-                    'contest_id' => $contest_id,
-                    'image' => $img,
-                    'question' => $question,
-                    'question_type' => $question_type,
-                    'optiona' => $a,
-                    'optionb' => $b,
-                    'optionc' => $c,
-                    'optiond' => $d,
-                    'optione' => $e,
-                    'answer' => $answer,
-                    'note' => $note
-                );
-                $this->db->where('id', $id)->update('tbl_contest_question', $frm_data);
-                return TRUE;
+                $frm_data['image'] = $img;
             }
         }
+        $this->db->where('id', $id)->update('tbl_contest_question', $frm_data);
+        return TRUE;
     }
 
     public function delete_contest_questions($id, $image_url)
@@ -307,23 +277,22 @@ class Contest_model extends CI_Model
         $id = $this->input->post('edit_id');
 
         $name = $this->input->post('name');
-        $start_date = $this->input->post('start_date');
-        $end_date = $this->input->post('end_date');
         $description = $this->input->post('description');
         $entry = $this->input->post('entry');
 
-        if ($_FILES['update_file']['name'] == '') {
-            $frm_data = array(
-                'name' => $name,
-                'language_id' => $this->input->post('language_id') ?? 0,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
-                'description' => $description,
-                'entry' => $entry
-            );
-            $this->db->where('id', $id)->update('tbl_contest', $frm_data);
-            return TRUE;
-        } else {
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+
+        $frm_data = array(
+            'name' => $name,
+            'language_id' => $this->input->post('language_id') ?? 0,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'description' => $description,
+            'entry' => $entry
+        );
+
+        if ($_FILES['update_file']['name'] != '') {
             $config['upload_path'] = CONTEST_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
@@ -340,19 +309,11 @@ class Contest_model extends CI_Model
 
                 $data = $this->upload->data();
                 $img = $data['file_name'];
-                $frm_data = array(
-                    'name' => $name,
-                    'language_id' => $this->input->post('language_id') ?? 0,
-                    'start_date' => $start_date,
-                    'end_date' => $end_date,
-                    'description' => $description,
-                    'image' => $img,
-                    'entry' => $entry
-                );
-                $this->db->where('id', $id)->update('tbl_contest', $frm_data);
-                return TRUE;
+                $frm_data['image'] = $img;
             }
         }
+        $this->db->where('id', $id)->update('tbl_contest', $frm_data);
+        return TRUE;
     }
 
     public function delete_contest($id, $image_url)

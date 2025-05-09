@@ -395,7 +395,26 @@
                                                     <!-- ------------------------------- -->
                                                 </div>
                                             </div>
-
+                                            <div class="row">
+                                                <div class="form-group col-md-2">
+                                                    <!-- checks the Multi Match Icon exists or not  -->
+                                                    <?php
+                                                    if (!empty($multi_match_icon['message'])) { ?>
+                                                        <div class="mb-3">
+                                                            <label for="formFile" class="control-label"><?= lang('multi_match_icon'); ?></label>
+                                                            <input class="form-control multi_match_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="multi_match_icon">
+                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $multi_match_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $multi_match_icon['message'] ?>' height=50, width=50></a>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="mb-3">
+                                                            <label for="formFile" class="control-label"><?= lang('multi_match_icon'); ?></label> <small class="text-danger"> * </small>
+                                                            <input class="form-control multi_match_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="multi_match_icon" required>
+                                                            <p style="display: none" id="multi_match_icon_img_error_msg" class="alert alert-danger"></p>
+                                                        </div>
+                                                    <?php } ?>
+                                                    <!----------->
+                                                </div>
+                                            </div>
                                             <!-- Footer Configuration -->
                                             <hr>
                                             <h4>
@@ -606,7 +625,7 @@
         var _URL = window.URL || window.webkitURL;
 
         // get the value of all the logos and icons 
-        let logos = ['favicon', 'header_logo', 'footer_logo', 'sticy_header_logo', 'quiz_zone_icon', 'daily_quiz_icon', 'true_false_icon', 'fun_learn_icon', 'self_challange_icon', 'contest_play_icon', 'one_one_battle_icon', 'group_battle_icon', 'audio_question_icon', 'math_mania_icon', 'exam_icon', 'guess_the_word_icon', 'social_media_icon'];
+        let logos = ['favicon', 'header_logo', 'footer_logo', 'sticy_header_logo', 'quiz_zone_icon', 'daily_quiz_icon', 'true_false_icon', 'fun_learn_icon', 'self_challange_icon', 'contest_play_icon', 'one_one_battle_icon', 'group_battle_icon', 'audio_question_icon', 'math_mania_icon', 'exam_icon', 'guess_the_word_icon', 'social_media_icon', 'multi_match_icon'];
 
         //added in loop to check the upload file validation
         $.each(logos, function(index, value) {

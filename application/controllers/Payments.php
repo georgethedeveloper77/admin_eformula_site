@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Payments extends CI_Controller
 {
-
+    public $utc_date;
     public function __construct()
     {
         parent::__construct();
@@ -18,12 +18,11 @@ class Payments extends CI_Controller
         }
         $this->load->helper('password_helper');
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
-
         $this->category_type = $this->config->item('category_type');
 
-        $this->toDate = date('Y-m-d');
-
+        date_default_timezone_set(get_system_timezone());
+        $toDate = date('Y-m-d');
+        $this->utc_date = gmdate('Y-m-d', strtotime($toDate));
         $this->NO_IMAGE = base_url() . LOGO_IMG_PATH . is_settings('half_logo');
     }
 
@@ -43,8 +42,13 @@ class Payments extends CI_Controller
             redirect('/', 'refresh');
         } else {
             $settings = [
-                'payment_mode', 'payment_message',
-                'per_coin', 'coin_amount', 'currency_symbol', 'coin_limit', 'difference_hours'
+                'payment_mode',
+                'payment_message',
+                'per_coin',
+                'coin_amount',
+                'currency_symbol',
+                'coin_limit',
+                'difference_hours'
             ];
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'payment_settings')) {
@@ -132,7 +136,7 @@ class Payments extends CI_Controller
                                 'points' => $coins,
                                 'type' => 'redeemedAmount',
                                 'status' => 0,
-                                'date' => $this->toDate
+                                'date' => $this->utc_date
                             ];
                             $this->db->insert('tbl_tracker', $tracker_data);
                         }

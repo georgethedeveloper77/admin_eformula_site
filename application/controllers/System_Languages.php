@@ -12,8 +12,6 @@ class System_Languages extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
-
         $this->category_type = $this->config->item('category_type');
     }
 
@@ -253,7 +251,12 @@ class System_Languages extends CI_Controller
                 }
 
                 if (!$missingKeys) {
-                    $missingKeys = ($getArray);
+                    if (is_array($sampleArray) && is_array($getArray)) {
+                        // Find the missing keys
+                        $missingKeys = array_intersect_key($sampleArray, $getArray);
+                    } else {
+                        $missingKeys = ($getArray);
+                    }
                 }
             }
             $this->result['missing_keys'] = $missingKeys;

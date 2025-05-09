@@ -36,14 +36,16 @@
                 <div class="d-sm-none d-lg-inline-block"><?= lang('hi'); ?>, <?= ucwords($this->session->userdata('authName')); ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <?php if ($this->session->userdata('authStatus')) { ?>
+                <?php if (has_permissions('read', 'profile')) { ?>
                     <a href="<?php echo base_url(); ?>profile" class="dropdown-item has-icon">
                         <em class="fas fa-user"></em> <?= lang('profile'); ?>
                     </a>
+                <?php }
+                if (has_permissions('read', 'reset_password')) { ?>
+                    <a href="<?php echo base_url(); ?>resetpassword" class="dropdown-item has-icon">
+                        <em class="fas fa-key"></em> <?= lang('reset_password'); ?>
+                    </a>
                 <?php } ?>
-                <a href="<?php echo base_url(); ?>resetpassword" class="dropdown-item has-icon">
-                    <em class="fas fa-key"></em> <?= lang('reset_password'); ?>
-                </a>
                 <a href="<?php echo base_url(); ?>logout" class="dropdown-item has-icon">
                     <em class="fas fa-sign-out-alt"></em> <?= lang('logout'); ?>
                 </a>
@@ -71,7 +73,7 @@
             <li>
                 <a class="nav-link" href="<?= base_url(); ?>dashboard"><em class="fas fa-home"></em> <span><?= lang('dashboard'); ?></span></a>
             </li>
-            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'questions') || has_permissions('read', 'questions') || has_permissions('read', 'question_report')) { ?>
+            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'questions') || has_permissions('read', 'questions') || has_permissions('read', 'import_question') || has_permissions('read', 'question_report')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em><span><?= lang('quiz_zone'); ?></span></a>
                     <ul class="dropdown-menu">
@@ -84,13 +86,13 @@
                         <?php if (has_permissions('read', 'category_order')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
-                        <?php if (has_permissions('read', 'questions')) { ?>
+                        <?php if (has_permissions('create', 'questions')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>create-questions"><?= lang('create_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'questions')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>manage-questions"><?= lang('view_questions'); ?></a></li>
                         <?php } ?>
-                        <?php if (has_permissions('read', 'questions')) { ?>
+                        <?php if (has_permissions('read', 'import_question')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>import-questions"> <?= lang('import_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'question_report')) { ?>
@@ -105,6 +107,35 @@
                 </li>
             <?php } ?>
 
+            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'multi_match') || has_permissions('read', 'multi_match') || has_permissions('read', 'multi_match_import_question') || has_permissions('read', 'multi_match_question_report')) { ?>
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-puzzle-piece"></em><span><?= lang('multi_match'); ?></span></a>
+                    <ul class="dropdown-menu">
+                        <?php if (has_permissions('read', 'categories')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>multi-match-category"><?= lang('main_category'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'subcategories')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>multi-match-subcategory"><?= lang('sub_category'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'category_order')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>multi-match-category-order"><?= lang('category_order'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('create', 'multi_match')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>multi-match"><?= lang('create_questions'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'multi_match')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>manage-multi-match"><?= lang('view_questions'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'multi_match_import_question')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>multi-match-import-questions"> <?= lang('import_questions'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'multi_match_question_report')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>multi-match-question-reports"> <?= lang('question_reports'); ?></a></li>
+                        <?php } ?>
+                    </ul>
+                </li>
+            <?php } ?>
+
             <?php if (has_permissions('read', 'manage_contest') || has_permissions('read', 'manage_contest_question') || has_permissions('read', 'import_contest_question')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em> <span><?= lang('contests'); ?></span></a>
@@ -115,7 +146,7 @@
                         <?php if (has_permissions('read', 'manage_contest_question')) { ?>
                             <li><a href="<?= base_url(); ?>contest-questions"> <?= lang('manage_questions'); ?></a></li>
                         <?php } ?>
-                        <?php if (has_permissions('read', 'manage_contest_question')) { ?>
+                        <?php if (has_permissions('read', 'import_contest_question')) { ?>
                             <li><a href="<?= base_url(); ?>contest-questions-import"> <?= lang('import_questions'); ?></a></li>
                         <?php } ?>
                     </ul>
@@ -191,7 +222,7 @@
                         <?php if (has_permissions('read', 'category_order')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>maths-question-category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
-                        <?php if (has_permissions('read', 'maths_questions')) { ?>
+                        <?php if (has_permissions('create', 'maths_questions')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>create-maths-questions"><?= lang('create_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'maths_questions')) { ?>
@@ -220,17 +251,17 @@
                     <a class="nav-link" href="<?= base_url() ?>in-app-users"><em class="fas fa-users"></em> <span><?= lang('in_app_users'); ?></span></a>
                 </li>
             <?php } ?>
-            <?php if ($this->session->userdata('authStatus')) { ?>
+            <?php if (has_permissions('read', 'activity_tracker')) { ?>
                 <li>
                     <a class="nav-link" href="<?= base_url() ?>activity-tracker"><em class="fas fa-chart-bar"></em> <span><?= lang('activity_tracker'); ?></span></a>
                 </li>
             <?php } ?>
-            <?php if ($this->session->userdata('authStatus')) { ?>
+            <?php if (has_permissions('read', 'payment_requests')) { ?>
                 <li>
                     <a class="nav-link" href="<?= base_url() ?>payment-requests"><em class="fas fa-rupee-sign"></em> <span><?= lang('payment_requests'); ?></span></a>
                 </li>
             <?php } ?>
-            <?php if ($this->session->userdata('authStatus')) { ?>
+            <?php if (has_permissions('read', 'leaderboard')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-th"></em><span><?= lang('leaderboard'); ?></span></a>
                     <ul class="dropdown-menu">
@@ -252,34 +283,50 @@
                     <a class="nav-link" href="<?= base_url() ?>system-languages"><em class="fas fa-language"></em> <span><?= lang('system_languages') ?></span></a>
                 </li>
             <?php } ?>
-            <?php if (has_permissions('read', 'system_configuration')) { ?>
+            <?php if (has_permissions('read', 'in_app_settings') || has_permissions('read', 'coin_store_settings') || has_permissions('read', 'badges_settings') || has_permissions('read', 'ads_settings') || has_permissions('read', 'payment_settings') || has_permissions('read', 'firebase_configurations') || has_permissions('read', 'system_configuration') || has_permissions('read', 'system_utilities') || has_permissions('read', 'authentication_settings')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span><?= lang('settings'); ?></span></a>
                     <ul class="dropdown-menu">
                         <?php if (has_permissions('read', 'system_configuration')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>system-configurations"><?= lang('system_configurations'); ?></a></li>
                         <?php } ?>
-
-
-                        <?php if (has_permissions('read', 'system_configuration')) { ?>
+                        <?php if (has_permissions('read', 'system_utilities')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>system-utilities"><?= lang('system_utilities'); ?></a></li>
                         <?php } ?>
-
                         <?php if (has_permissions('read', 'authentication_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>authentication-settings"><?= lang('authentication_settings'); ?></a></li>
                         <?php } ?>
-
-                        <?php if ($this->session->userdata('authStatus')) { ?>
+                        <?php if (has_permissions('read', 'firebase_configurations')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>firebase-configurations"><?= lang('firebase_configurations'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'payment_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>payment-settings"><?= lang('payment_settings'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'ads_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>ads-settings"><?= lang('ads_settings'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'badges_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>badges-settings"><?= lang('badges_settings'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'coin_store_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>coin-store-settings"><?= lang('coin_store_settings'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'in_app_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>in-app-settings"><?= lang('in_app_settings'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'about_us')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>about-us"><?= lang('about_us'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'contact_us')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>contact-us"><?= lang('contact_us'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'how_to_play')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>instructions"><?= lang('how_to_play'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'privacy_policy')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>privacy-policy"><?= lang('privacy_policy'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'term_conditions')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>terms-conditions"><?= lang('term_conditions'); ?></a></li>
                         <?php } ?>
                     </ul>
@@ -291,12 +338,12 @@
                     <a class="nav-link" href="<?= base_url(); ?>send-notifications"><em class="fas fa-bullhorn"></em> <span><?= lang('send_notifications'); ?></span></a>
                 </li>
             <?php } ?>
-            <?php if ($this->session->userdata('authStatus')) { ?>
+            <?php if (has_permissions('read', 'users_accounts_rights')) { ?>
                 <li>
                     <a class="nav-link" href="<?= base_url(); ?>user-accounts-rights"><em class="fas fa-user"></em> <span><?= lang('user_accounts_and_rights'); ?></span></a>
                 </li>
             <?php } ?>
-            <?php if ($this->session->userdata('authStatus')) { ?>
+            <?php if (has_permissions('read', 'web_settings')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span><?= lang('web_settings'); ?></span></a>
                     <ul class="dropdown-menu">
@@ -306,7 +353,7 @@
                     </ul>
                 </li>
             <?php } ?>
-            <?php if ($this->session->userdata('authStatus')) { ?>
+            <?php if (has_permissions('read', 'system_update')) { ?>
                 <li>
                     <a class="nav-link" href="<?= base_url(); ?>system-updates"><em class="fas fa-cloud-download-alt"></em> <span>System Update</span></a>
                 </li>

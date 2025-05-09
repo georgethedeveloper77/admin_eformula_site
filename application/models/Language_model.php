@@ -89,7 +89,6 @@ class Language_model extends CI_Model
             return array('error' => true, 'message' =>  lang('code_already_exists')); // Duplicate language
         }
 
-        $message = '';
         $status = $this->input->post('status');
         $default_active = $this->input->post('default_active');
         $updateData = array('language' => $language, 'code' => $code, 'status' => $status);
@@ -98,29 +97,19 @@ class Language_model extends CI_Model
             $updateData['default_active'] = 1;
             $updateData['status'] = 1;
             $this->db->where('id !=', $id)->update('tbl_languages', ['default_active' => 0]);
-            if ($checkData['status'] == 0 && $checkData['default_active'] == 0) {
-                $message = lang('default_status_activated');
-            } else if ($status == 0) {
-                $message = lang('default_language_must_active');
-            } else {
-                $message = lang('data_updated_successfully');
-            }
         } elseif ($status == 0 && $checkData['default_active'] == 1) {
             $updateData['status'] = 1;
-            $message = lang('default_language_must_active');
         } else {
             $existingDefault = $this->db->where('default_active', 1)->where('id !=', $id)->get('tbl_languages')->row_array();
             if (!$existingDefault) {
                 $updateData['default_active'] = 1;
-                $message = lang('default_language_require_set_as_default');
             } else {
                 $updateData['default_active'] = 0;
-                $message = lang('data_updated_successfully');
             }
         }
         $this->db->where('id', $id)->update('tbl_languages', $updateData);
 
-        return array('message' => $message);
+        return array('error' => false, 'message' => lang('data_updated_successfully'));
     }
 
     public function delete_data($id)

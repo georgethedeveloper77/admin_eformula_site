@@ -2,7 +2,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Question_model extends CI_Model
+class Multi_Match_model extends CI_Model
 {
     public function __construct()
     {
@@ -12,7 +12,7 @@ class Question_model extends CI_Model
 
     public function get_data($id)
     {
-        return $this->db->where('id', $id)->order_by('id', 'DESC')->get('tbl_question')->result();
+        return $this->db->where('id', $id)->order_by('id', 'DESC')->get('tbl_multi_match')->result();
     }
 
     public function import_data()
@@ -37,13 +37,14 @@ class Question_model extends CI_Model
                     $emapData[7] = $emapData[7];    // optionc
                     $emapData[8] = $emapData[8];    // optiond
                     $emapData[9] = (empty($emapData[9])) ? "" : $emapData[9];  // optione
-                    $emapData[10] = trim(strtolower($emapData[10]));  //answer
-                    $emapData[11] = $emapData[11];       //level
-                    $emapData[12] = $emapData[12];      // note
+                    $emapData[10] = trim($emapData[10]);  //answer_type
+                    $emapData[11] = trim(strtolower($emapData[11]));  //answer
+                    $emapData[12] = $emapData[12];       //level
+                    $emapData[13] = $emapData[13];      // note
                     $count++;
                     if ($count > 1) {
                         if ($emapData[3] == '1') {
-                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && $emapData[7] != '' && $emapData[8] != '' && !empty($emapData[10]) && $emapData[11]) {
+                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && $emapData[7] != '' && $emapData[8] != '' && !empty($emapData[10]) && $emapData[11] != '' && $emapData[12]) {
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
@@ -51,7 +52,7 @@ class Question_model extends CI_Model
                                 break;
                             }
                         } else if ($emapData[3] == '2') {
-                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && !empty($emapData[10]) && $emapData[11]) {
+                            if ($emapData[0] != '' && $emapData[1] != '' && $emapData[2] != '' && !empty($emapData[3]) && $emapData[4] != '' && $emapData[5] != '' && $emapData[6] != '' && !empty($emapData[10]) && $emapData[11] != '' && $emapData[12]) {
                                 $empty_value_found = true;
                             } else {
                                 $empty_value_found = false;
@@ -80,9 +81,10 @@ class Question_model extends CI_Model
                         $emapData1[7] = $emapData1[7];    // optionc
                         $emapData1[8] = $emapData1[8];    // optiond
                         $emapData1[9] = (empty($emapData1[9])) ? "" : $emapData1[9];  // optione
-                        $emapData1[10] = trim(strtolower($emapData1[10]));  //answer
-                        $emapData1[11] = $emapData1[11];       //level
-                        $emapData1[12] = $emapData1[12];      // note
+                        $emapData1[10] = trim($emapData1[10]);   //answer_type
+                        $emapData1[11] = trim(strtolower($emapData1[11]));  //answer
+                        $emapData1[12] = $emapData1[12];       //level
+                        $emapData1[13] = $emapData1[13];      // note
                         $count1++;
                         if ($count1 > 1) {
                             if (count($emapData1) > 2) {
@@ -98,11 +100,12 @@ class Question_model extends CI_Model
                                     'optionc' => $emapData1[7],
                                     'optiond' => $emapData1[8],
                                     'optione' => $emapData1[9],
-                                    'answer' => $emapData1[10],
-                                    'level' => $emapData1[11],
-                                    'note' => $emapData1[12]
+                                    'answer_type' => $emapData1[10],
+                                    'answer' => $emapData1[11],
+                                    'level' => $emapData1[12],
+                                    'note' => $emapData1[13]
                                 );
-                                $this->db->insert('tbl_question', $frm_data);
+                                $this->db->insert('tbl_multi_match', $frm_data);
                             }
                         }
                     }
@@ -119,40 +122,20 @@ class Question_model extends CI_Model
 
     public function delete_question_report($id)
     {
-        $this->db->where('id', $id)->delete('tbl_question_reports');
-    }
-
-    public function add_daily_quiz($language_id, $question_ids, $daily_quiz_date)
-    {
-
-        $data = $this->db->where('date_published', $daily_quiz_date)->where('language_id', $language_id)->get('tbl_daily_quiz')->result();
-
-        if ($data) {
-            $frm_data = array(
-                'language_id' => $language_id,
-                'questions_id' => $question_ids,
-            );
-            $this->db->where('id', $data[0]->id)->update('tbl_daily_quiz', $frm_data);
-        } else {
-            $frm_data = array(
-                'language_id' => $language_id,
-                'questions_id' => $question_ids,
-                'date_published' => $daily_quiz_date
-            );
-            $this->db->insert('tbl_daily_quiz', $frm_data);
-        }
+        $this->db->where('id', $id)->delete('tbl_multi_match_question_reports');
     }
 
     public function add_data()
     {
-        if (!is_dir(QUESTION_IMG_PATH)) {
-            mkdir(QUESTION_IMG_PATH, 0777, TRUE);
+        if (!is_dir(MULTIMATCH_QUESTION_IMG_PATH)) {
+            mkdir(MULTIMATCH_QUESTION_IMG_PATH, 0777, TRUE);
         }
         $language = ($this->input->post('language_id')) ? $this->input->post('language_id') : 0;
         $question = $this->input->post('question');
         $category = $this->input->post('category');
         $subcategory = ($this->input->post('subcategory')) ? $this->input->post('subcategory') : 0;
         $question_type = $this->input->post('question_type');
+        $answer_type = $this->input->post('answer_type') ?? 1;
         $a = $this->input->post('a');
         $b = $this->input->post('b');
         $c = ($question_type == 1) ? $this->input->post('c') : "";
@@ -161,6 +144,12 @@ class Question_model extends CI_Model
         $level = $this->input->post('level');
         $answer = $this->input->post('answer');
         $note = $this->input->post('note');
+        $answer = '';
+        if ($answer_type == 2) {
+            $answer = ($this->input->post('text_answer')) ? $this->input->post('text_answer') : '';
+        } else {
+            $answer = ($this->input->post('answer')) ? implode(',', $this->input->post('answer')) : '';
+        }
 
         $frm_data = array(
             'category' => $category,
@@ -173,13 +162,14 @@ class Question_model extends CI_Model
             'optionc' => $c,
             'optiond' => $d,
             'optione' => $e,
+            'answer_type' => $answer_type,
             'answer' => $answer,
             'level' => $level,
             'note' => $note,
             'image' => ''
         );
         if ($_FILES['file']['name'] != '') {
-            $config['upload_path'] = QUESTION_IMG_PATH;
+            $config['upload_path'] = MULTIMATCH_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
             $this->load->library('upload', $config);
@@ -193,34 +183,43 @@ class Question_model extends CI_Model
                 $frm_data['image'] = $img;
             }
         }
-        $this->db->insert('tbl_question', $frm_data);
+        $this->db->insert('tbl_multi_match', $frm_data);
         return TRUE;
     }
 
     public function update_data()
     {
-        if (!is_dir(QUESTION_IMG_PATH)) {
-            mkdir(QUESTION_IMG_PATH, 0777, TRUE);
+        if (!is_dir(MULTIMATCH_QUESTION_IMG_PATH)) {
+            mkdir(MULTIMATCH_QUESTION_IMG_PATH, 0777, TRUE);
         }
         $id = $this->input->post('edit_id');
 
         if (is_language_mode_enabled()) {
             $language = ($this->input->post('language_id')) ? $this->input->post('language_id') : 0;
             $data = array('language_id' => $language);
-            $this->db->where('id', $id)->update('tbl_question', $data);
+            $this->db->where('id', $id)->update('tbl_multi_match', $data);
         }
 
         $question = $this->input->post('question');
         $category = $this->input->post('category');
         $subcategory = ($this->input->post('subcategory')) ? $this->input->post('subcategory') : 0;
         $question_type = $this->input->post('question_type');
+        $answer_type = $this->input->post('answer_type') ?? 1;
         $a = $this->input->post('a');
         $b = $this->input->post('b');
         $c = ($question_type == 1) ? $this->input->post('c') : "";
         $d = ($question_type == 1) ? $this->input->post('d') : "";
         $e = ($this->input->post('e')) ? $this->input->post('e') : "";
         $level = $this->input->post('level');
-        $answer = $this->input->post('answer');
+
+
+        $answer = '';
+        if ($answer_type == 2) {
+            $answer = ($this->input->post('text_answer')) ? $this->input->post('text_answer') : '';
+        } else {
+            $answer = ($this->input->post('answer')) ? implode(',', $this->input->post('answer')) : '';
+        }
+
         $note = $this->input->post('note');
 
         $frm_data = array(
@@ -234,11 +233,12 @@ class Question_model extends CI_Model
             'optiond' => $d,
             'optione' => $e,
             'answer' => $answer,
+            'answer_type' => $answer_type,
             'level' => $level,
             'note' => $note
         );
         if (isset($_FILES['file']) && !empty($_FILES['file']['name'])) {
-            $config['upload_path'] = QUESTION_IMG_PATH;
+            $config['upload_path'] = MULTIMATCH_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
             $this->load->library('upload', $config);
@@ -256,7 +256,8 @@ class Question_model extends CI_Model
                 $frm_data['image'] = $data['file_name'];
             }
         }
-        $this->db->where('id', $id)->update('tbl_question', $frm_data);
+
+        $this->db->where('id', $id)->update('tbl_multi_match', $frm_data);
         return TRUE;
     }
 
@@ -265,10 +266,8 @@ class Question_model extends CI_Model
         if (file_exists($image_url)) {
             unlink($image_url);
         }
-        $this->db->where('id', $id)->delete('tbl_question');
+        $this->db->where('id', $id)->delete('tbl_multi_match');
         //remove report question
-        $this->db->where('question_id', $id)->delete('tbl_question_reports');
-        //remove bookmark question
-        $this->db->where('question_id', $id)->delete('tbl_bookmark');
+        $this->db->where('question_id', $id)->delete('tbl_multi_match_question_reports');
     }
 }

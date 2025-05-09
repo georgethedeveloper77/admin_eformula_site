@@ -12,17 +12,14 @@ class Audio extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
-
         $this->quiz_type = 4;
-
         $this->result['total_audio_time'] = $this->db->where('type', 'total_audio_time')->get('tbl_settings')->row_array();
     }
 
     public function index()
     {
         if (!has_permissions('read', 'audio_question')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'audio_question')) {
@@ -42,9 +39,8 @@ class Audio extends CI_Controller
                     'subcategory' => $this->input->post('subcategory')
                 ];
                 $this->session->set_userdata($setData);
-                redirect('audio-question', 'refresh');
-            }
-            if ($this->input->post('btnupdate')) {
+                redirect('audio-question');
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'audio_question')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -55,7 +51,7 @@ class Audio extends CI_Controller
                         $this->session->set_flashdata('success', lang('audio_question_updated_successfully'));
                     }
                 }
-                redirect('audio-question', 'refresh');
+                redirect('audio-question');
             }
             $this->result['language'] = $this->Language_model->get_data();
             $this->result['category'] = $this->Category_model->get_data($this->quiz_type);
@@ -66,7 +62,8 @@ class Audio extends CI_Controller
     public function delete_audio_question()
     {
         if (!has_permissions('delete', 'audio_question')) {
-            echo FALSE;        } else {
+            echo FALSE;
+        } else {
             $id = $this->input->post('id');
             $audio_url = $this->input->post('audio_url');
             $this->Audio_model->delete_data($id, $audio_url);

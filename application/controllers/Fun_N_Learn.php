@@ -12,7 +12,6 @@ class Fun_N_Learn extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
         $this->quiz_type = 2;
     }
 

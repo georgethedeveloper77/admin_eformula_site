@@ -119,6 +119,7 @@ define('LANGUAGE_FILE_ALLOWED_TYPES', 'json|JSON');
 define('COIN_STORE_IMG_PATH', 'images/coin-store/');
 define('LANGUAGE_PATH', 'application/language/');
 define('LANGUAGE_ALLOWED_TYPES', 'PHP|php');
+define('MULTIMATCH_QUESTION_IMG_PATH', 'images/multimatch-questions/');
 
 //audio path
 define('QUESTION_AUDIO_PATH', 'images/audio/');

@@ -8,13 +8,15 @@ class CoinStore extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        date_default_timezone_set(get_system_timezone());
+        if (!$this->session->userdata('isLoggedIn')) {
+            redirect('/');
+        }
     }
 
     public function index()
     {
         if (!has_permissions('read', 'coin_store_settings')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'coin_store_settings')) {
@@ -43,11 +45,10 @@ class CoinStore extends CI_Controller
                         redirect('coin-store-settings');
                     } else {
                         $this->session->set_flashdata('success', lang('data_created_successfully'));
-                        redirect('coin-store-settings', 'refresh');
+                        redirect('coin-store-settings');
                     }
                 }
-            }
-            if ($this->input->post('btnupdate')) {
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'coin_store_settings')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -66,17 +67,16 @@ class CoinStore extends CI_Controller
                         redirect('coin-store-settings');
                     } else {
                         $this->session->set_flashdata('success', lang('data_updated_successfully'));
-                        redirect('coin-store-settings', 'refresh');
+                        redirect('coin-store-settings');
                     }
                 }
-            }
-            if ($this->input->post('btnupdatestatus')) {
+            } else if ($this->input->post('btnupdatestatus')) {
                 if (!has_permissions('update', 'coin_store_settings')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data1 = $this->Coin_Store_model->update_status();
                     $this->session->set_flashdata('success', lang('status_updated_successfully'));
-                    redirect('coin-store-settings', 'refresh');
+                    redirect('coin-store-settings');
                 }
             }
             $this->result['is_ads'] = 0;

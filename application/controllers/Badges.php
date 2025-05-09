@@ -12,13 +12,12 @@ class Badges extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
     }
 
     public function index()
     {
-        if (!$this->session->userdata('isLoggedIn')) {
-            redirect('login');
+        if (!has_permissions('read', 'badges_settings')) {
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'badges_settings')) {
@@ -60,8 +59,8 @@ class Badges extends CI_Controller
 
     public function edit_data($id)
     {
-        if (!$this->session->userdata('isLoggedIn')) {
-            redirect('login');
+        if (!has_permissions('read', 'badges_settings')) {
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('update', 'badges_settings')) {

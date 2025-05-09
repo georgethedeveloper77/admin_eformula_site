@@ -8,8 +8,9 @@ class System_Update extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        date_default_timezone_set(get_system_timezone());
-
+        if (!$this->session->userdata('isLoggedIn')) {
+            redirect('/');
+        }
         $this->load->helper('password_helper');
     }
 
@@ -57,7 +58,7 @@ class System_Update extends CI_Controller
                     redirect('firebase-configurations');
                 }
                 if ($this->input->post('btnadd')) {
-                    if (!has_permissions('create', 'set_setting')) {
+                    if (!has_permissions('update', 'system_update')) {
                         $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         if ($_FILES['file']['name'] != '') {
@@ -180,10 +181,118 @@ class System_Update extends CI_Controller
                             redirect('system-updates', 'refresh');
                         }
                     }
+                    $this->replace_keys_in_web_json_files();
                     redirect('system-updates', 'refresh');
                 }
+                $this->replace_keys_in_web_json_files();
                 $this->result['system_version'] = $this->db->where('type', 'system_version')->get('tbl_settings')->row_array();
                 $this->load->view('system_updates', $this->result);
+            }
+        }
+    }
+
+    public function replace_keys_in_web_json_files()
+    {
+        $directory_path = FCPATH . 'upload/languages/web/';
+
+        if (!is_dir($directory_path)) {
+            echo "Directory does not exist.";
+            return;
+        }
+        $json_files = glob($directory_path . '*.json');
+
+        if (empty($json_files)) {
+            echo "No JSON files found in the directory.";
+            return;
+        }
+
+        $keys = [
+            "Battle with one on one",
+            "Boost your knowledge",
+            "Challenge Your Mind",
+            "Challenge Yourself",
+            "Choice your answers",
+            "Daily basic new quiz game",
+            "Fun and Play Quiz Win",
+            "Fun vocabulary game",
+            "invalid_room_code",
+            "It's a group quiz battle",
+            "It's like a comprehension game",
+            "Play quiz contest",
+            "Quiz Zone Win",
+            "Select your favorite Zone to play",
+            "Used Hint Lifeline",
+            "Quiz Zone",
+            "Daily Quiz",
+            "True & False",
+            "Fun & Learn",
+            "Guess The Word",
+            "Self Challenge",
+            "Contest Play",
+            "1 v/s 1 Battle",
+            "Group Battle",
+            "Audio Questions",
+            "Math Mania",
+            "You have unlocked new badge"
+        ];
+
+        $change_with_keys = [
+            "battle_with_one_on_one",
+            "boost_your_knowledge",
+            "challenge_your_mind",
+            "challenge_yourself",
+            "choice_your_answers",
+            "daily_basic_new_quiz_game",
+            "fun_and_play_quiz_win",
+            "fun_vocabulary_game",
+            "invalid_room_code",
+            "its_a_group_quiz_battle",
+            "its_like_a_comprehension_game",
+            "play_quiz_contest",
+            "quiz_zone_win",
+            "select_your_favorite_zone_to_play",
+            "used_hint_lifeline",
+            "quiz_zone",
+            "daily_quiz",
+            "true_false",
+            "fun_learn",
+            "guess_the_word",
+            "self_challenge",
+            "contest_play",
+            "1_vs_1_battle",
+            "group_battle",
+            "audio_questions",
+            "math_mania",
+            "you_have_unlocked_new_badge"
+        ];
+
+        foreach ($json_files as $file_path) {
+            $json_data = file_get_contents($file_path);
+            $dataArray = json_decode($json_data, true);
+
+            foreach ($keys as $index => $oldKey) {
+                if (array_key_exists($oldKey, $dataArray)) {
+                    $newKey = $change_with_keys[$index];
+                    $dataArray[$newKey] = $dataArray[$oldKey];
+                    unset($dataArray[$oldKey]);
+                }
+            }
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                echo "Error decoding JSON in file: " . basename($file_path) . "\n";
+                continue;
+            }
+            // Encode the updated array back to JSON
+            $updatedJsonData = json_encode($dataArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                echo "Error encoding JSON data!";
+                return;
+            }
+
+            // Save the updated JSON back to the file
+            if (!file_put_contents($file_path, $updatedJsonData)) {
+                echo "Failed to write the updated JSON file!";
             }
         }
     }

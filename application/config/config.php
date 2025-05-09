@@ -497,7 +497,9 @@ $config['csrf_exclude_uris'] = array(
   'removeImage',
   'delete-system-languages',
   'delete-app-system-languages',
-  'delete-web-system-languages'
+  'delete-web-system-languages',
+  'delete_multi_match',
+  'delete_multi_match_report'
 );
 
 /*

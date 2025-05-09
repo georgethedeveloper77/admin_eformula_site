@@ -12,10 +12,7 @@ class Maths_Question extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
-
         $this->quiz_type = 5;
-
         $this->result['language'] = $this->Language_model->get_data();
         $this->result['category'] = $this->Category_model->get_data($this->quiz_type);
     }

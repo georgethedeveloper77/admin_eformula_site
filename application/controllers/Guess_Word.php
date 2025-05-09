@@ -12,10 +12,8 @@ class Guess_Word extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
         $this->category_type = $this->config->item('category_type');
         $this->quiz_type = 3;
-        //        $this->result['subcategory'] = $this->Subcategory_model->get_data();
     }
 
     public function index()

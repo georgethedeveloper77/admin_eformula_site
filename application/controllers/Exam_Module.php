@@ -12,7 +12,6 @@ class Exam_Module extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
         $this->quiz_type = 2;
         $this->result['language'] = $this->Language_model->get_data();
     }
@@ -27,14 +26,22 @@ class Exam_Module extends CI_Controller
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $data = $this->Exam_Module_model->import_data();
-                    if ($data == "1") {
+                    if ($data['error_code'] == "1") {
                         $this->session->set_flashdata('success', lang('csv_file_successfully_imported'));
-                    } else if ($data == "0") {
-                        $this->session->set_flashdata('error', lang('please_upload_data_in_csv_file'));
-                    } else if ($data == "2") {
-                        $this->session->set_flashdata('error', lang('please_fill_all_the_data_in_csv_file'));
+                    } else if ($data['error_code'] == "0") {
+                        if ($data['error'] != '') {
+                            $this->session->set_flashdata('error', $data['error']);
+                        } else {
+                            $this->session->set_flashdata('error',  lang('please_upload_data_in_csv_file'));
+                        }
+                    } else if ($data['error_code'] == "2") {
+                        if ($data['error'] != '') {
+                            $this->session->set_flashdata('error', $data['error']);
+                        } else {
+                            $this->session->set_flashdata('error', lang('please_fill_all_the_data_in_csv_file'));
+                        }
                     } else {
-                        $this->session->set_flashdata('error', $data);
+                        $this->session->set_flashdata('error', $data['error']);
                     }
                 }
                 redirect('exam-module-questions-import');

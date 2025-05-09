@@ -125,7 +125,13 @@ class Setting_model extends CI_Model
             'exam_module_resume_exam_timeout',
             'contest_mode',
             'contest_mode_wrong_deduct_score',
-            'contest_mode_correct_credit_score'
+            'contest_mode_correct_credit_score',
+            'multi_match_mode',
+            'multi_match_fix_level_question',
+            'multi_match_total_level_question',
+            'multi_match_duration',
+            'multi_match_wrong_answer_deduct_score',
+            'multi_match_correct_answer_credit_score',
         ];
 
 
@@ -615,6 +621,7 @@ class Setting_model extends CI_Model
                 'tbl_coin_store' => COIN_STORE_IMG_PATH,
                 'tbl_fun_n_learn' => FUN_LEARN_IMG_PATH,
                 'tbl_fun_n_learn_question' => FUN_LEARN_QUESTION_IMG_PATH,
+                'tbl_multi_match' => MULTIMATCH_QUESTION_IMG_PATH,
             );
             if ($table == 'tbl_audio_question') {
                 $query = $this->db->query("SELECT `audio` FROM " . $table . " WHERE id in ( " . $ids . " )");
@@ -775,7 +782,8 @@ class Setting_model extends CI_Model
             'guess_the_word_icon',
             'primary_color',
             'footer_color',
-            'social_media'
+            'social_media',
+            'multi_match_icon'
         ];
 
         foreach ($settings as $type) {

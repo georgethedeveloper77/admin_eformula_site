@@ -9,14 +9,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Notification_model extends CI_Model
 {
-
-    public $toDate;
     public $toDateTime;
     public function __construct()
     {
         parent::__construct();
         date_default_timezone_set(get_system_timezone());
-        $this->toDate = date('Y-m-d');
         $this->toDateTime = date('Y-m-d H:i:s');
     }
 
@@ -86,7 +83,7 @@ class Notification_model extends CI_Model
         $insert_id = $this->db->insert_id();
         //notification 
         if ($users == 'all') {
-            $res = $this->db->select("fcm_id")->get("tbl_users")->result_array();
+            $res = $this->db->select("fcm_id")->where('fcm_id!=', '')->where('fcm_id!=', 'empty')->where('fcm_id IS NOT NULL')->get("tbl_users")->result_array();
             $fcm_ids = array();
             foreach ($res as $fcm_id) {
                 $fcm_ids[] = $fcm_id['fcm_id'];
@@ -102,7 +99,7 @@ class Notification_model extends CI_Model
             $fcm_ids = array();
             $fcm_ids = explode(",", $selected_list);
             if ($insert_id) {
-                $getID = $this->db->select('id')->where_in('fcm_id', $fcm_ids)->get("tbl_users")->result_array();
+                $getID = $this->db->select('id')->where('fcm_id !=', '')->where('fcm_id!=', 'empty')->where('fcm_id IS NOT NULL')->where_in('fcm_id', $fcm_ids)->get("tbl_users")->result_array();
                 $comma_separated_ids = '';
                 if (!empty($getID)) {
                     $getIds = array_column($getID, 'id');

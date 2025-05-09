@@ -28,6 +28,9 @@ class Api extends REST_Controller
         $jwtKey = $jwtKey['message'];
         $this->JWT_SECRET_KEY = "$jwtKey";
 
+        $this->systemTimezoneGMT = is_settings('system_timezone_gmt') ? is_settings('system_timezone_gmt') : 'Asia/Kolkata';
+        $this->systemTimezone = is_settings('system_timezone') ? is_settings('system_timezone') : '+05:30';
+
         $questionShuffleMode = $this->db->where('type', 'question_shuffle_mode')->get('tbl_settings')->row_array();
         $questionShuffleMode = $questionShuffleMode['message'];
         if ($questionShuffleMode) {
@@ -499,6 +502,9 @@ class Api extends REST_Controller
             } else if ($type == 5 || $type == '5') {
                 $this->db->select('b.*, q.category, q.subcategory, q.language_id, q.image, q.question, q.question_type, q.optiona, q.optionb, q.optionc, q.optiond, q.optione, q.answer, q.note');
                 $this->db->join('tbl_maths_question q', 'q.id=b.question_id');
+            } else if ($type == 6 || $type == '6') {
+                $this->db->select('b.*, q.category, q.subcategory, q.language_id, q.image, q.question, q.question_type,q.answer_type, q.optiona, q.optionb, q.optionc, q.optiond, q.optione, q.answer, q.note');
+                $this->db->join('tbl_multi_match q', 'q.id=b.question_id');
             } else {
                 $this->db->select('b.*, q.category, q.subcategory, q.language_id, q.image, q.question, q.question_type, q.optiona, q.optionb, q.optionc, q.optiond, q.optione, q.answer, q.level, q.note');
                 $this->db->join('tbl_question q', 'q.id=b.question_id');
@@ -516,6 +522,12 @@ class Api extends REST_Controller
                     } else if ($type == 5 || $type == '5') {
                         $data[$i]['image'] = ($data[$i]['image']) ? base_url() . MATHS_QUESTION_IMG_PATH . $data[$i]['image'] : '';
                         $data[$i] = $this->suffleOptions($data[$i], $firebase_id);
+                    } else if ($type == 6 || $type == '6') {
+                        $data[$i]['image'] = ($data[$i]['image']) ? base_url() . MULTIMATCH_QUESTION_IMG_PATH . $data[$i]['image'] : '';
+                        $answers = explode(',', trim($data[$i]['answer']));
+                        $data[$i]['answer'] = array_map(function ($answer) use ($firebase_id) {
+                            return $this->encrypt_data($firebase_id, $answer);
+                        }, $answers);
                     } else {
                         $data[$i]['image'] = ($data[$i]['image']) ? base_url() . QUESTION_IMG_PATH . $data[$i]['image'] : '';
                         $data[$i] = $this->suffleOptions($data[$i], $firebase_id);
@@ -980,12 +992,23 @@ class Api extends REST_Controller
             } else if ($type == 5 || $type == '5') {
                 $no_of_que = ' (select count(id) from tbl_maths_question q where q.category=c.id ) as no_of_que,';
                 $no_of =  '(SELECT @no_of_subcategories := count(`id`) from tbl_subcategory s WHERE s.maincat_id = c.id AND s.status = 1 AND s.id IN (SELECT subcategory FROM tbl_maths_question WHERE subcategory != 0)) as no_of';
+            } else if ($type == 6 || $type == '6') {
+                $no_of_que = ' (select count(id) from tbl_multi_match q where q.category=c.id ) as no_of_que,';
+                $no_of =  '(SELECT @no_of_subcategories := count(`id`) from tbl_subcategory s WHERE s.maincat_id = c.id AND s.status = 1 AND s.id IN (SELECT subcategory FROM tbl_multi_match WHERE subcategory != 0)) as no_of';
             }
 
             if ($user_id) {
-                $this->db->select('c.*,' . $no_of . ',' . $no_of_que . ' if(@no_of_subcategories = 0, (SELECT @maxlevel := MAX(`level`+0) from tbl_question q WHERE c.id = q.category ),@maxlevel := 0) as maxlevel, (SELECT count(*) from tbl_user_category uc WHERE uc.category_id = c.id and uc.user_id = ' . $user_id . ' ) as has_unlocked');
+                if ($type == 6) {
+                    $this->db->select('c.*,' . $no_of . ',' . $no_of_que . ' if(@no_of_subcategories = 0, (SELECT @maxlevel := MAX(`level`+0) from tbl_multi_match q WHERE c.id = q.category ),@maxlevel := 0) as maxlevel, (SELECT count(*) from tbl_user_category uc WHERE uc.category_id = c.id and uc.user_id = ' . $user_id . ' ) as has_unlocked');
+                } else {
+                    $this->db->select('c.*,' . $no_of . ',' . $no_of_que . ' if(@no_of_subcategories = 0, (SELECT @maxlevel := MAX(`level`+0) from tbl_question q WHERE c.id = q.category ),@maxlevel := 0) as maxlevel, (SELECT count(*) from tbl_user_category uc WHERE uc.category_id = c.id and uc.user_id = ' . $user_id . ' ) as has_unlocked');
+                }
             } else {
-                $this->db->select('c.*,' . $no_of . ',' . $no_of_que . ' if(@no_of_subcategories = 0, (SELECT @maxlevel := MAX(`level`+0) from tbl_question q WHERE c.id = q.category ),@maxlevel := 0) as maxlevel');
+                if ($type == 6) {
+                    $this->db->select('c.*,' . $no_of . ',' . $no_of_que . ' if(@no_of_subcategories = 0, (SELECT @maxlevel := MAX(`level`+0) from tbl_multi_match q WHERE c.id = q.category ),@maxlevel := 0) as maxlevel');
+                } else {
+                    $this->db->select('c.*,' . $no_of . ',' . $no_of_que . ' if(@no_of_subcategories = 0, (SELECT @maxlevel := MAX(`level`+0) from tbl_question q WHERE c.id = q.category ),@maxlevel := 0) as maxlevel');
+                }
             }
             $this->db->where('type', $type);
             if ($this->post('id')) {
@@ -1091,22 +1114,27 @@ class Api extends REST_Controller
         }
 
         if ($user_id) {
-            $res1 = $this->db->where('date', $this->toDate)->where('user_id', $user_id)->get('tbl_daily_quiz_user')->row_array();
+            $timezone = $this->post('timezone') ? $this->post('timezone') : $this->systemTimezone;
+            $today = new DateTime('now', new DateTimeZone($timezone));
+            $today_date = $today->format('Y-m-d');
+            $gmt_format = $this->post('gmt_format') ? $this->post('gmt_format') : $this->systemTimezoneGMT;
+
+            $res1 = $this->db->where("DATE(CONVERT_TZ(date, '+00:00', '" . $gmt_format . "')) =", $today_date)->where('user_id', $user_id)->get('tbl_daily_quiz_user')->row_array();
             if (empty($res1)) {
                 $questions = $response = array();
                 $language_id = ($this->post('language_id') && is_numeric($this->post('language_id'))) ? $this->post('language_id') : '0';
-                $res = $this->db->where('date_published', $this->toDate)->where('language_id', $language_id)->get('tbl_daily_quiz')->row_array();
+                $res = $this->db->where("DATE(CONVERT_TZ(date_published, '+00:00', '" . $gmt_format . "')) =", $today_date)->where('language_id', $language_id)->get('tbl_daily_quiz')->row_array();
                 if (!empty($res)) {
                     $res2 = $this->db->where('user_id', $user_id)->get('tbl_daily_quiz_user')->row_array();
                     if (!empty($res2)) {
                         $frm_data = array(
-                            'date' => $this->toDate,
+                            'date' => $today_date,
                         );
                         $this->db->where('user_id', $user_id)->update('tbl_daily_quiz_user', $frm_data);
                     } else {
                         $frm_data = array(
                             'user_id' => $user_id,
-                            'date' => $this->toDate,
+                            'date' => $today_date,
                         );
                         $this->db->insert('tbl_daily_quiz_user', $frm_data);
                     }
@@ -1275,21 +1303,23 @@ class Api extends REST_Controller
 
                 if ($type == 1 || $type == '1') {
                     $no_of_que = ' (select count(id) from tbl_question q where q.subcategory=s.id ) as no_of_que,';
-                }
-                if ($type == 2 || $type == '2') {
+                } else if ($type == 2 || $type == '2') {
                     $no_of_que = ' (select count(id) from tbl_fun_n_learn q where q.subcategory=s.id AND q.status=1) as no_of_que,';
-                }
-                if ($type == 3 || $type == '3') {
+                } else if ($type == 3 || $type == '3') {
                     $no_of_que = ' (select count(id) from tbl_guess_the_word q where q.subcategory=s.id ) as no_of_que,';
-                }
-                if ($type == 4 || $type == '4') {
+                } else if ($type == 4 || $type == '4') {
                     $no_of_que = ' (select count(id) from tbl_audio_question q where q.subcategory=s.id ) as no_of_que,';
-                }
-                if ($type == 5 || $type == '5') {
+                } else if ($type == 5 || $type == '5') {
                     $no_of_que = ' (select count(id) from tbl_maths_question q where q.subcategory=s.id ) as no_of_que,';
+                } else if ($type == 6 || $type == '6') {
+                    $no_of_que = ' (select count(id) from tbl_multi_match q where q.subcategory=s.id ) as no_of_que,';
                 }
 
-                $this->db->select('s.*,`c.category_name as category_name, ' . $no_of_que . ' (select max(`level` + 0) from tbl_question q where q.subcategory=s.id ) as maxlevel, (SELECT count(*) from tbl_user_subcategory us WHERE us.subcategory_id = s.id and us.user_id = ' . $user_id . ' ) as has_unlocked');
+                if ($type == 6) {
+                    $this->db->select('s.*,`c.category_name as category_name, ' . $no_of_que . ' (select max(`level` + 0) from tbl_multi_match q where q.subcategory=s.id ) as maxlevel, (SELECT count(*) from tbl_user_subcategory us WHERE us.subcategory_id = s.id and us.user_id = ' . $user_id . ' ) as has_unlocked');
+                } else {
+                    $this->db->select('s.*,`c.category_name as category_name, ' . $no_of_que . ' (select max(`level` + 0) from tbl_question q where q.subcategory=s.id ) as maxlevel, (SELECT count(*) from tbl_user_subcategory us WHERE us.subcategory_id = s.id and us.user_id = ' . $user_id . ' ) as has_unlocked');
+                }
                 $this->db->join('tbl_category c', 'c.id = s.maincat_id');
                 $this->db->where('maincat_id', $res['id']);
                 $this->db->where('status', 1);
@@ -1380,8 +1410,6 @@ class Api extends REST_Controller
 
         $this->response($response, REST_Controller::HTTP_OK);
     }
-
-
 
     public function get_monthly_leaderboard_post()
     {
@@ -1551,7 +1579,6 @@ class Api extends REST_Controller
 
         $this->response($response, REST_Controller::HTTP_OK);
     }
-
 
     public function get_globle_leaderboard_post()
     {
@@ -2108,13 +2135,20 @@ class Api extends REST_Controller
         }
 
         if ($user_id) {
+            $timezone = $this->post('timezone') ? $this->post('timezone') : $this->systemTimezone;
+            $today = new DateTime('now', new DateTimeZone($timezone));
+            $today_date = $today->format('Y-m-d H:i:00');
+            $gmt_format = $this->post('gmt_format') ? $this->post('gmt_format') : $this->systemTimezoneGMT;
+
+            $toDateTime = (new DateTime("now", new DateTimeZone($timezone)))->format("Y-m-d H:i:00");
+
             $language_id = ($this->post('language_id') && is_numeric($this->post('language_id'))) ? $this->post('language_id') : '0';
 
             /* selecting live quiz ids */
             if ($language_id) {
-                $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND language_id = $language_id AND (('$this->toDateTime') between CAST(start_date AS DATETIME) and CAST(end_date AS DATETIME))")->result_array();
+                $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND language_id = $language_id AND (CONVERT_TZ('" . $toDateTime . "', '+00:00', '" . $gmt_format . "') BETWEEN CONVERT_TZ(start_date, '+00:00', '" . $gmt_format . "') AND CONVERT_TZ(end_date, '+00:00', '" . $gmt_format . "'))")->result_array();
             } else {
-                $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND (('$this->toDateTime') between CAST(start_date AS DATETIME) and CAST(end_date AS DATETIME))")->result_array();
+                $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND (CONVERT_TZ('" . $toDateTime . "', '+00:00', '" . $gmt_format . "') BETWEEN CONVERT_TZ(start_date, '+00:00', '" . $gmt_format . "') AND CONVERT_TZ(end_date, '+00:00', '" . $gmt_format . "'))")->result_array();
             }
 
 
@@ -2382,7 +2416,13 @@ class Api extends REST_Controller
             'gmail_login',
             'email_login',
             'phone_login',
-            'apple_login'
+            'apple_login',
+            'multi_match_mode',
+            'multi_match_fix_level_question',
+            'multi_match_total_level_question',
+            'multi_match_duration',
+            'multi_match_wrong_answer_deduct_score',
+            'multi_match_correct_answer_credit_score',
         ];
         foreach ($setting as $row) {
             $data = $this->db->where('type', $row)->get('tbl_settings')->row_array();
@@ -2926,11 +2966,16 @@ class Api extends REST_Controller
             $this->response($is_user, REST_Controller::HTTP_OK);
             return false;
         }
+
         if ($user_id && $this->post('type')) {
             $type = $this->post('type');
+            $timezone = $this->post('timezone') ? $this->post('timezone') : $this->systemTimezone;
+            $today = new DateTime('now', new DateTimeZone($timezone));
+            $today_date = $today->format('Y-m-d');
+            $gmt_format = $this->post('gmt_format') ? $this->post('gmt_format') : $this->systemTimezoneGMT;
 
             if ($type == 1 || $type == '1') {
-                $this->db->select('te.*, (select count(id) from tbl_exam_module_question q where q.exam_module_id=te.id ) as no_of_que, (select SUM(marks) from tbl_exam_module_question q where q.exam_module_id=te.id ) as total_marks');
+                $this->db->select('te.*,DATE_FORMAT(CONVERT_TZ(te.date, "+00:00", "' . $gmt_format . '"), "%Y-%m-%d") AS converted_date, (select count(id) from tbl_exam_module_question q where q.exam_module_id=te.id ) as no_of_que, (select SUM(marks) from tbl_exam_module_question q where q.exam_module_id=te.id ) as total_marks');
                 if ($this->post('id')) {
                     $id = $this->post('id');
                     $this->db->where('id', $id);
@@ -2939,7 +2984,9 @@ class Api extends REST_Controller
                     $language_id = $this->post('language_id');
                     $this->db->where('language_id', $language_id);
                 }
-                $this->db->where('status', 1)->where('date', $this->toDate);
+                $this->db->where('status', 1);
+                $this->db->where("DATE(CONVERT_TZ(date, '+00:00', '" . $gmt_format . "')) =", $today_date);
+
                 $this->db->order_by('id', 'DESC');
                 $data = $this->db->get('tbl_exam_module te')->result_array();
                 if (!empty($data)) {
@@ -3112,6 +3159,7 @@ class Api extends REST_Controller
                 'tbl_tracker',
                 'tbl_users_badges',
                 'tbl_users_statistics',
+                'tbl_multi_match_question_reports'
             ];
 
             foreach ($tables as $type) {
@@ -3749,7 +3797,8 @@ class Api extends REST_Controller
             'guess_the_word_icon',
             'primary_color',
             'footer_color',
-            'social_media'
+            'social_media',
+            'multi_match_icon'
         ];
         // Here Added language because settings and home settings of web are in same folder and web settings will be always stored with language 14
         $data = $this->db->where('language_id', 14)->where_in('type', $types)->get('tbl_web_settings')->result_array();
@@ -3768,7 +3817,7 @@ class Api extends REST_Controller
                 } else {
                     $message = $data[$i]['message'];
                     // LOGOS of Web settings
-                    $logos = ['favicon', 'header_logo', 'footer_logo', 'sticky_header_logo', 'quiz_zone_icon', 'daily_quiz_icon', 'true_false_icon', 'fun_learn_icon', 'self_challange_icon', 'contest_play_icon', 'one_one_battle_icon', 'group_battle_icon', 'audio_question_icon', 'math_mania_icon', 'exam_icon', 'guess_the_word_icon'];
+                    $logos = ['favicon', 'header_logo', 'footer_logo', 'sticky_header_logo', 'quiz_zone_icon', 'daily_quiz_icon', 'true_false_icon', 'fun_learn_icon', 'self_challange_icon', 'contest_play_icon', 'one_one_battle_icon', 'group_battle_icon', 'audio_question_icon', 'math_mania_icon', 'exam_icon', 'guess_the_word_icon', 'multi_match_icon'];
                     foreach ($logos as $key => $value) {
                         if ($type == $value) {
                             $message = ($message) ? base_url() . WEB_SETTINGS_LOGO_PATH . $message : '';
@@ -4114,6 +4163,300 @@ class Api extends REST_Controller
         $this->response($response, REST_Controller::HTTP_OK);
     }
 
+    public function get_multi_match_questions_post()
+    {
+        $is_user = $this->verify_token();
+        if (!$is_user['error']) {
+            $user_id = $is_user['user_id'];
+            $firebase_id = $is_user['firebase_id'];
+        } else {
+            $this->response($is_user, REST_Controller::HTTP_OK);
+            return false;
+        }
+
+        if ($this->post('type') && $this->post('id')) {
+            $type = $this->post('type');
+            $id = $this->post('id');
+
+            $this->db->where($type, $id);
+            $this->db->order_by($this->Order_By);
+            $data = $this->db->get('tbl_multi_match')->result_array();
+            if (!empty($data)) {
+                for ($i = 0; $i < count($data); $i++) {
+                    $data[$i]['image'] = ($data[$i]['image']) ? base_url() . MULTIMATCH_QUESTION_IMG_PATH . $data[$i]['image'] : '';
+                    $answers = explode(',', trim($data[$i]['answer']));
+                    $data[$i]['answer'] = array_map(function ($answer) use ($firebase_id) {
+                        return $this->encrypt_data($firebase_id, $answer);
+                    }, $answers);
+                }
+                $response['error'] = false;
+                $response['data'] = $data;
+            } else {
+                $response['error'] = true;
+                $response['message'] = "102";
+            }
+        } else {
+            $response['error'] = true;
+            $response['message'] = "103";
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function get_multi_match_questions_by_type_post()
+    {
+        $is_user = $this->verify_token();
+        if (!$is_user['error']) {
+            $user_id = $is_user['user_id'];
+            $firebase_id = $is_user['firebase_id'];
+        } else {
+            $this->response($is_user, REST_Controller::HTTP_OK);
+            return false;
+        }
+
+        if ($this->post('question_type')) {
+            $type = $this->post('question_type');
+            $language_id = ($this->post('language_id')) ? $this->post('language_id') : "0";
+            $fix_question = is_settings('true_false_quiz_fix_question');
+            $limit = is_settings('true_false_quiz_total_question');
+
+            $this->db->select('ms.*,c.id as cat_id, sc.id as subcat_id');
+
+            $this->db->where('ms.question_type', $type);
+            if (!empty($language_id)) {
+                $this->db->where('ms.language_id', $language_id);
+            }
+            $this->db->join('tbl_category c', 'ms.category = c.id')->where('c.is_premium', '0');
+            $this->db->join('tbl_subcategory sc', 'ms.subcategory = sc.id', 'left');
+            $this->db->order_by($this->Order_By);
+
+            if ($fix_question == 1 && $limit) {
+                $this->db->limit($limit, 0);
+            }
+
+            $data = $this->db->get('tbl_multi_match ms')->result_array();
+
+            if (!empty($data)) {
+                for ($i = 0; $i < count($data); $i++) {
+                    $data[$i]['image'] = ($data[$i]['image']) ? base_url() . MULTIMATCH_QUESTION_IMG_PATH . $data[$i]['image'] : '';
+                    $answers = explode(',', trim($data[$i]['answer']));
+                    $data[$i]['answer'] = array_map(function ($answer) use ($firebase_id) {
+                        return $this->encrypt_data($firebase_id, $answer);
+                    }, $answers);
+                }
+                $response['error'] = false;
+                $response['data'] = $data;
+            } else {
+                $response['error'] = true;
+                $response['message'] = "102";
+            }
+        } else {
+            $response['error'] = true;
+            $response['message'] = "103";
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function get_multi_match_questions_by_level_post()
+    {
+        $is_user = $this->verify_token();
+        if (!$is_user['error']) {
+
+            $user_id = $is_user['user_id'];
+            $firebase_id = $is_user['firebase_id'];
+        } else {
+
+            $this->response($is_user, REST_Controller::HTTP_OK);
+            return false;
+        }
+        if ($this->post('level') && ($this->post('category') || $this->post('subcategory'))) {
+            $level = $this->post('level');
+            $language_id = ($this->post('language_id')) ? $this->post('language_id') : 0;
+            $category_id = $this->post('category');
+            $subcategory_id = $this->post('subcategory');
+            $fix_question = is_settings('multi_match_fix_level_question');
+            $limit = is_settings('multi_match_total_level_question');
+
+            $this->db->select('mq.*,cat.slug as category_slug,subcat.slug as subcategory_slug');
+            $this->db->where('level', $level);
+            $this->db->join('tbl_category cat', 'cat.id=mq.category', 'left');
+            $this->db->join('tbl_subcategory subcat', 'subcat.id=mq.subcategory', 'left');
+            if ($this->post('subcategory')) {
+                $this->db->where('mq.subcategory', $subcategory_id);
+            } else {
+                $this->db->where('mq.category', $category_id);
+            }
+            if (!empty($language_id)) {
+                $this->db->where('mq.language_id', $language_id);
+            }
+            $this->db->order_by($this->Order_By);
+            if ($fix_question == 1) {
+                $this->db->limit($limit, 0);
+            }
+            $data = $this->db->get('tbl_multi_match mq')->result_array();
+            if (!empty($data)) {
+                for ($i = 0; $i < count($data); $i++) {
+                    $data[$i]['image'] = ($data[$i]['image']) ? base_url() . MULTIMATCH_QUESTION_IMG_PATH . $data[$i]['image'] : '';
+                    $answers = explode(',', trim($data[$i]['answer']));
+                    $data[$i]['answer'] = array_map(function ($answer) use ($firebase_id) {
+                        return $this->encrypt_data($firebase_id, $answer);
+                    }, $answers);
+                }
+                $response['error'] = false;
+                $response['data'] = $data;
+            } else {
+                $response['error'] = true;
+                $response['message'] = "102";
+            }
+        } else {
+            $response['error'] = true;
+            $response['message'] = "103";
+        }
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function multi_match_report_question_post()
+    {
+        $is_user = $this->verify_token();
+        if (!$is_user['error']) {
+            $user_id = $is_user['user_id'];
+            $firebase_id = $is_user['firebase_id'];
+        } else {
+            $this->response($is_user, REST_Controller::HTTP_OK);
+            return false;
+        }
+
+        if ($this->post('question_id') && $user_id && $this->post('message')) {
+            $frm_data = array(
+                'question_id' => $this->post('question_id'),
+                'user_id' => $user_id,
+                'message' => $this->post('message'),
+                'date' => $this->toDateTime,
+            );
+            $this->db->insert('tbl_multi_match_question_reports', $frm_data);
+            $response['error'] = false;
+            $response['message'] = "109";
+        } else {
+            $response['error'] = true;
+            $response['message'] = "103";
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function set_multi_match_level_data_post()
+    {
+        $is_user = $this->verify_token();
+        if (!$is_user['error']) {
+            $user_id = $is_user['user_id'];
+            $firebase_id = $is_user['firebase_id'];
+        } else {
+            $this->response($is_user, REST_Controller::HTTP_OK);
+            return false;
+        }
+
+        if ($user_id && $this->post('category') && $this->post('level')) {
+            $category = $this->post('category');
+            $subcategory = ($this->post('subcategory')) ? $this->post('subcategory') : 0;
+            $level = $this->post('level');
+
+            $this->db->where('user_id', $user_id)->where('category', $category)->where('subcategory', $subcategory);
+            $res = $this->db->get('tbl_multi_match_level')->result_array();
+            if (!empty($res)) {
+                $data = array(
+                    'level' => $level,
+                );
+                $this->db->where('user_id', $user_id)->where('category', $category)->where('subcategory', $subcategory)->update('tbl_multi_match_level', $data);
+            } else {
+                $frm_data = array(
+                    'user_id' => $user_id,
+                    'category' => $category,
+                    'subcategory' => $subcategory,
+                    'level' => $level,
+                );
+                $this->db->insert('tbl_multi_match_level', $frm_data);
+            }
+            $response['error'] = false;
+            $response['message'] = "111";
+        } else {
+            $response['error'] = true;
+            $response['message'] = "103";
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
+    public function get_multi_match_level_data_post()
+    {
+        $is_user = $this->verify_token();
+        if (!$is_user['error']) {
+            $user_id = $is_user['user_id'];
+            $firebase_id = $is_user['firebase_id'];
+        } else {
+            $this->response($is_user, REST_Controller::HTTP_OK);
+            return false;
+        }
+
+        if ($user_id && ($this->post('category') || $this->post('category_slug'))) {
+            $category = $this->post('category') ?? 0;
+            $categorySlug = !empty($this->post('category_slug')) ? $this->post('category_slug') : null;
+            $subcategory = ($this->post('subcategory')) ? $this->post('subcategory') : 0;
+            $subcategorySlug = !empty($this->post('subcategory_slug')) ? $this->post('subcategory_slug') : null;
+
+            if ($subcategory) {
+                $subcategoryData = $this->db->select("id,maincat_id,subcategory_name,slug")->where('id', $subcategory)->get('tbl_subcategory')->row_array();
+                if ($subcategoryData) {
+                    $categoryData = $this->getCategoryData($category, $categorySlug);
+                    $questionData = $this->getMultiMatchQuestionData($subcategoryData, $categoryData);
+                }
+            } elseif ($subcategorySlug) {
+                $subcategoryData = $this->db->select("id,maincat_id,subcategory_name,slug")->where('slug', $subcategorySlug)->get('tbl_subcategory')->row_array();
+                if ($subcategoryData) {
+                    $categoryData = $this->getCategoryData($category, $categorySlug);
+                    $questionData = $this->getMultiMatchQuestionData($subcategoryData, $categoryData);
+                }
+            } else {
+                $categoryData = $this->getCategoryData($category, $categorySlug);
+                $subcategoryData = ['id' => 0];
+                $questionData = $this->getMultiMatchQuestionData($subcategoryData, $categoryData);
+            }
+
+            if ((isset($categoryData) && !empty($categoryData)) && (isset($subcategoryData) && !empty($subcategoryData))) {
+                // Get Level Data with its Particular Question Count
+                $max_level = $questionData['max_level'];
+                $counter = range(1, $max_level);
+                $levelData = [];
+
+                foreach ($counter as $key => $level) {
+                    $query = $this->db->query('select count(id) as no_of_que from tbl_multi_match where level = ' . $level . ' and category = ' . $categoryData["id"] . ' and subcategory = ' . $subcategoryData["id"])->row_array();
+                    $levelData[$key]['level'] = $level;
+                    $levelData[$key]['no_of_ques'] = $query['no_of_que'];
+                }
+
+                // Get Data 
+                $res = $this->db->select('level')->where('user_id', $user_id)->where('category', $categoryData['id'])->where('subcategory', $subcategoryData['id'])->get('tbl_multi_match_level')->row_array();
+                $data = array(
+                    'level' => $res['level'] ?? "1",
+                    'no_of_ques' => $questionData['no_of_que'],
+                    'max_level' => $questionData['max_level'],
+                    'category' => $categoryData ?? [],
+                    'subcategory' => $subcategoryData ?? [],
+                    'level_data' => $levelData ?? []
+                );
+                $response['error'] = false;
+                $response['data'] = $data;
+            } else {
+                $response['error'] = true;
+                $response['message'] = "102";
+            }
+        } else {
+            $response['error'] = true;
+            $response['message'] = "103";
+        }
+
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
     /**
      * Other Functions used for internally 
      */
@@ -4592,6 +4935,15 @@ class Api extends REST_Controller
             return $this->db->query('select count(id) as no_of_que, MAX(level) as max_level from tbl_question where subcategory  = ' . $subcategoryData["id"])->row_array();
         } else {
             return $this->db->query('select count(id) as no_of_que, MAX(level) as max_level from tbl_question where category = ' . $categoryData["id"] . ' AND subcategory = 0')->row_array();
+        }
+    }
+
+    function getMultiMatchQuestionData($subcategoryData, $categoryData)
+    {
+        if ($subcategoryData["id"] != 0) {
+            return $this->db->query('select count(id) as no_of_que, MAX(level) as max_level from tbl_multi_match where subcategory  = ' . $subcategoryData["id"])->row_array();
+        } else {
+            return $this->db->query('select count(id) as no_of_que, MAX(level) as max_level from tbl_multi_match where category = ' . $categoryData["id"] . ' AND subcategory = 0')->row_array();
         }
     }
 }

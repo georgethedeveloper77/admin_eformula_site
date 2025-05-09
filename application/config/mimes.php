@@ -160,7 +160,7 @@ return array(
 	'cdr'	=>	array('application/cdr', 'application/coreldraw', 'application/x-cdr', 'application/x-coreldraw', 'image/cdr', 'image/x-cdr', 'zz-application/zz-winassoc-cdr'),
 	'wma'	=>	array('audio/x-ms-wma', 'video/x-ms-asf'),
 	'jar'	=>	array('application/java-archive', 'application/x-java-application', 'application/x-jar', 'application/x-compressed'),
-	'svg'	=>	array('image/svg+xml', 'application/xml', 'text/xml' ,'image/svg', 'application/octet-stream'),
+	'svg'	=>	array('image/svg+xml', 'application/xml', 'text/xml' ,'image/svg'),
 	'vcf'	=>	'text/x-vcard',
 	'srt'	=>	array('text/srt', 'text/plain'),
 	'vtt'	=>	array('text/vtt', 'text/plain'),

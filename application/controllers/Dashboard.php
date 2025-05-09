@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Dashboard extends CI_Controller
 {
-
+    public $toDate;
     public function __construct()
     {
         parent::__construct();
@@ -13,10 +13,10 @@ class Dashboard extends CI_Controller
         }
         $this->load->helper('password_helper');
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
 
         $this->category_type = $this->config->item('category_type');
 
+        date_default_timezone_set(get_system_timezone());
         $this->toDate = date('Y-m-d');
 
         $this->NO_IMAGE = base_url() . LOGO_IMG_PATH . is_settings('half_logo');
@@ -50,7 +50,7 @@ class Dashboard extends CI_Controller
 
     public function edit_accounts_rights()
     {
-        if (!$this->session->userdata('authStatus')) {
+        if (!has_permissions('read', 'users_accounts_rights')) {
             redirect('/');
         } else {
             $id = $this->input->post('id');
@@ -62,7 +62,7 @@ class Dashboard extends CI_Controller
 
     public function users_accounts_rights()
     {
-        if (!$this->session->userdata('authStatus')) {
+        if (!has_permissions('read', 'users_accounts_rights')) {
             redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
@@ -79,8 +79,7 @@ class Dashboard extends CI_Controller
                     }
                 }
                 redirect('user-accounts-rights');
-            }
-            if ($this->input->post('btnupdate')) {
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'users_accounts_rights')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -103,24 +102,35 @@ class Dashboard extends CI_Controller
 
     public function global_leaderboard()
     {
-        $this->load->view('leaderboard_global');
+        if (!has_permissions('read', 'leaderboard')) {
+            redirect('/');
+        } else {
+            $this->load->view('leaderboard_global');
+        }
     }
 
     public function monthly_leaderboard()
     {
-        $this->load->view('leaderboard_monthly');
+        if (!has_permissions('read', 'leaderboard')) {
+            redirect('/');
+        } else {
+            $this->load->view('leaderboard_monthly');
+        }
     }
 
     public function daily_leaderboard()
     {
-        $this->load->view('leaderboard_daily');
+        if (!has_permissions('read', 'leaderboard')) {
+            redirect('/');
+        } else {
+            $this->load->view('leaderboard_daily');
+        }
     }
 
     public function get_subcategories_of_category()
     {
         $category_id = $this->input->post('category_id');
         $data = $this->db->where('maincat_id', $category_id)
-            // ->where('status', 1)
             ->order_by('row_order', 'ASC')->get('tbl_subcategory')->result();
         if ($this->input->post('sortable')) {
             $options = '';
@@ -192,8 +202,7 @@ class Dashboard extends CI_Controller
                     $this->session->set_flashdata('success', lang('user_updated_successfully'));
                 }
                 redirect('users');
-            }
-            if ($this->input->post('btnupdateCoins')) {
+            } else if ($this->input->post('btnupdateCoins')) {
                 if (!has_permissions('update', 'users')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {

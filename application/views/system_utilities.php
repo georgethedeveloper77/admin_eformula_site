@@ -746,7 +746,54 @@
                                                 </div>
 
                                             </div>
+                                            <hr class="row">
 
+                                            <!-- Multi Match Settings -->
+                                            <h4 class="row">
+                                                <label class="control-label"><b><?= lang('multi_match_settings'); ?></b></label>
+                                                <i class="fa fa-question-circle fa-sm ml-2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?= lang('please_enter_value_greater_than_or_equal_to_1') ?>"></i>
+                                            </h4>
+                                            <div class="row bg-light rounded p-3">
+
+                                                <!-- Multi Match Visiblity Switch -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2">
+                                                    <label class="control-label"><?= lang('visible_mode'); ?></label><br>
+                                                    <input type="checkbox" id="multi_match_mode_btn" data-plugin="switchery" <?php isset($multi_match_mode) && !empty($multi_match_mode) && $multi_match_mode['message'] == '1' ? print_r('checked') : "" ?>>
+                                                    <input type="hidden" id="multi_match_mode" name="multi_match_mode" value="<?= isset($multi_match_mode) && !empty($multi_match_mode) ? $multi_match_mode['message'] : 0; ?>">
+                                                </div>
+
+                                                <!-- Multi Match Fix Level Question Switch -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2">
+                                                    <label class="control-label"><?= lang('fix_question_in_level'); ?></label><br>
+                                                    <input type="checkbox" id="multi_match_fix_level_question_btn" data-plugin="switchery" <?php (isset($multi_match_fix_level_question) && !empty($multi_match_fix_level_question) && $multi_match_fix_level_question['message'] == '1') ? print_r('checked') : ""; ?>>
+
+                                                    <input type="hidden" id="multi_match_fix_level_question" name="multi_match_fix_level_question" value="<?= (isset($multi_match_fix_level_question) && !empty($multi_match_fix_level_question)) ? $multi_match_fix_level_question['message'] : 0; ?>">
+                                                </div>
+
+                                                <!-- Multi Match Total Level Question -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2" id="multi_match_fix_que" style="display:none">
+                                                    <label class="control-label"><?= lang('total_question_per_level'); ?></label>
+                                                    <input type="number" min="1" id="multi_match_total_level_question" name="multi_match_total_level_question" class="form-control" value="<?php echo (isset($multi_match_total_level_question) && !empty($multi_match_total_level_question)) ? $multi_match_total_level_question['message'] : '10' ?>">
+                                                </div>
+
+                                                <!-- Multi Match Durtaion -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2">
+                                                    <label class="control-label"><?= lang('multi_match_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <input name="multi_match_duration" type="number" min=1 class="form-control" value="<?php echo (!empty($multi_match_duration['message'])) ? $multi_match_duration['message'] : "30" ?>" required>
+                                                </div>
+
+                                                <!-- Wrong Answer Deduct Score -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2">
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <input type="number" min=1 id="multi_match_wrong_answer_deduct_score" min="1" name="multi_match_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($multi_match_wrong_answer_deduct_score) ? $multi_match_wrong_answer_deduct_score['message'] : "" ?>">
+                                                </div>
+
+                                                <!-- Correct Answer Credit Score -->
+                                                <div class="form-group col-md-3 col-sm-6 mt-2">
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <input type="number" min=1 id="multi_match_correct_answer_credit_score" min="1" name="multi_match_correct_answer_credit_score" required class="form-control" value="<?php echo isset($multi_match_correct_answer_credit_score) ? $multi_match_correct_answer_credit_score['message'] : "" ?>">
+                                                </div>
+                                            </div>
                                             <hr class="row">
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
@@ -825,27 +872,10 @@
             let BattleGroupQuizCodeChar = $('#battle_mode_group_code_char_value').val();
             $('#battle_mode_group_code_char').val(BattleGroupQuizCodeChar)
 
-            // let BattleRandomQuizFixLevelQuestionToggle = $("#battle_mode_random_fix_question").val();
-            // if(BattleRandomQuizFixLevelQuestionToggle == 1){
-            //     $('#battle_mode_random_fix_question_btn').trigger('change')
-            // }
-            // tinymce.init({
-            //     selector: '#message',
-            //     height: 250,
-            //     menubar: true,
-            //     plugins: [
-            //         'advlist autolink lists link charmap print preview anchor textcolor',
-            //         'searchreplace visualblocks code fullscreen',
-            //         'insertdatetime table contextmenu paste code help wordcount'
-            //     ],
-            //     toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-            //     setup: function (editor) {
-            //         editor.on("change keyup", function (e) {
-            //             editor.save();
-            //             $(editor.getElement()).trigger('change');
-            //         });
-            //     }
-            // });
+            let multiMatchFixLevelQuestionToggle = $("#multi_match_fix_level_question").val();
+            if (multiMatchFixLevelQuestionToggle == 1) {
+                $('#multi_match_fix_level_question_btn').trigger('change')
+            }
         });
     </script>
 
@@ -1164,6 +1194,30 @@
                 $('#contest_mode').val(1);
             } else {
                 $('#contest_mode').val(0);
+            }
+        };
+
+        /* on change of Quiz Zone Visibilty Mode btn - switchery js */
+        var changeMultiMatchVisiblityMode = document.querySelector('#multi_match_mode_btn');
+        changeMultiMatchVisiblityMode.onchange = function() {
+            if (changeMultiMatchVisiblityMode.checked)
+                $('#multi_match_mode').val(1);
+            else
+                $('#multi_match_mode').val(0);
+        };
+
+
+        /* on change of fix question btn - switchery js */
+        var multiMatchChangeFixQuestion = document.querySelector('#multi_match_fix_level_question_btn');
+        multiMatchChangeFixQuestion.onchange = function() {
+            if (multiMatchChangeFixQuestion.checked) {
+                $('#multi_match_fix_level_question').val(1);
+                $('#multi_match_fix_que').show(100);
+                $('#multi_match_total_level_question').attr('required', true);
+            } else {
+                $('#multi_match_fix_level_question').val(0);
+                $('#multi_match_total_level_question').removeAttr('required');
+                $('#multi_match_fix_que').hide(100);
             }
         };
     </script>

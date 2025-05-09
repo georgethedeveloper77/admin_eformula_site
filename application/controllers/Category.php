@@ -12,15 +12,13 @@ class Category extends CI_Controller
             redirect('/');
         }
         $this->load->config('quiz');
-        date_default_timezone_set(get_system_timezone());
-
         $this->category_type = $this->config->item('category_type');
     }
 
     public function index()
     {
         if (!has_permissions('read', 'categories')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 $type_name = $this->input->post('type');
@@ -39,9 +37,8 @@ class Category extends CI_Controller
                         $this->session->set_flashdata('success', lang('category_created_successfully'));
                     }
                 }
-                redirect($type_name, 'refresh');
-            }
-            if ($this->input->post('btnupdate')) {
+                redirect($type_name);
+            } else if ($this->input->post('btnupdate')) {
                 $type_name = $this->input->post('type');
                 $type = $this->category_type[$type_name];
                 if (!has_permissions('update', 'categories')) {
@@ -58,7 +55,7 @@ class Category extends CI_Controller
                         $this->session->set_flashdata('success', lang('category_updated_successfully'));
                     }
                 }
-                redirect($type_name, 'refresh');
+                redirect($type_name);
             }
             $this->result['language'] = $this->Language_model->get_data();
             $this->load->view('category', $this->result);
@@ -80,7 +77,7 @@ class Category extends CI_Controller
     public function category_order()
     {
         if (!has_permissions('read', 'category_order')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnaddcategory')) {
                 $type_name = $this->input->post('type');
@@ -90,7 +87,7 @@ class Category extends CI_Controller
                     $this->Category_model->update_order();
                     $this->session->set_flashdata('success', lang('category_order_updated_successfully'));
                 }
-                redirect($type_name, 'refresh');
+                redirect($type_name);
             }
             if ($this->input->post('btnaddsubcategory')) {
                 $type_name = $this->input->post('type');
@@ -100,7 +97,7 @@ class Category extends CI_Controller
                     $this->Subcategory_model->update_order();
                     $this->session->set_flashdata('success', lang('subcategory_order_updated_successfully'));
                 }
-                redirect($type_name, 'refresh');
+                redirect($type_name);
             }
             $this->result['language'] = $this->Language_model->get_data();
 
@@ -111,10 +108,8 @@ class Category extends CI_Controller
             $this->db->select('s.*');
             $this->db->join('tbl_category c', 'c.id=s.maincat_id')
                 ->where('c.type', $type);
-            // $this->db->where('s.status', 1)
             $this->db->order_by('s.row_order', 'ASC');
             $subcategory_list = $this->db->get('tbl_subcategory s')->result();
-            //            log_message('error', $this->db->last_query());
             $this->result['subcategory'] = $subcategory_list;
             $this->load->view('category_order', $this->result);
         }
@@ -123,7 +118,7 @@ class Category extends CI_Controller
     public function get_slug()
     {
         if (!has_permissions('read', 'categories')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             $this->load->helper('url');
             $category_name = $this->input->post('category_name');
@@ -152,13 +147,13 @@ class Category extends CI_Controller
     public function verify_slug()
     {
         if (!has_permissions('read', 'categories')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             $slug = $this->input->post('slug');
             $id = $this->input->post('id');
             $slug = trim($slug);
             if (!preg_match('/^[a-z0-9- ]+$/i', $slug)) {
-                echo 3; // Code 
+                echo 3;
                 return false;
             } else if ($this->Category_model->is_unique_slug($slug, $id) != 0) {
                 echo FALSE;

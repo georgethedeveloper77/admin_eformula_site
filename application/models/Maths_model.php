@@ -1,17 +1,20 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Maths_model extends CI_Model {
+class Maths_model extends CI_Model
+{
 
-    public function get_data($id = 0) {
-        if($id != 0){
+    public function get_data($id = 0)
+    {
+        if ($id != 0) {
             $this->db->where('id', $id);
         }
         return $this->db->order_by('id', 'DESC')->get('tbl_maths_question')->result();
     }
 
-    public function add_data() {
+    public function add_data()
+    {
         if (!is_dir(MATHS_QUESTION_IMG_PATH)) {
             mkdir(MATHS_QUESTION_IMG_PATH, 0777, TRUE);
         }
@@ -28,24 +31,22 @@ class Maths_model extends CI_Model {
         $answer = $this->input->post('answer');
         $note = $this->input->post('note');
 
-        if ($_FILES['file']['name'] == '') {
-            $frm_data = array(
-                'category' => $category,
-                'subcategory' => $subcategory,
-                'language_id' => $language,
-                'question' => $question,
-                'question_type' => $question_type,
-                'optiona' => $a,
-                'optionb' => $b,
-                'optionc' => $c,
-                'optiond' => $d,
-                'optione' => $e,
-                'answer' => $answer,
-                'note' => $note
-            );
-            $this->db->insert('tbl_maths_question', $frm_data);
-            return TRUE;
-        } else {
+        $frm_data = array(
+            'category' => $category,
+            'subcategory' => $subcategory,
+            'language_id' => $language,
+            'question' => $question,
+            'question_type' => $question_type,
+            'optiona' => $a,
+            'optionb' => $b,
+            'optionc' => $c,
+            'optiond' => $d,
+            'optione' => $e,
+            'answer' => $answer,
+            'note' => $note,
+            'image' => ''
+        );
+        if ($_FILES['file']['name'] != '') {
             $config['upload_path'] = MATHS_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
@@ -57,28 +58,15 @@ class Maths_model extends CI_Model {
             } else {
                 $data = $this->upload->data();
                 $img = $data['file_name'];
-                $frm_data = array(
-                    'category' => $category,
-                    'subcategory' => $subcategory,
-                    'language_id' => $language,
-                    'image' => $img,
-                    'question' => $question,
-                    'question_type' => $question_type,
-                    'optiona' => $a,
-                    'optionb' => $b,
-                    'optionc' => $c,
-                    'optiond' => $d,
-                    'optione' => $e,
-                    'answer' => $answer,
-                    'note' => $note
-                );
-                $this->db->insert('tbl_maths_question', $frm_data);
-                return TRUE;
+                $frm_data['image'] = $img;
             }
         }
+        $this->db->insert('tbl_maths_question', $frm_data);
+        return TRUE;
     }
 
-    public function update_data() {
+    public function update_data()
+    {
         if (!is_dir(MATHS_QUESTION_IMG_PATH)) {
             mkdir(MATHS_QUESTION_IMG_PATH, 0777, TRUE);
         }
@@ -102,23 +90,20 @@ class Maths_model extends CI_Model {
         $answer = $this->input->post('answer');
         $note = $this->input->post('note');
 
-        if ($_FILES['file']['name'] == '') {
-            $frm_data = array(
-                'category' => $category,
-                'subcategory' => $subcategory,
-                'question' => $question,
-                'question_type' => $question_type,
-                'optiona' => $a,
-                'optionb' => $b,
-                'optionc' => $c,
-                'optiond' => $d,
-                'optione' => $e,
-                'answer' => $answer,
-                'note' => $note
-            );
-            $this->db->where('id', $id)->update('tbl_maths_question', $frm_data);
-            return TRUE;
-        } else {
+        $frm_data = array(
+            'category' => $category,
+            'subcategory' => $subcategory,
+            'question' => $question,
+            'question_type' => $question_type,
+            'optiona' => $a,
+            'optionb' => $b,
+            'optionc' => $c,
+            'optiond' => $d,
+            'optione' => $e,
+            'answer' => $answer,
+            'note' => $note
+        );
+        if ($_FILES['file']['name'] != '') {
             $config['upload_path'] = MATHS_QUESTION_IMG_PATH;
             $config['allowed_types'] = IMG_ALLOWED_TYPES;
             $config['file_name'] = time();
@@ -135,33 +120,18 @@ class Maths_model extends CI_Model {
 
                 $data = $this->upload->data();
                 $img = $data['file_name'];
-                $frm_data = array(
-                    'category' => $category,
-                    'subcategory' => $subcategory,
-                    'image' => $img,
-                    'question' => $question,
-                    'question_type' => $question_type,
-                    'optiona' => $a,
-                    'optionb' => $b,
-                    'optionc' => $c,
-                    'optiond' => $d,
-                    'optione' => $e,
-                    'answer' => $answer,
-                    'note' => $note
-                );
-                $this->db->where('id', $id)->update('tbl_maths_question', $frm_data);
-                return TRUE;
+                $frm_data['image'] = $img;
             }
         }
+        $this->db->where('id', $id)->update('tbl_maths_question', $frm_data);
+        return TRUE;
     }
 
-    public function delete_data($id, $image_url) {
+    public function delete_data($id, $image_url)
+    {
         if (file_exists($image_url)) {
             unlink($image_url);
         }
         $this->db->where('id', $id)->delete('tbl_maths_question');
     }
-
 }
-
-?>

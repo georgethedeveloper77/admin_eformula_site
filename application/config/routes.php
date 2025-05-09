@@ -212,3 +212,15 @@ $route['new-labels/(:any)'] = 'System_Languages/new_language_data';
 $route['delete-app-system-languages'] = 'System_Languages/delete_app_language_data';
 $route['delete-web-system-languages'] = 'System_Languages/delete_web_language_data';
 $route['new-labels/(:any)/(:any)'] = 'System_Languages/new_json_language_data';
+
+$route['multi-match-category'] = 'Category';
+$route['multi-match-subcategory'] = 'Subcategory';
+$route['multi-match-category-order'] = 'Category/category_order';
+$route['multi-match'] = 'Multi_Match';
+$route['multi-match/(:num)'] = 'Multi_Match/edit_questions/$1';
+$route['manage-multi-match'] = 'Multi_Match/manage_questions';
+$route['delete_multi_match'] = 'Multi_Match/delete_questions';
+$route['multi-match-question-reports'] = 'Multi_Match/question_reports';
+$route['multi-match-question-reports/(:num)'] = 'Multi_Match/edit_question_reports/$1';
+$route['delete_multi_match_report'] = 'Multi_Match/delete_question_report';
+$route['multi-match-import-questions'] = 'Multi_Match/import_questions';

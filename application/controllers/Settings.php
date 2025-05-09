@@ -8,7 +8,6 @@ class Settings extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        date_default_timezone_set(get_system_timezone());
     }
 
     public function firebase_configurations()
@@ -40,115 +39,124 @@ class Settings extends CI_Controller
 
     public function system_utilities()
     {
-
-        if ($this->input->post('btnadd')) {
-            if (!has_permissions('update', 'system_configuration')) {
-                $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
-            } else {
-                $this->Setting_model->update_system_utility();
-                $this->session->set_flashdata('success', lang('settings_updated_successfully'));
+        if (!$this->session->userdata('isLoggedIn')) {
+            redirect('/');
+        } else {
+            if ($this->input->post('btnadd')) {
+                if (!has_permissions('update', 'system_configuration')) {
+                    $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
+                } else {
+                    $this->Setting_model->update_system_utility();
+                    $this->session->set_flashdata('success', lang('settings_updated_successfully'));
+                }
+                redirect('system-utilities');
             }
-            redirect('system-utilities');
-        }
 
-        $settings = [
-            'maximum_winning_coins',
-            'minimum_coins_winning_percentage',
-            'quiz_winning_percentage',
-            'score',
-            'answer_mode',
-            'welcome_bonus_coin',
-            'review_answers_deduct_coin',
-            'question_shuffle_mode',
-            'option_shuffle_mode',
-            'quiz_zone_mode',
-            'quiz_zone_fix_level_question',
-            'quiz_zone_total_level_question',
-            'quiz_zone_duration',
-            'quiz_zone_lifeline_deduct_coin',
-            'quiz_zone_wrong_answer_deduct_score',
-            'quiz_zone_correct_answer_credit_score',
-            'guess_the_word_question',
-            'guess_the_word_fix_question',
-            'guess_the_word_total_question',
-            'guess_the_word_seconds',
-            'guess_the_word_max_hints',
-            'guess_the_word_max_winning_coin',
-            'guess_the_word_wrong_answer_deduct_score',
-            'guess_the_word_correct_answer_credit_score',
-            'audio_mode_question',
-            'audio_quiz_fix_question',
-            'audio_quiz_total_question',
-            'total_audio_time',
-            'audio_quiz_seconds',
-            'audio_quiz_wrong_answer_deduct_score',
-            'audio_quiz_correct_answer_credit_score',
-            'maths_quiz_mode',
-            'maths_quiz_fix_question',
-            'maths_quiz_total_question',
-            'maths_quiz_seconds',
-            'maths_quiz_wrong_answer_deduct_score',
-            'maths_quiz_correct_answer_credit_score',
-            'fun_n_learn_question',
-            'fun_n_learn_quiz_fix_question',
-            'fun_n_learn_quiz_total_question',
-            'fun_and_learn_time_in_seconds',
-            'fun_n_learn_quiz_wrong_answer_deduct_score',
-            'fun_n_learn_quiz_correct_answer_credit_score',
-            'true_false_mode',
-            'true_false_quiz_fix_question',
-            'true_false_quiz_total_question',
-            'true_false_quiz_in_seconds',
-            'true_false_quiz_wrong_answer_deduct_score',
-            'true_false_quiz_correct_answer_credit_score',
-            'battle_mode_one',
-            'battle_mode_one_category',
-            'battle_mode_one_fix_question',
-            'battle_mode_one_total_question',
-            'battle_mode_one_in_seconds',
-            'battle_mode_one_wrong_answer_deduct_score',
-            'battle_mode_one_correct_answer_credit_score',
-            'battle_mode_one_quickest_correct_answer_extra_score',
-            'battle_mode_one_second_quickest_correct_answer_extra_score',
-            'battle_mode_one_code_char',
-            'battle_mode_one_entry_coin',
-            'battle_mode_group',
-            'battle_mode_group_category',
-            'battle_mode_group_fix_question',
-            'battle_mode_group_total_question',
-            'battle_mode_group_in_seconds',
-            'battle_mode_group_wrong_answer_deduct_score',
-            'battle_mode_group_correct_answer_credit_score',
-            'battle_mode_group_quickest_correct_answer_extra_score',
-            'battle_mode_group_second_quickest_correct_answer_extra_score',
-            'battle_mode_group_code_char',
-            'battle_mode_group_entry_coin',
-            'battle_mode_random',
-            'battle_mode_random_category',
-            'battle_mode_random_fix_question',
-            'battle_mode_random_total_question',
-            'battle_mode_random_in_seconds',
-            'battle_mode_random_wrong_answer_deduct_score',
-            'battle_mode_random_correct_answer_credit_score',
-            'battle_mode_random_quickest_correct_answer_extra_score',
-            'battle_mode_random_second_quickest_correct_answer_extra_score',
-            'battle_mode_random_search_duration',
-            'battle_mode_random_entry_coin',
-            'self_challenge_mode',
-            'self_challenge_max_minutes',
-            'self_challenge_max_questions',
-            'exam_module',
-            'exam_module_resume_exam_timeout',
-            'contest_mode',
-            'contest_mode_wrong_deduct_score',
-            'contest_mode_correct_credit_score'
-        ];
-        foreach ($settings as $row) {
-            $data = $this->db->where('type', $row)->get('tbl_settings')->row_array();
-            $this->result[$row] = $data;
-        }
+            $settings = [
+                'maximum_winning_coins',
+                'minimum_coins_winning_percentage',
+                'quiz_winning_percentage',
+                'score',
+                'answer_mode',
+                'welcome_bonus_coin',
+                'review_answers_deduct_coin',
+                'question_shuffle_mode',
+                'option_shuffle_mode',
+                'quiz_zone_mode',
+                'quiz_zone_fix_level_question',
+                'quiz_zone_total_level_question',
+                'quiz_zone_duration',
+                'quiz_zone_lifeline_deduct_coin',
+                'quiz_zone_wrong_answer_deduct_score',
+                'quiz_zone_correct_answer_credit_score',
+                'guess_the_word_question',
+                'guess_the_word_fix_question',
+                'guess_the_word_total_question',
+                'guess_the_word_seconds',
+                'guess_the_word_max_hints',
+                'guess_the_word_max_winning_coin',
+                'guess_the_word_wrong_answer_deduct_score',
+                'guess_the_word_correct_answer_credit_score',
+                'audio_mode_question',
+                'audio_quiz_fix_question',
+                'audio_quiz_total_question',
+                'total_audio_time',
+                'audio_quiz_seconds',
+                'audio_quiz_wrong_answer_deduct_score',
+                'audio_quiz_correct_answer_credit_score',
+                'maths_quiz_mode',
+                'maths_quiz_fix_question',
+                'maths_quiz_total_question',
+                'maths_quiz_seconds',
+                'maths_quiz_wrong_answer_deduct_score',
+                'maths_quiz_correct_answer_credit_score',
+                'fun_n_learn_question',
+                'fun_n_learn_quiz_fix_question',
+                'fun_n_learn_quiz_total_question',
+                'fun_and_learn_time_in_seconds',
+                'fun_n_learn_quiz_wrong_answer_deduct_score',
+                'fun_n_learn_quiz_correct_answer_credit_score',
+                'true_false_mode',
+                'true_false_quiz_fix_question',
+                'true_false_quiz_total_question',
+                'true_false_quiz_in_seconds',
+                'true_false_quiz_wrong_answer_deduct_score',
+                'true_false_quiz_correct_answer_credit_score',
+                'battle_mode_one',
+                'battle_mode_one_category',
+                'battle_mode_one_fix_question',
+                'battle_mode_one_total_question',
+                'battle_mode_one_in_seconds',
+                'battle_mode_one_wrong_answer_deduct_score',
+                'battle_mode_one_correct_answer_credit_score',
+                'battle_mode_one_quickest_correct_answer_extra_score',
+                'battle_mode_one_second_quickest_correct_answer_extra_score',
+                'battle_mode_one_code_char',
+                'battle_mode_one_entry_coin',
+                'battle_mode_group',
+                'battle_mode_group_category',
+                'battle_mode_group_fix_question',
+                'battle_mode_group_total_question',
+                'battle_mode_group_in_seconds',
+                'battle_mode_group_wrong_answer_deduct_score',
+                'battle_mode_group_correct_answer_credit_score',
+                'battle_mode_group_quickest_correct_answer_extra_score',
+                'battle_mode_group_second_quickest_correct_answer_extra_score',
+                'battle_mode_group_code_char',
+                'battle_mode_group_entry_coin',
+                'battle_mode_random',
+                'battle_mode_random_category',
+                'battle_mode_random_fix_question',
+                'battle_mode_random_total_question',
+                'battle_mode_random_in_seconds',
+                'battle_mode_random_wrong_answer_deduct_score',
+                'battle_mode_random_correct_answer_credit_score',
+                'battle_mode_random_quickest_correct_answer_extra_score',
+                'battle_mode_random_second_quickest_correct_answer_extra_score',
+                'battle_mode_random_search_duration',
+                'battle_mode_random_entry_coin',
+                'self_challenge_mode',
+                'self_challenge_max_minutes',
+                'self_challenge_max_questions',
+                'exam_module',
+                'exam_module_resume_exam_timeout',
+                'contest_mode',
+                'contest_mode_wrong_deduct_score',
+                'contest_mode_correct_credit_score',
+                'multi_match_mode',
+                'multi_match_fix_level_question',
+                'multi_match_total_level_question',
+                'multi_match_duration',
+                'multi_match_wrong_answer_deduct_score',
+                'multi_match_correct_answer_credit_score',
+            ];
+            foreach ($settings as $row) {
+                $data = $this->db->where('type', $row)->get('tbl_settings')->row_array();
+                $this->result[$row] = $data;
+            }
 
-        $this->load->view('system_utilities', $this->result);
+            $this->load->view('system_utilities', $this->result);
+        }
     }
 
     public function system_configurations()
@@ -372,7 +380,7 @@ class Settings extends CI_Controller
                 redirect('/');
             } else {
                 if ($this->input->post('btnadd')) {
-                    if (!has_permissions('create', 'terms_conditions')) {
+                    if (!has_permissions('create', 'term_conditions')) {
                         $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_terms_conditions();
@@ -424,7 +432,7 @@ class Settings extends CI_Controller
                 redirect('/');
             } else {
                 if ($this->input->post('btnadd')) {
-                    if (!has_permissions('create', 'instructions')) {
+                    if (!has_permissions('create', 'how_to_play')) {
                         $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_instructions();
@@ -530,7 +538,7 @@ class Settings extends CI_Controller
                 redirect('/');
             } else {
                 if ($this->input->post('btnadd')) {
-                    if (!has_permissions('create', 'system_configuration')) {
+                    if (!has_permissions('create', 'web_settings')) {
                         $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_web_settings();
@@ -575,7 +583,8 @@ class Settings extends CI_Controller
                     'guess_the_word_icon',
                     'primary_color',
                     'footer_color',
-                    'social_media'
+                    'social_media',
+                    'multi_match_icon'
                 ];
 
                 foreach ($settings as $row) {
@@ -596,7 +605,7 @@ class Settings extends CI_Controller
                 redirect('/');
             } else {
                 if ($this->input->post('btnadd')) {
-                    if (!has_permissions('create', 'system_configuration')) {
+                    if (!has_permissions('create', 'web_settings')) {
                         $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                     } else {
                         $this->Setting_model->update_web_home_settings();
@@ -609,13 +618,14 @@ class Settings extends CI_Controller
             }
         }
     }
+
     public function edit_web_home_settings($id)
     {
-        if (!has_permissions('read', 'system_configuration')) {
+        if (!has_permissions('read', 'web_settings')) {
             redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
-                if (!has_permissions('update', 'system_configuration')) {
+                if (!has_permissions('update', 'web_settings')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Setting_model->update_web_home_settings();
@@ -677,7 +687,6 @@ class Settings extends CI_Controller
 
     public function in_app_settings()
     {
-
         if (!$this->session->userdata('isLoggedIn')) {
             redirect('/');
         } else {

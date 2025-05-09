@@ -4,7 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Contest extends CI_Controller
 {
-
+    public $toDate;
+    public $toDateTime;
     public function __construct()
     {
         parent::__construct();
@@ -13,6 +14,8 @@ class Contest extends CI_Controller
         }
         $this->load->config('quiz');
         date_default_timezone_set(get_system_timezone());
+        $this->toDate = date('Y-m-d');
+        $this->toDateTime = date('Y-m-d H:i:s');
     }
 
     public function contest_questions_import()
@@ -22,17 +25,25 @@ class Contest extends CI_Controller
                 $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
             } else {
                 $data = $this->Contest_model->import_data();
-                if ($data == "1") {
+                if ($data['error_code'] == "1") {
                     $this->session->set_flashdata('success', lang('csv_file_successfully_imported'));
-                } else if ($data == "0") {
-                    $this->session->set_flashdata('error', lang('please_upload_data_in_csv_file'));
-                } else if ($data == "2") {
-                    $this->session->set_flashdata('error', lang('please_fill_all_the_data_in_csv_file'));
+                } else if ($data['error_code'] == "0") {
+                    if ($data['error'] != '') {
+                        $this->session->set_flashdata('error', $data['error']);
+                    } else {
+                        $this->session->set_flashdata('error',  lang('please_upload_data_in_csv_file'));
+                    }
+                } else if ($data['error_code'] == "2") {
+                    if ($data['error'] != '') {
+                        $this->session->set_flashdata('error', $data['error']);
+                    } else {
+                        $this->session->set_flashdata('error', lang('please_fill_all_the_data_in_csv_file'));
+                    }
                 } else {
-                    $this->session->set_flashdata('error', $data);
+                    $this->session->set_flashdata('error', $data['error']);
                 }
             }
-            redirect('contest-questions-import', 'refresh');
+            redirect('contest-questions-import');
         }
         $this->load->view('contest_questions_import');
     }
@@ -40,7 +51,7 @@ class Contest extends CI_Controller
     public function contest_questions()
     {
         if (!has_permissions('read', 'manage_contest_question')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'manage_contest_question')) {
@@ -53,9 +64,8 @@ class Contest extends CI_Controller
                         $this->session->set_flashdata('success', lang('question_created_successfully'));
                     }
                 }
-                redirect('contest-questions', 'refresh');
-            }
-            if ($this->input->post('btnupdate')) {
+                redirect('contest-questions');
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'manage_contest_question')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -66,7 +76,7 @@ class Contest extends CI_Controller
                         $this->session->set_flashdata('success', lang('question_updated_successfully'));
                     }
                 }
-                redirect('contest-questions', 'refresh');
+                redirect('contest-questions');
             }
             $this->result['language'] = $this->Language_model->get_data();
             $this->result['contest'] = $this->Contest_model->get_data();
@@ -89,9 +99,9 @@ class Contest extends CI_Controller
     public function contest_prize_distribute($id)
     {
         if (!has_permissions('read', 'manage_contest')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
-            $currentDate = date('Y-m-d H:i:s');
+            $currentDate = $this->toDateTime;
             $res = $this->db->where('end_date <=', $currentDate)->where('id', $id)->limit(1)->get('tbl_contest')->result();
             if (!empty($res)) {
                 foreach ($res as $contest) {
@@ -118,7 +128,7 @@ class Contest extends CI_Controller
                                         'points' => $winner_points,
                                         'type' => $type,
                                         'status' => 0,
-                                        'date' => date("Y-m-d")
+                                        'date' => $this->toDate
                                     );
                                     $this->db->insert('tbl_tracker', $frm_data);
 
@@ -141,14 +151,14 @@ class Contest extends CI_Controller
             } else {
                 $this->session->set_flashdata('error', lang('prize_distribution_is_currently_not_available_check_contest_end_date'));
             }
-            redirect('contest', 'refresh');
+            redirect('contest');
         }
     }
 
     public function contest_leaderboard()
     {
         if (!has_permissions('read', 'manage_contest')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             $this->load->view('contest_leaderboard');
         }
@@ -157,7 +167,7 @@ class Contest extends CI_Controller
     public function index()
     {
         if (!has_permissions('read', 'manage_contest')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'manage_contest')) {
@@ -170,9 +180,8 @@ class Contest extends CI_Controller
                         $this->session->set_flashdata('success', lang('contest_created_successfully'));
                     }
                 }
-                redirect('contest', 'refresh');
-            }
-            if ($this->input->post('btnupdate')) {
+                redirect('contest');
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'manage_contest')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -183,9 +192,8 @@ class Contest extends CI_Controller
                         $this->session->set_flashdata('success',  lang('contest_updated_successfully'));
                     }
                 }
-                redirect('contest', 'refresh');
-            }
-            if ($this->input->post('btnupdatestatus')) {
+                redirect('contest');
+            } else if ($this->input->post('btnupdatestatus')) {
                 if (!has_permissions('update', 'manage_contest')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
@@ -198,7 +206,7 @@ class Contest extends CI_Controller
                         $this->session->set_flashdata('success', lang('contest_updated_successfully'));
                     }
                 }
-                redirect('contest', 'refresh');
+                redirect('contest');
             }
             $this->result['language'] = $this->Language_model->get_data();
             $this->load->view('contest', $this->result);
@@ -220,7 +228,7 @@ class Contest extends CI_Controller
     public function contest_prize($id)
     {
         if (!has_permissions('read', 'manage_contest')) {
-            redirect('/', 'refresh');
+            redirect('/');
         } else {
             if ($this->input->post('btnadd')) {
                 if (!has_permissions('create', 'manage_contest')) {
@@ -229,16 +237,15 @@ class Contest extends CI_Controller
                     $this->Contest_model->add_contest_prize();
                     $this->session->set_flashdata('success', lang('prize_created_successfully'));
                 }
-                redirect('contest-prize/' . $id, 'refresh');
-            }
-            if ($this->input->post('btnupdate')) {
+                redirect('contest-prize/' . $id);
+            } else if ($this->input->post('btnupdate')) {
                 if (!has_permissions('update', 'manage_contest')) {
                     $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
                 } else {
                     $this->Contest_model->update_contest_prize();
                     $this->session->set_flashdata('success', lang('prize_updated_successfully'));
                 }
-                redirect('contest-prize/' . $id, 'refresh');
+                redirect('contest-prize/' . $id);
             }
             $this->result['max'] = $this->Contest_model->get_max_top_winner($id);
             $this->load->view('contest_prize', $this->result);

@@ -74,6 +74,12 @@ API methods
 63. set_user_in_app
 64. get_system_language_list
 65. get_system_language_json
+66. get_multi_match_questions
+67. get_multi_match_questions_by_type
+68. get_multi_match_questions_by_level
+69. multi_match_report_question
+70. set_multi_match_level_data
+71. get_multi_match_level_data
 
 
 ------------------------------------------
@@ -120,7 +126,7 @@ a. For Sign Up:-
 
 7. get_categories
 	type:1 
-	//1-quiz_zone, 2-fun_n_learn, 3-guess_the_word, 4-audio_question, 5-maths_question
+	//1-quiz_zone, 2-fun_n_learn, 3-guess_the_word, 4-audio_question, 5-maths_question ,6-multi_match
 	language_id:1   //{optional}
 	id:31 OR slug   //{optional}
 	sub_type : 1 // {optional} set when type=1 // 1 - self challenge, 2 -  battle, 3 -  group battle.
@@ -365,6 +371,32 @@ a. For Sign Up:-
 		from  //1=app,2=web
 		language  //set name param from get_system_language_list
 	
+66. get_multi_match_questions
+	type:category or subcategory
+	id:1 {if type:category then id:category id}
+
+67. get_multi_match_questions_by_type
+	question_type:1  //1=normal ,2 = true/false
+	language_id:2   // {optional} 
+
+68. get_multi_match_questions_by_level
+	level:2
+	category:5 {or}
+	subcategory:9
+	language_id:2   // {optional}
+
+69. multi_match_report_question
+	question_id:1
+	message:test
+
+70. set_multi_match_level_data
+    level:2
+	category:5
+	subcategory:9  // {optional}
+
+71. set_multi_match_level_data
+    category:5 {or}
+	category_slug:slug
 
 Status And their responses :- 
 

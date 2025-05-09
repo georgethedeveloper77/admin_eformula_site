@@ -321,6 +321,7 @@ class System_Languages_model extends CI_Model
         if (file_exists($file_path)) {
             $FileContent = file_get_contents($file_path);
             $languageArray = json_decode($FileContent, true);
+
             if (!is_array($languageArray)) {
                 $languageArray = [];
             }
