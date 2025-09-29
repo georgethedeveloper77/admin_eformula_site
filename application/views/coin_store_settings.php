@@ -30,26 +30,26 @@
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                                            <div class="form-group row">
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('title'); ?></label><small class="text-danger">*</small>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" name="title" required class="form-control" placeholder="<?= lang('title'); ?>" value="<?= $this->session->flashdata('title'); ?>" />
                                                 </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('coins'); ?></label><small class="text-danger">*</small>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('coins'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min="0" name="coins" required class="form-control" placeholder="<?= lang('coins'); ?>" value="<?= $this->session->flashdata('coins'); ?>" />
                                                 </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('product_id'); ?></label><small class="text-danger">*</small>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('product_id'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" name="product_id" required class="form-control" placeholder="<?= lang('product_id'); ?>" value="<?= $this->session->flashdata('product_id'); ?>" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('description'); ?></label><small class="text-danger">*</small>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('description'); ?> <small class="text-danger">*</small></label>
                                                     <textarea name="description" cols="50" rows="2" required class="form-control" placeholder="<?= lang('description'); ?>"><?= $this->session->flashdata('description'); ?></textarea>
                                                 </div>
-                                                <div class="col-md-4 col-sm-12">
+                                                <div class="form-group col-md-4 col-sm-12">
                                                     <label class="control-label"><?= lang('image'); ?></label>
                                                     <input id="file" name="file" type="file" accept="image/*" class="form-control">
                                                     <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
@@ -58,7 +58,7 @@
                                                 <?php
                                                 if (!$is_ads) {
                                                 ?>
-                                                    <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group col-md-4 col-sm-12">
                                                         <label class="control-label"><?= lang('type'); ?></label>
                                                         <select name="type" class="form-control">
                                                             <option value=""><?= lang('select_type'); ?></option>
@@ -70,8 +70,8 @@
                                                 ?>
                                             </div>
 
-                                            <div class="form-group row mt-4">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
@@ -138,27 +138,27 @@
                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                             <input type='hidden' name="edit_id" id="edit-id" value="" />
                             <input type="hidden" name='image_url' id="image-url" value="" />
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('title'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                     <input id="edit-title" name="title" type="text" class="form-control" required placeholder="<?= lang('title'); ?>">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('coins'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('coins'); ?> <small class="text-danger">*</small></label>
                                     <input id="edit-coins" name="coins" type="text" class="form-control" required placeholder="<?= lang('coins'); ?>">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('product_id'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('product_id'); ?> <small class="text-danger">*</small></label>
                                     <input id="edit-product-id" name="product_id" type="text" class="form-control" required placeholder="<?= lang('product_id'); ?>">
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label class="control-label"><?= lang('type'); ?></label>
                                     <select name="type" id="edit-type" class="form-control">
                                         <option value=""><?= lang('select_type'); ?></option>
@@ -167,14 +167,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('description'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('description'); ?> <small class="text-danger">*</small></label>
                                     <textarea id="edit-description" name="description" class="form-control" required placeholder="<?= lang('description'); ?>"></textarea>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label class="control-label"><?= lang('image'); ?></label>
                                     <input id="update_file" name="edit_file" type="file" accept="image/*" class="form-control">
                                     <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>

@@ -35,15 +35,15 @@
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <input type="hidden" id="fun_n_learn_id" name="fun_n_learn_id" value="<?= $this->uri->segment(2) ?>" />
 
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label"><?= lang('question'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
+                                                    <label class="control-label"><?= lang('question'); ?> <small class="text-danger">*</small></label>
                                                     <textarea name="question" class="form-control" required></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('question_type'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('question_type'); ?> <small class="text-danger">*</small></label>
                                                     <div>
                                                         <div class="form-check-inline bg-light p-2">
                                                             <label class="form-check-label">
@@ -55,46 +55,46 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12 ">
+                                                <div class="form-group col-md-6 col-sm-12 ">
                                                     <label class="control-label"><?= lang('image'); ?></label>
                                                     <input id="file" name="file" type="file" accept="image/*" class="form-control">
                                                     <small class="text-danger"><?= lang('image_type_supported'); ?></small>
                                                     <p style="display: none" id="img_error_msg" class="badge badge-danger"></p>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-6">
-                                                    <label class="control-label"><?= lang('option_a'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-6">
+                                                    <label class="control-label"><?= lang('option_a'); ?> <small class="text-danger">*</small></label>
                                                     <input class="form-control" type="text" id="a" name="a" required>
                                                 </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <label class="control-label"><?= lang('option_b'); ?></label>
+                                                <div class="form-group col-md-6 col-sm-6">
+                                                    <label class="control-label"><?= lang('option_b'); ?> <small class="text-danger">*</small></label>
                                                     <input class="form-control" type="text" id="b" name="b" required>
                                                 </div>
                                             </div>
                                             <div id="tf">
-                                                <div class="form-group row">
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <label class="control-label"><?= lang('option_c'); ?></label>
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 col-sm-6">
+                                                        <label class="control-label"><?= lang('option_c'); ?> <small class="text-danger">*</small></label>
                                                         <input class="form-control" type="text" id="c" name="c" required>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <label class="control-label"><?= lang('option_d'); ?></label>
+                                                    <div class="form-group col-md-6 col-sm-6">
+                                                        <label class="control-label"><?= lang('option_d'); ?> <small class="text-danger">*</small></label>
                                                         <input class="form-control" type="text" id="d" name="d" required>
                                                     </div>
                                                 </div>
                                                 <?php if (is_option_e_mode_enabled()) { ?>
-                                                    <div class="form-group row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <label class="control-label"><?= lang('option_e'); ?></label>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6 col-sm-12">
+                                                            <label class="control-label"><?= lang('option_e'); ?> <small class="text-danger">*</small></label>
                                                             <input class="form-control" type="text" id="e" name="e" required>
                                                         </div>
                                                     </div>
                                                 <?php } ?>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label"><?= lang('answer'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
+                                                    <label class="control-label"><?= lang('answer'); ?> <small class="text-danger">*</small></label>
                                                     <select name='answer' id='answer' class='form-control' required>
                                                         <option value=''><?= lang('select_right_answer'); ?></option>
                                                         <option value='a'><?= lang('a'); ?></option>
@@ -107,8 +107,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
@@ -179,62 +179,45 @@
                             <input type='hidden' name="edit_question_type" value="" />
                             <input type="hidden" name='image_url' id="image_url" value="" />
 
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('question'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('question'); ?> <small class="text-danger">*</small></label>
                                     <textarea id="edit_question" name="question" class="form-control" required></textarea>
                                 </div>
                             </div>
-                            <!-- Removed Question Type Change in edit -->
-                            <!-- <div class="form-group row">
-                                    <div class="col-md-6 col-sm-12">  
-                                        <label class="control-label"><?= lang('question_type'); ?></label>
-                                        <div>
-                                            <div class="form-check-inline bg-light p-2">
-                                                <label class="form-check-label">
-                                                    <input type="radio" class="form-check-input" name="edit_question_type" value="1" checked required> <?= lang('options'); ?>
-                                                </label>
-
-                                                <label class="form-check-label">
-                                                    <input type="radio" class="form-check-input" name="edit_question_type" value="2"> <?= lang('true_false'); ?>
-                                                </label>
-                                            </div>
-                                        </div>                                                             
-                                    </div>                                   
-                                </div> -->
-                            <div class="form-group row">
-                                <div class="col-md-6 col-sm-6">
-                                    <label class="control-label"><?= lang('option_a'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-6">
+                                    <label class="control-label"><?= lang('option_a'); ?> <small class="text-danger">*</small></label>
                                     <input class="form-control" type="text" id="edit_a" name="a" required>
                                 </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <label class="control-label"><?= lang('option_b'); ?></label>
+                                <div class="form-group col-md-6 col-sm-6">
+                                    <label class="control-label"><?= lang('option_b'); ?> <small class="text-danger">*</small></label>
                                     <input class="form-control" type="text" id="edit_b" name="b" required>
                                 </div>
                             </div>
                             <div id="edit_tf">
-                                <div class="form-group row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <label class="control-label"><?= lang('option_c'); ?></label>
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label class="control-label"><?= lang('option_c'); ?> <small class="text-danger">*</small></label>
                                         <input class="form-control" type="text" id="edit_c" name="c" required>
                                     </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <label class="control-label"><?= lang('option_d'); ?></label>
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label class="control-label"><?= lang('option_d'); ?> <small class="text-danger">*</small></label>
                                         <input class="form-control" type="text" id="edit_d" name="d" required>
                                     </div>
                                 </div>
                                 <?php if (is_option_e_mode_enabled()) { ?>
-                                    <div class="form-group row">
-                                        <div class="col-md-6 col-sm-12">
-                                            <label class="control-label"><?= lang('option_e'); ?></label>
+                                    <div class="row">
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label class="control-label"><?= lang('option_e'); ?> <small class="text-danger">*</small></label>
                                             <input class="form-control" type="text" id="edit_e" name="e" required>
                                         </div>
                                     </div>
                                 <?php } ?>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('answer'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('answer'); ?> <small class="text-danger">*</small></label>
                                     <select name='answer' id='edit_answer' class='form-control' required>
                                         <option value=''><?= lang('select_right_answer'); ?></option>
                                         <option value='a'><?= lang('a'); ?></option>

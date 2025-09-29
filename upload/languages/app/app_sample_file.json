@@ -493,10 +493,8 @@
     "yesLogoutLbl": "Yes, Logout",
     "youLeftLbl": "You left the game",
     "youLeftTheExam": "You left the exam",
-    "youLossLbl": "You Loss",
-    "youLostLbl": "YOU LOST",
+    "youLostLbl": "You Lost",
     "youWillGet": "You will get",
-    "youWin": "You win",
     "youWonLbl": "You won",
     "yourAnsLbl": "Your Answer",
     "yourCoins": "Your Coins",
@@ -565,5 +563,15 @@
     "referCodeToFriend": "Refer Code to Friend",
     "redeemedAmount": "Redeemed Amount",
     "reviewAnswers": "Review Answers",
-    "adminAdded": "Admin Added"
+    "adminAdded": "Admin Added",
+    "playZone": "Play Zone",
+    "loginRequired": "Login Required",
+    "loginRequiredDesc": "This feature requires you to be logged in.\nPlease log in to continue.",
+    "navHome": "Home",
+    "navLeaderBoard": "LeaderBoard",
+    "navQuizZone": "Quiz Zone",
+    "navPlayZone": "Play Zone",
+    "navProfile": "Profile",
+    "oneVsOneBattleResult": "One vs One Battle Result",
+    "speedBonus": "Speed Bonus"
 }

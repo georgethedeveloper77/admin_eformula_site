@@ -44,16 +44,16 @@
                                             }
                                             ?>
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                                            <div class="form-group row">
-                                                <div class="col-md-6">
-                                                    <label class="control-label"><?= lang('language_name'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label"><?= lang('language_name'); ?> <small class="text-danger">*</small></label>
                                                     <input name="language_name" class="form-control language-name" required placeholder="<?= lang('language_name'); ?>">
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="control-label"><?= lang('language_code'); ?></label>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label"><?= lang('language_code'); ?> <small class="text-danger">*</small></label>
                                                     <input name="language_code" class="form-control language-code" required placeholder="<?= lang('language_code'); ?>">
                                                 </div>
-                                                <div class="col-md-2 col-sm-6">
+                                                <div class="form-group col-md-2 col-sm-6">
                                                     <label class="control-label">&nbsp;</label><br />
                                                     <input type="submit" name="btncreate" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
@@ -71,9 +71,9 @@
                                         <form method="post" class="needs-validation" novalidate="">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('select_language'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('select_language'); ?> <small class="text-danger">*</small></label>
                                                     <select name="language_id" class="form-control" required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -81,7 +81,7 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-2 col-sm-6">
+                                                <div class="form-group col-md-2 col-sm-6">
                                                     <label class="control-label">&nbsp;</label><br />
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
@@ -139,22 +139,22 @@
                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                             <input type='hidden' name="edit_id" id="edit_id" value="" />
 
-                            <div class="form-group row">
+                            <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label"><?= lang('language_name'); ?></label>
+                                    <label class="control-label"><?= lang('language_name'); ?> <small class="text-danger">*</small></label>
                                     <input name="language_name" class="form-control edit-language-name" required placeholder="<?= lang('language_name'); ?>">
                                 </div>
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label"><?= lang('language_code'); ?></label>
+                                    <label class="control-label"><?= lang('language_code'); ?> <small class="text-danger">*</small></label>
                                     <input name="language_code" class="form-control edit-language-code" required placeholder="<?= lang('language_code'); ?>">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-6 col-sm-12">
+                            <div class="row">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <label class="control-label"><?= lang('status') ?></label><br>
                                     <input type="checkbox" id="status" name="status" data-plugin="switchery">
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div class="form-group col-md-6 col-sm-12">
                                     <label class="control-label"><?= lang('default') ?></label><br>
                                     <input type="checkbox" id="default" name="default_active" data-plugin="switchery">
                                 </div>

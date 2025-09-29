@@ -62,13 +62,13 @@
         <script src="<?= base_url(); ?>assets/js/scripts.js" type="text/javascript"></script>
 
         <!-- Bootstrap Table JS -->
-        <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.1/extensions/fixed-columns/bootstrap-table-fixed-columns.js" integrity="sha512-vUtvztHGEEX0eswg+OM1xGKszUHhpRI32JPmbvlGVaxedq5UPknVAofneF2IiDh5wupeFEbnr10gtPOhzf+OwA==" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+        <script src="<?= base_url(); ?>assets/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>assets/bootstrap-table/extensions/export/tableexport.jquery.plugin/tableExport.min.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>assets/bootstrap-table/extensions/export/jspdf/dist/jspdf.umd.min.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>assets/bootstrap-table/extensions/export/bootstrap-table-export.min.js" type="text/javascript"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.1/extensions/export/bootstrap-table-export.min.js" integrity="sha512-lGi502bUEdBiuZwrfAHQipnpKG8AklFJZYlo7hT9tFwxSZyvKUkUZc+lVwn8C8zm+KK2s/QsSiDugG/rnY4TCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="<?= base_url(); ?>assets/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js" type="text/javascript"></script>
+        <script src="<?= base_url(); ?>assets/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js" type="text/javascript"></script>
 
         <!-- Light Box JS -->
         <script src="<?= base_url(); ?>assets/lightbox/lightbox.js" type="text/javascript"></script>

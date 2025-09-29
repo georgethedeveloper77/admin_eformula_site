@@ -31,19 +31,19 @@
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <input type="hidden" name="multiple_ids" id="multiple_ids" />
-                                            <div class="form-group row justify-content-center">
-                                                <div class="col-md-2 col-sm-12 text-right">
-                                                    <a href="javascript:void(0)" class="btn btn-warning" id="get_multiple_data_btn"><?= lang('get_selected_requested'); ?></a>
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-md-4 col-lg-3 col-sm-12">
+                                                    <a href="javascript:void(0)" class="btn btn-warning form-control" id="get_multiple_data_btn"><?= lang('get_selected_requested'); ?></a>
                                                 </div>
-                                                <div class="col-md-3 col-sm-12">
+                                                <div class="form-group col-md-3 col-lg-3 col-sm-12">
                                                     <select id="multiple_status" name='status' class='form-control' required>
                                                         <option value=''><?= lang('select_status'); ?></option>
                                                         <option value='0'><?= lang('pending'); ?></option>
                                                         <option value='1'><?= lang('completed'); ?></option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-3 col-sm-12">
-                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
+                                                <div class="form-group col-md-3 col-lg-2 col-sm-12">
+                                                    <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?> form-control" />
                                                 </div>
                                             </div>
                                         </form>
@@ -85,7 +85,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><?= lang('edit_user'); ?></h5>
+                    <h5 class="modal-title"><?= lang('edit_payment_request'); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

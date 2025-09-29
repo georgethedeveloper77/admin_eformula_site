@@ -11,6 +11,11 @@
     <title><?= lang('dashboard'); ?> | <?php echo (is_settings('app_name')) ? is_settings('app_name') : "" ?></title>
 
     <?php base_url() . include 'include.php'; ?>
+    <style>
+        #myTab3 li {
+            padding: 5px;
+        }
+    </style>
 </head>
 
 <body>

@@ -27,6 +27,41 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
+                                        <?php
+                                        function renderImageUpload($fieldName, $labelKey, $data, $colSize = 'col-md-2', $isRequired = true)
+                                        {
+                                            $hasImage  = !empty($data['message']);
+                                            $imageUrl  = $hasImage ? base_url(WEB_SETTINGS_LOGO_PATH . $data['message']) : '';
+                                            $required  = (!$hasImage && $isRequired) ? 'required' : '';
+                                            $errorId   = "{$fieldName}_img_error_msg";
+                                            $inputId   = $fieldName;
+                                            $inputClass = $fieldName; ?>
+                                            <div class="form-group <?= $colSize ?>">
+                                                <div class="mb-3">
+                                                    <label for="<?= $inputId ?>" class="control-label"><?= lang($labelKey); ?>
+                                                        <?php if (!$hasImage && $isRequired): ?>
+                                                            <small class="text-danger"> * </small>
+                                                        <?php endif; ?>
+                                                    </label>
+                                                    <input class="form-control <?= $inputClass ?>"
+                                                        type="file"
+                                                        accept="image/jpg,image/png,image/svg+xml,image/jpeg"
+                                                        name="<?= $fieldName ?>"
+                                                        id="<?= $inputId ?>"
+                                                        <?= $required ?>>
+                                                    <p id="<?= $errorId ?>" class="alert alert-danger" style="display: none;"></p>
+                                                    <?php if ($hasImage): ?>
+                                                        <div class="mt-2">
+                                                            <a href="<?= $imageUrl ?>" data-lightbox="<?= lang($labelKey); ?>">
+                                                                <img src="<?= $imageUrl ?>" height="50" width="50" alt="<?= lang($labelKey); ?>">
+                                                            </a>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
@@ -91,64 +126,13 @@
                                                     <li> <?= lang('file_type_support'); ?></li>
                                                 </div>
                                             </ul>
+
                                             <div class="row">
-                                                <div class="form-group col-md-3">
-                                                    <!-- checks the header logo exists or not  -->
-                                                    <?php
-                                                    if (!empty($header_logo['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('header_logo'); ?></label>
-                                                            <input class="form-control header_logo" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="header_logo">
-                                                            <p style="display: none" id="header_logo_img_error_msg" class="alert alert-danger"></p>
-                                                            <div><a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $header_logo['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $header_logo['message'] ?>' height=50, width=50></a></div>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('header_logo'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control header_logo" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="header_logo" required>
-                                                            <p style="display: none" id="header_logo_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!----------->
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <!-- checks the Footer logo exists or not  -->
-                                                    <?php
-                                                    if (!empty($footer_logo['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('footer_logo'); ?></label>
-                                                            <input class="form-control footer_logo" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="footer_logo">
-                                                            <p style="display: none" id="header_logo_img_error_msg" class="alert alert-danger"></p>
-                                                            <div><a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $footer_logo['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $footer_logo['message'] ?>' height=50, width=50></a></div>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('footer_logo'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control footer_logo" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="footer_logo" required>
-                                                            <p style="display: none" id="header_logo_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!---------------->
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <!-- checks the Sticky header logo exists or not  -->
-                                                    <?php
-                                                    if (!empty($sticky_header_logo['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('sticky_header_logo'); ?></label>
-                                                            <input class="form-control sticky_header_logo" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="sticky_header_logo">
-                                                            <p style="display: none" id="sticky_header_logo_img_error_msg" class="alert alert-danger"></p>
-                                                            <div><a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $sticky_header_logo['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $sticky_header_logo['message'] ?>' height=50, width=50></a></div>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('sticky_header_logo'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control sticky_header_logo" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="sticky_header_logo" required>
-                                                            <p style="display: none" id="sticky_header_logo_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
+                                                <?php
+                                                renderImageUpload('header_logo', 'header_logo', $header_logo, 'col-md-3');
+                                                renderImageUpload('footer_logo', 'footer_logo', $footer_logo, 'col-md-3');
+                                                renderImageUpload('sticky_header_logo', 'sticky_header_logo', $sticky_header_logo, 'col-md-3');
+                                                ?>
                                             </div>
 
                                             <!-- Features Icons  -->
@@ -165,255 +149,29 @@
                                                 </div>
                                             </ul>
                                             <div class="row">
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Quiz Zone Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($quiz_zone_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('quiz_zone_icon'); ?></label>
-                                                            <input class="form-control quiz_zone_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="quiz_zone_icon">
-                                                            <p style="display: none" id="quiz_zone_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $quiz_zone_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $quiz_zone_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('quiz_zone_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control quiz_zone_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="quiz_zone_icon" required>
-                                                            <p style="display: none" id="quiz_zone_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!----------->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Daily Quiz Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($daily_quiz_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('daily_quiz_icon'); ?></label>
-                                                            <input class="form-control daily_quiz_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="daily_quiz_icon">
-                                                            <p style="display: none" id="daily_quiz_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $daily_quiz_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $daily_quiz_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('daily_quiz_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control daily_quiz_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="daily_quiz_icon" required>
-                                                            <p style="display: none" id="daily_quiz_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!----------->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the True & False Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($true_false_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('true_flase_icon'); ?></label>
-                                                            <input class="form-control true_false_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="true_false_icon">
-                                                            <p style="display: none" id="true_false_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $true_false_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $true_false_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('true_flase_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control true_false_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="true_false_icon" required>
-                                                            <p style="display: none" id="true_false_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!---------------->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Fun & Learn Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($fun_learn_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('fun_learn_icon'); ?></label>
-                                                            <input class="form-control fun_learn_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="fun_learn_icon">
-                                                            <p style="display: none" id="fun_learn_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $fun_learn_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $fun_learn_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('fun_learn_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control fun_learn_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="fun_learn_icon" required>
-                                                            <p style="display: none" id="fun_learn_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Self Challange Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($self_challange_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('self_challange_icon'); ?></label>
-                                                            <input class="form-control self_challange_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="self_challange_icon">
-                                                            <p style="display: none" id="self_challange_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $self_challange_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $self_challange_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('self_challange_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control self_challange_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="self_challange_icon" required>
-                                                            <p style="display: none" id="self_challange_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Contest Play exists or not  -->
-                                                    <?php
-                                                    if (!empty($contest_play_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('contest_play_icon'); ?></label>
-                                                            <input class="form-control contest_play_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="contest_play_icon">
-                                                            <p style="display: none" id="contest_play_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $contest_play_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $contest_play_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('contest_play'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control contest_play_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="contest_play_icon" required>
-                                                            <p style="display: none" id="contest_play_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
+                                                <?php
+                                                renderImageUpload('quiz_zone_icon', 'quiz_zone_icon', $quiz_zone_icon);
+                                                renderImageUpload('daily_quiz_icon', 'daily_quiz_icon', $daily_quiz_icon);
+                                                renderImageUpload('true_false_icon', 'true_flase_icon', $true_false_icon);
+                                                renderImageUpload('fun_learn_icon', 'fun_learn_icon', $fun_learn_icon);
+                                                renderImageUpload('self_challange_icon', 'self_challange_icon', $self_challange_icon);
+                                                renderImageUpload('contest_play_icon', 'contest_play_icon', $contest_play_icon);
+                                                ?>
                                             </div>
                                             <div class="row">
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the 1 vs 1 Battle Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($one_one_battle_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('1_vs_1_battle_icon'); ?></label>
-                                                            <input class="form-control one_one_battle_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="one_one_battle_icon">
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $one_one_battle_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $one_one_battle_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('1_vs_1_battle_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control one_one_battle_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="one_one_battle_icon" required>
-                                                            <p style="display: none" id="one_one_battle_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!----------->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Group Battle Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($group_battle_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('group_battle_icon'); ?></label>
-                                                            <input class="form-control group_battle_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="group_battle_icon">
-                                                            <p style="display: none" id="group_battle_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $group_battle_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $group_battle_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('group_battle_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control group_battle_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="group_battle_icon" required>
-                                                            <p style="display: none" id="group_battle_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!----------->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Audio Questions Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($audio_question_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('audio_question_icon'); ?></label>
-                                                            <input class="form-control audio_question_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="audio_question_icon">
-                                                            <p style="display: none" id="audio_question_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $audio_question_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $audio_question_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('audio_question_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control audio_question_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="audio_question_icon" required>
-                                                            <p style="display: none" id="audio_question_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!---------------->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Math Mania Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($math_mania_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('math_mania_icon'); ?></label>
-                                                            <input class="form-control math_mania_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="math_mania_icon">
-                                                            <p style="display: none" id="math_mania_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $math_mania_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $math_mania_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('math_mania_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control math_mania_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="math_mania_icon" required>
-                                                            <p style="display: none" id="math_mania_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Exam Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($exam_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('exam_icon'); ?></label>
-                                                            <input class="form-control exam_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="exam_icon">
-                                                            <p style="display: none" id="exam_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $exam_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $exam_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('exam_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control exam_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="exam_icon" required>
-                                                            <p style="display: none" id="exam_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Guess The Word Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($guess_the_word_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('guess_the_word_icon'); ?></label>
-                                                            <input class="form-control guess_the_word_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="guess_the_word_icon">
-                                                            <p style="display: none" id="guess_the_word_icon_img_error_msg" class="alert alert-danger"></p>
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $guess_the_word_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $guess_the_word_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('guess_the_word_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control guess_the_word_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="guess_the_word_icon" required>
-                                                            <p style="display: none" id="guess_the_word_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!-- ------------------------------- -->
-                                                </div>
+                                                <?php
+                                                renderImageUpload('one_one_battle_icon', '1_vs_1_battle_icon', $one_one_battle_icon);
+                                                renderImageUpload('group_battle_icon', 'group_battle_icon', $group_battle_icon);
+                                                renderImageUpload('audio_question_icon', 'audio_question_icon', $audio_question_icon);
+                                                renderImageUpload('math_mania_icon', 'math_mania_icon', $math_mania_icon);
+                                                renderImageUpload('exam_icon', 'exam_icon', $exam_icon);
+                                                renderImageUpload('guess_the_word_icon', 'guess_the_word_icon', $guess_the_word_icon);
+                                                ?>
                                             </div>
                                             <div class="row">
-                                                <div class="form-group col-md-2">
-                                                    <!-- checks the Multi Match Icon exists or not  -->
-                                                    <?php
-                                                    if (!empty($multi_match_icon['message'])) { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('multi_match_icon'); ?></label>
-                                                            <input class="form-control multi_match_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="multi_match_icon">
-                                                            <a href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $multi_match_icon['message'] ?>' data-lightbox="Logos"><img src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $multi_match_icon['message'] ?>' height=50, width=50></a>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="mb-3">
-                                                            <label for="formFile" class="control-label"><?= lang('multi_match_icon'); ?></label> <small class="text-danger"> * </small>
-                                                            <input class="form-control multi_match_icon" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" name="multi_match_icon" required>
-                                                            <p style="display: none" id="multi_match_icon_img_error_msg" class="alert alert-danger"></p>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <!----------->
-                                                </div>
+                                                <?php
+                                                renderImageUpload('multi_match_icon', 'multi_match_icon', $multi_match_icon);
+                                                ?>
                                             </div>
                                             <!-- Footer Configuration -->
                                             <hr>
@@ -481,22 +239,36 @@
                                                                     <label class="control-label"><?= lang('link'); ?> </label>
                                                                     <input type="text" name="social_media[<?= ($key + 1) ?>][link]" value="<?= $singleValue->link ?>" class="form-control social_media_link" placeholder="<?= lang('link'); ?>" required="required">
                                                                 </div>
-                                                                <?php if (!empty($singleValue->icon)) { ?>
-                                                                    <div class="form-group col-sm-11 col-lg-5">
-                                                                        <label class="control-label"><?= lang('icon'); ?></label>
-                                                                        <input type="hidden" class="exists-icon-value" name="social_media[<?= ($key + 1) ?>][icon]" value="<?= $singleValue->icon ?>">
-                                                                        <input class="form-control social_media_icon" name="social_media[<?= ($key + 1) ?>][file]" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" data-no="<?= ($key + 1) ?>">
-                                                                        <p style="display: none" id="social_media_icon_img_error_msg" class="alert alert-danger"></p>
-                                                                        <a class="last-icon-preview" href='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $singleValue->icon ?>' data-lightbox="Logos"><img class="last-icon" src='<?= base_url() . WEB_SETTINGS_LOGO_PATH . $singleValue->icon ?>' height=50, width=50></a>
-                                                                    </div>
-                                                                <?php } else { ?>
-                                                                    <div class="form-group col-sm-11 col-lg-5">
-                                                                        <label class="control-label"><?= lang('icon'); ?></label>
-                                                                        <input type="hidden" name="social_media[<?= ($key + 1) ?>][icon]" value="">
-                                                                        <input class="form-control social_media_icon" name="social_media[<?= ($key + 1) ?>][file]" type="file" accept="image/jpg,image/png,image/svg+xml,image/jpeg" required="required" data-no="<?= ($key + 1) ?>">
-                                                                        <p style="display: none" id="social_media_icon_img_error_msg" class="alert alert-danger"></p>
-                                                                    </div>
-                                                                <?php } ?>
+                                                                <?php
+                                                                $hasIcon = !empty($singleValue->icon);
+                                                                $iconUrl = $hasIcon ? base_url(WEB_SETTINGS_LOGO_PATH . $singleValue->icon) : '';
+                                                                $fieldIndex = $key + 1;
+                                                                ?>
+                                                                <div class="form-group col-sm-11 col-lg-5">
+                                                                    <label class="control-label"><?= lang('icon'); ?></label>
+                                                                    <input type="hidden"
+                                                                        name="social_media[<?= $fieldIndex ?>][icon]"
+                                                                        class="<?= $hasIcon ? 'exists-icon-value' : '' ?>"
+                                                                        value="<?= $hasIcon ? $singleValue->icon : '' ?>">
+
+
+                                                                    <input class="form-control social_media_icon"
+                                                                        name="social_media[<?= $fieldIndex ?>][file]"
+                                                                        type="file"
+                                                                        accept="image/jpg,image/png,image/svg+xml,image/jpeg"
+                                                                        data-no="<?= $fieldIndex ?>"
+                                                                        <?= $hasIcon ? '' : 'required' ?>>
+
+                                                                    <p style="display: none" id="social_media_icon_img_error_msg" class="alert alert-danger"></p>
+
+                                                                    <?php if ($hasIcon): ?>
+                                                                        <div class="mt-2">
+                                                                            <a class="last-icon-preview" href="<?= $iconUrl ?>" data-lightbox="Logos">
+                                                                                <img class="last-icon" src="<?= $iconUrl ?>" height="50" width="50" alt="Icon">
+                                                                            </a>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
                                                                 <div class="form-group col-md-1 pl-0 mt-4">
                                                                     <button type="button" class="btn btn-icon btn-primary remove-social-media" title="<?= lang('remove_social_media'); ?>">
                                                                         <i class="fa fa-times"></i>

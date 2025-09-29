@@ -41,9 +41,20 @@ class Dashboard extends CI_Controller
             $this->result['years'][] = $row->year;
         }
 
-        $this->result['month_data'] = $this->db->query("SELECT m.name as month_name, (SELECT COUNT(id) AS user_count FROM tbl_users WHERE YEAR(date_registered) = YEAR('" . $this->toDate . "') AND MONTHNAME(date_registered) = m.name GROUP BY MONTH(date_registered)) as user_count FROM tbl_month_week m WHERE m.type=1")->result();
-        $this->result['week_data'] = $this->db->query("SELECT m.name as day_name, (SELECT COUNT(id) AS user_count FROM tbl_users WHERE YEAR(date_registered) = YEAR('" . $this->toDate . "') AND MONTH(date_registered) = MONTH('" . $this->toDate . "') AND DAYNAME(date_registered) = m.name GROUP BY DAYOFWEEK(date_registered)) as user_count FROM tbl_month_week m WHERE m.type=2")->result();
-        $this->result['day_data'] = $this->db->query("SELECT COUNT(id) AS user_count, DAYOFMONTH(date_registered) AS day_name FROM tbl_users WHERE YEAR(date_registered) = YEAR('" . $this->toDate . "') AND MONTH(date_registered) = MONTH('" . $this->toDate . "') GROUP BY DATE(date_registered)")->result();
+        $year = date('Y');
+        $month = date('m');
+
+        $register_month_sql = "SELECT m.name AS month_name,(SELECT COUNT(id) FROM tbl_users u WHERE status = 1 AND YEAR(u.date_registered) = {$year} AND MONTHNAME(date_registered) = m.name) AS user_count FROM tbl_month_week m WHERE m.type = 1";
+        $month_register_query = $this->db->query($register_month_sql)->result();
+        $this->result['month_data'] = $month_register_query;
+
+        $register_week_sql = "SELECT m.name AS day_name,(SELECT COUNT(id) FROM tbl_users u WHERE status = 1 AND YEAR(u.date_registered) = {$year} AND MONTH(u.date_registered) ={$month} AND DAYNAME(u.date_registered) = m.name) AS user_count FROM tbl_month_week m WHERE m.type = 2";
+        $week_register_query = $this->db->query($register_week_sql)->result();
+        $this->result['week_data'] = $week_register_query;
+
+        $this->db->select('HOUR(date_registered) as day_name, COUNT(*) as user_count')->from('tbl_users')->where('status', 1)->where('DATE(date_registered) =' . $this->toDate, null, false)->group_by('HOUR(date_registered)')->order_by('day_name');
+        $day_register_query = $this->db->get()->result();
+        $this->result['day_data'] = $day_register_query;
 
         $this->load->view('dashboard', $this->result);
     }

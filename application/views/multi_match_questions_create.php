@@ -79,10 +79,10 @@
                                                 <input type="hidden" id="edit_id" name="edit_id" required value="<?= $question_id ?>" aria-required="true">
                                                 <input type="hidden" id="image_url" name="image_url" value="<?= ($question_id != '') ? ((!empty($data)) ? (($data[0]->image != '') ? MULTIMATCH_QUESTION_IMG_PATH . $data[0]->image : '') : '') : '' ?>">
                                             <?php } ?>
-                                            <div class="form-group row">
+                                            <div class="row">
                                                 <?php if (is_language_mode_enabled()) { ?>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                                         <select name="language_id" id="language_id" class="form-control" required>
                                                             <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
@@ -90,21 +90,21 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="category" name="category" class="form-control" required>
                                                             <option value=""><?= lang('select_main_category'); ?></option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('sub_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
                                                             <option value=""><?= lang('select_sub_category'); ?></option>
                                                         </select>
                                                     </div>
                                                 <?php } else { ?>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="category" name="category" class="form-control" required>
                                                             <option value=""><?= lang('select_main_category'); ?></option>
                                                             <?php foreach ($category as $cat) { ?>
@@ -112,7 +112,7 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group col-md-6 col-sm-12">
                                                         <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
                                                             <option value=""><?= lang('select_sub_category'); ?></option>
@@ -120,15 +120,15 @@
                                                     </div>
                                                 <?php } ?>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label"><?= lang('question'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
+                                                    <label class="control-label"><?= lang('question'); ?> <small class="text-danger">*</small></label>
                                                     <textarea id="question" name="question" class="form-control" required><?= ($question_id != '') ? ((!empty($data)) ? $data[0]->question : '') : '' ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('question_type'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="control-label"><?= lang('question_type'); ?> <small class="text-danger">*</small></label>
                                                     <div>
                                                         <div class="form-check-inline bg-light p-2">
                                                             <label class="form-check-label">
@@ -140,8 +140,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('answer_type'); ?></label>
+                                                <div class="form-group col-md-3 col-sm-12">
+                                                    <label class="control-label"><?= lang('answer_type'); ?> <small class="text-danger">*</small></label>
                                                     <div>
                                                         <div class="form-check-inline bg-light p-2">
                                                             <label class="form-check-label">
@@ -153,7 +153,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12">
+                                                <div class="form-group col-md-6 col-sm-12">
                                                     <label class="control-label"><?= lang('image_for_question'); ?> <small><?= lang('if_any'); ?></small></label>
                                                     <input id="file" name="file" type="file" accept="image/*" class="form-control">
                                                     <small class="text-danger"><?= lang('image_type_supported'); ?></small>
@@ -166,39 +166,39 @@
                                                     <?php } ?>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-6">
-                                                    <label class="control-label"><?= lang('option_a'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-6">
+                                                    <label class="control-label"><?= lang('option_a'); ?> <small class="text-danger">*</small></label>
                                                     <textarea class="form-control" id="a" name="a" required><?= ($question_id !=  '') ? ((!empty($data)) ? $data[0]->optiona : '') : '' ?></textarea>
                                                 </div>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <label class="control-label"><?= lang('option_b'); ?></label>
+                                                <div class="form-group col-md-6 col-sm-6">
+                                                    <label class="control-label"><?= lang('option_b'); ?> <small class="text-danger">*</small></label>
                                                     <textarea class="form-control" id="b" name="b" required><?= ($question_id !=  '') ? ((!empty($data)) ? $data[0]->optionb : '') : '' ?></textarea>
                                                 </div>
                                             </div>
                                             <div id="tf">
-                                                <div class="form-group row">
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <label class="control-label"><?= lang('option_c'); ?></label>
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 col-sm-6">
+                                                        <label class="control-label"><?= lang('option_c'); ?> <small class="text-danger">*</small></label>
                                                         <textarea class="form-control" id="c" name="c" required><?= ($question_id !=  '') ? ((!empty($data)) ? $data[0]->optionc : '') : '' ?></textarea>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-6">
-                                                        <label class="control-label"><?= lang('option_d'); ?></label>
+                                                    <div class="form-group col-md-6 col-sm-6">
+                                                        <label class="control-label"><?= lang('option_d'); ?> <small class="text-danger">*</small></label>
                                                         <textarea class="form-control" id="d" name="d" required><?= ($question_id !=  '') ? ((!empty($data)) ? $data[0]->optiond : '') : '' ?></textarea>
                                                     </div>
                                                 </div>
                                                 <?php if (is_option_e_mode_enabled()) { ?>
-                                                    <div class="form-group row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <label class="control-label"><?= lang('option_e'); ?></label>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6 col-sm-12">
+                                                            <label class="control-label"><?= lang('option_e'); ?> <small class="text-danger">*</small></label>
                                                             <textarea class="form-control" id="e" name="e" required><?= ($question_id !=  '') ? ((!empty($data)) ? $data[0]->optione : '') : '' ?></textarea>
                                                         </div>
                                                     </div>
                                                 <?php } ?>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12" id="option1_answer1">
-                                                    <label class="control-label"><?= lang('answer'); ?></label><br>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12" id="option1_answer1">
+                                                    <label class="control-label"><?= lang('answer'); ?> <small class="text-danger">*</small></label><br>
                                                     <select name='answer[]' id="answer1" class='form-control select2' data-placeholder="<?= lang('select_right_answer'); ?>" required multiple="multiple">
                                                         <option value='a' <?= in_array('a', $selected_answer) && ((!empty($data)) ? (($data[0]->question_type == '1') ? true : false) : false) ? 'selected' : '' ?>><?= lang('a'); ?></option>
                                                         <option value='b' <?= in_array('b', $selected_answer) && ((!empty($data)) ? (($data[0]->question_type == '1') ? true : false) : false) ? 'selected' : '' ?>><?= lang('b'); ?></option>
@@ -209,14 +209,14 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12" id="option2_answer1">
+                                                <div class="form-group col-md-6 col-sm-12" id="option2_answer1">
                                                     <label class="control-label"><?= lang('answer'); ?></label><br>
                                                     <select name='answer[]' id="answer_tf" class='form-control select2' data-placeholder="<?= lang('select_right_answer'); ?>" multiple="multiple">
                                                         <option value='a' <?= in_array('a', $selected_answer) && ((!empty($data)) ? (($data[0]->question_type == '2') ? true : false) : false) ? 'selected' : '' ?>><?= lang('a'); ?></option>
                                                         <option value='b' <?= in_array('b', $selected_answer) && ((!empty($data)) ? (($data[0]->question_type == '2') ? true : false) : false) ? 'selected' : '' ?>><?= lang('b'); ?></option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12 answer_order" id="option1_answer2">
+                                                <div class="form-group col-md-6 col-sm-12 answer_order" id="option1_answer2">
                                                     <label class="control-label"><?= lang('answer'); ?></label>
                                                     <input type='text' name='text_answer' class='form-control answer_type2' value="<?= $sess_answer ?>">
                                                     <ol id="sortable-row" class="mt-3">
@@ -229,7 +229,7 @@
                                                         <?php } ?>
                                                     </ol>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12 answer_order" id="option2_answer2">
+                                                <div class="form-group col-md-6 col-sm-12 answer_order" id="option2_answer2">
                                                     <label class="control-label"><?= lang('answer'); ?></label>
                                                     <input type='text' name='text_answer' class='form-control answer_type2' value="<?= $sess_answer ?>">
                                                     <ol id="sortable-row-1" class="mt-3">
@@ -237,20 +237,20 @@
                                                         <li id=b><?= lang('b'); ?></li>
                                                     </ol>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('level'); ?></label>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('level'); ?> <small class="text-danger">*</small></label>
                                                     <input type='number' name='level' class='form-control' required min="1" value="<?= ($question_id !=  '') ? ((!empty($data)) ? $data[0]->level : '') : "" ?>">
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
                                                     <label class="control-label"><?= lang('note'); ?></label>
                                                     <small><?= lang('this_will_be_showing_with_review_selection_only'); ?></small>
                                                     <textarea name='note' id="note" class='form-control'><?= ($question_id != '') ? ((!empty($data)) ? $data[0]->note : '') : '' ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>

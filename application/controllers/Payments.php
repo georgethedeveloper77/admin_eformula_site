@@ -166,21 +166,19 @@ class Payments extends CI_Controller
                                 'body' => $message,
                                 'coins' => $coins
                             );
-                            if ($fcm_id != '') {
-                                $registrationID = explode(',', $fcm_id);
-                                $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
-                                $messaging = $factory->createMessaging();
-                                $message = CloudMessage::new();
-                                $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
-                                $messaging->sendMulticast($message, $registrationID);
-                            }
-                            if ($web_fcm_id != '') {
-                                $registrationID = explode(',', $web_fcm_id);
-                                $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
-                                $messaging = $factory->createMessaging();
-                                $message = CloudMessage::new();
-                                $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
-                                $messaging->sendMulticast($message, $registrationID);
+                            if ($fcm_id != '' || $web_fcm_id != '') {
+                                if ($fcm_id != '') {
+                                    $registrationID = explode(',', $fcm_id);
+                                } else if ($web_fcm_id != '') {
+                                    $registrationID = explode(',', $web_fcm_id);
+                                }
+                                if ($registrationID) {
+                                    $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
+                                    $messaging = $factory->createMessaging();
+                                    $message = CloudMessage::new();
+                                    $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
+                                    $messaging->sendMulticast($message, $registrationID);
+                                }
                             }
                         }
                         $this->session->set_flashdata('success', lang('data_updated_successfully'));

@@ -37,31 +37,31 @@
                                             <div class="row bg-light rounded p-3">
                                                 <!-- Maximum Wining Coins -->
                                                 <div class="form-group col-md-3 col-sm-12 mt-2">
-                                                    <label class="control-label"><?= lang('maximum_winning_coins'); ?></label>
+                                                    <label class="control-label"><?= lang('maximum_winning_coins'); ?> <small class="text-danger">*</small></label>
                                                     <input name="maximum_winning_coins" type="number" min=1 class="form-control" value="<?php echo (!empty($maximum_winning_coins['message'])) ? $maximum_winning_coins['message'] : 4 ?>" required>
                                                 </div>
 
                                                 <!-- Minimum Coin Winning Percentage -->
                                                 <div class="form-group col-md-3 col-sm-12 mt-2">
-                                                    <label class="control-label"><?= lang('minimum_winning_percentage'); ?></label>
+                                                    <label class="control-label"><?= lang('minimum_winning_percentage'); ?> <small class="text-danger">*</small></label>
                                                     <input name="minimum_coins_winning_percentage" type="number" min=1 class="form-control" value="<?php echo (!empty($minimum_coins_winning_percentage['message'])) ? $minimum_coins_winning_percentage['message'] : 70 ?>" required>
                                                 </div>
 
                                                 <!-- Quiz Winning Percentage -->
                                                 <div class="form-group col-md-3 col-sm-12 mt-2">
-                                                    <label class="control-label"><?= lang('quiz_winning_percentage'); ?></label>
+                                                    <label class="control-label"><?= lang('quiz_winning_percentage'); ?> <small class="text-danger">*</small></label>
                                                     <input name="quiz_winning_percentage" type="number" min=0 class="form-control" value="<?php echo ($quiz_winning_percentage['message'] != null) ? $quiz_winning_percentage['message'] : 30 ?>" required>
                                                 </div>
 
                                                 <!-- Score -->
                                                 <div class="form-group col-md-3 col-sm-12 mt-2">
-                                                    <label class="control-label"><?= lang('score'); ?></label>
+                                                    <label class="control-label"><?= lang('score'); ?> <small class="text-danger">*</small></label>
                                                     <input name="score" type="number" min=1 class="form-control" value="<?php echo (!empty($score['message'])) ? $score['message'] : 4 ?>" required>
                                                 </div>
 
                                                 <!-- Answer Mode -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('answer_mode'); ?></label>
+                                                    <label class="control-label"><?= lang('answer_mode'); ?> <small class="text-danger">*</small></label>
                                                     <select id="answer_mode" name="answer_mode" class="form-control" required>
                                                         <option value="1"> <?= lang('show_answer_correctness'); ?></option>
                                                         <option value="2"> <?= lang('don_not_show_answer_correctness'); ?></option>
@@ -72,13 +72,13 @@
 
                                                 <!-- Review Answer Deduct Coins -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('review_answers_deduct'); ?></label>
+                                                    <label class="control-label"><?= lang('review_answers_deduct'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="review_answers_deduct_coin" min="1" name="review_answers_deduct_coin" required class="form-control" value="<?php echo isset($review_answers_deduct_coin) ? $review_answers_deduct_coin['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Welcome Bonus -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('welcome_bonus'); ?></label>
+                                                    <label class="control-label"><?= lang('welcome_bonus'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="welcome_bonus_coin" min="1" name="welcome_bonus_coin" required class="form-control" value="<?php echo isset($welcome_bonus_coin) ? $welcome_bonus_coin['message'] : "" ?>">
                                                 </div>
 
@@ -129,25 +129,25 @@
 
                                                 <!-- Quiz Zone Durtaion -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('quiz_zone_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('quiz_zone_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="quiz_zone_duration" type="number" min=1 class="form-control" value="<?php echo (!empty($quiz_zone_duration['message'])) ? $quiz_zone_duration['message'] : "30" ?>" required>
                                                 </div>
 
                                                 <!-- Lifeline Coins Deduction -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('lifeline_deduct'); ?></label>
+                                                    <label class="control-label"><?= lang('lifeline_deduct'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="quiz_zone_lifeline_deduct_coin" min="1" name="quiz_zone_lifeline_deduct_coin" required class="form-control" value="<?php echo isset($quiz_zone_lifeline_deduct_coin) ? $quiz_zone_lifeline_deduct_coin['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="quiz_zone_wrong_answer_deduct_score" min="1" name="quiz_zone_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($quiz_zone_wrong_answer_deduct_score) ? $quiz_zone_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="quiz_zone_correct_answer_credit_score" min="1" name="quiz_zone_correct_answer_credit_score" required class="form-control" value="<?php echo isset($quiz_zone_correct_answer_credit_score) ? $quiz_zone_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
                                             </div>
@@ -182,37 +182,37 @@
 
                                                 <!-- Guess The Word Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('guess_the_word_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('guess_the_word_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="guess_the_word_seconds" type="number" min=1 class="form-control" value="<?php echo (!empty($guess_the_word_seconds['message'])) ? $guess_the_word_seconds['message'] : 60 ?>" required>
                                                 </div>
 
                                                 <!-- Guess The Word Max Hints -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('max_hints_per_quiz_question'); ?> </label>
+                                                    <label class="control-label"><?= lang('max_hints_per_quiz_question'); ?> <small class="text-danger">*</small></label>
                                                     <input name="guess_the_word_max_hints" type="number" min=1 class="form-control" value="<?php echo (!empty($guess_the_word_max_hints['message'])) ? $guess_the_word_max_hints['message'] : 60 ?>" required>
                                                 </div>
 
                                                 <!-- Guess The Word Max Winning -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('guess_the_word_max_winning'); ?></label>
+                                                    <label class="control-label"><?= lang('guess_the_word_max_winning'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="guess_the_word_max_winning_coin" min="1" name="guess_the_word_max_winning_coin" required class="form-control" value="<?php echo isset($guess_the_word_max_winning_coin) ? $guess_the_word_max_winning_coin['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Guess The Word Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="guess_the_word_wrong_answer_deduct_score" min="1" name="guess_the_word_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($guess_the_word_wrong_answer_deduct_score) ? $guess_the_word_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Guess The Word Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="guess_the_word_correct_answer_credit_score" min="1" name="guess_the_word_correct_answer_credit_score" required class="form-control" value="<?php echo isset($guess_the_word_correct_answer_credit_score) ? $guess_the_word_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Guess The Word Max Hints Per Quiz's Question -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('hint_deduct_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('hint_deduct_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="guess_the_word_hint_deduct_coin" min="1" name="guess_the_word_hint_deduct_coin" required class="form-control" value="<?php echo isset($guess_the_word_hint_deduct_coin) ? $guess_the_word_hint_deduct_coin['message'] : "" ?>">
                                                 </div>
                                             </div>
@@ -249,25 +249,25 @@
 
                                                 <!-- Audio Quiz Total Time of file -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2" id="fix_audio_time">
-                                                    <label class="control-label"><?= lang('total_audio_time_of_file'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small> </label>
+                                                    <label class="control-label"><?= lang('total_audio_time_of_file'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input type="number" min="1" id="total_audio_time" name="total_audio_time" required class="form-control" value="<?php echo isset($total_audio_time) && !empty($total_audio_time) ? $total_audio_time['message'] : '' ?>">
                                                 </div>
 
                                                 <!-- Audio Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('audio_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('audio_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="audio_quiz_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($audio_quiz_seconds) && !empty($audio_quiz_seconds['message'])) ? $audio_quiz_seconds['message'] : "" ?>" required>
                                                 </div>
 
                                                 <!-- Audio Quiz Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="audio_quiz_wrong_answer_deduct_score" min="1" name="audio_quiz_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($audio_quiz_wrong_answer_deduct_score) ? $audio_quiz_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Audio Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="audio_quiz_correct_answer_credit_score" min="1" name="audio_quiz_correct_answer_credit_score" required class="form-control" value="<?php echo isset($audio_quiz_correct_answer_credit_score) ? $audio_quiz_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
@@ -305,19 +305,19 @@
 
                                                 <!-- Maths Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('maths_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('maths_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="maths_quiz_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($maths_quiz_seconds) && !empty($maths_quiz_seconds['message'])) ? $maths_quiz_seconds['message'] : "" ?>" required>
                                                 </div>
 
                                                 <!-- Maths Quiz Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="maths_quiz_wrong_answer_deduct_score" min="1" name="maths_quiz_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($maths_quiz_wrong_answer_deduct_score) ? $maths_quiz_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Maths Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="maths_quiz_correct_answer_credit_score" min="1" name="maths_quiz_correct_answer_credit_score" required class="form-control" value="<?php echo isset($maths_quiz_correct_answer_credit_score) ? $maths_quiz_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
@@ -355,19 +355,19 @@
 
                                                 <!-- Fun N Learn Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('fun_n_learn_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('fun_n_learn_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="fun_and_learn_time_in_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($fun_and_learn_time_in_seconds) && !empty($fun_and_learn_time_in_seconds['message'])) ? $fun_and_learn_time_in_seconds['message'] : "" ?>" required>
                                                 </div>
 
                                                 <!-- Fun N Learn Quiz Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="fun_n_learn_quiz_wrong_answer_deduct_score" min="1" name="fun_n_learn_quiz_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($fun_n_learn_quiz_wrong_answer_deduct_score) ? $fun_n_learn_quiz_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Fun N Learn Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="fun_n_learn_quiz_correct_answer_credit_score" min="1" name="fun_n_learn_quiz_correct_answer_credit_score" required class="form-control" value="<?php echo isset($fun_n_learn_quiz_correct_answer_credit_score) ? $fun_n_learn_quiz_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
@@ -405,19 +405,19 @@
 
                                                 <!-- True False Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('true_false_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('true_false_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="true_false_quiz_in_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($true_false_quiz_in_seconds) && !empty($true_false_quiz_in_seconds['message'])) ? $true_false_quiz_in_seconds['message'] : "" ?>" required>
                                                 </div>
 
                                                 <!-- True False Quiz Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="true_false_quiz_wrong_answer_deduct_score" min="1" name="true_false_quiz_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($true_false_quiz_wrong_answer_deduct_score) ? $true_false_quiz_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- True False Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="true_false_quiz_correct_answer_credit_score" min="1" name="true_false_quiz_correct_answer_credit_score" required class="form-control" value="<?php echo isset($true_false_quiz_correct_answer_credit_score) ? $true_false_quiz_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
@@ -462,43 +462,37 @@
 
                                                 <!-- 1 vs 1 Battle Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('1_vs_1_battle_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('1_vs_1_battle_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="battle_mode_one_in_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($battle_mode_one_in_seconds) && !empty($battle_mode_one_in_seconds['message'])) ? $battle_mode_one_in_seconds['message'] : "" ?>" required>
-                                                </div>
-
-                                                <!-- 1 vs 1 Battle Quiz Wrong Answer Deduct Score -->
-                                                <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
-                                                    <input type="number" min=1 id="battle_mode_one_wrong_answer_deduct_score" min="1" name="battle_mode_one_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($battle_mode_one_wrong_answer_deduct_score) ? $battle_mode_one_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- 1 vs 1 Battle Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_one_correct_answer_credit_score" min="1" name="battle_mode_one_correct_answer_credit_score" required class="form-control" value="<?php echo isset($battle_mode_one_correct_answer_credit_score) ? $battle_mode_one_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- 1 vs 1 Battle Quiz Extra score for quickest correct answer -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('extra_score_for_quickest_correct_answer'); ?></label>
+                                                    <label class="control-label"><?= lang('extra_score_for_quickest_correct_answer'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_one_quickest_correct_answer_extra_score" min="1" name="battle_mode_one_quickest_correct_answer_extra_score" required class="form-control" value="<?php echo isset($battle_mode_one_quickest_correct_answer_extra_score) ? $battle_mode_one_quickest_correct_answer_extra_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- 1 vs 1 Battle Quiz Extra score for Second quickest correct answer -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('extra_score_for_seconds_quickest_correct_answer'); ?></label>
+                                                    <label class="control-label"><?= lang('extra_score_for_seconds_quickest_correct_answer'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_one_second_quickest_correct_answer_extra_score" min="1" name="battle_mode_one_second_quickest_correct_answer_extra_score" required class="form-control" value="<?php echo isset($battle_mode_one_second_quickest_correct_answer_extra_score) ? $battle_mode_one_second_quickest_correct_answer_extra_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- 1 vs 1 Battle Quiz Entry Coin -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('entry_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('entry_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_one_entry_coin" min="1" name="battle_mode_one_entry_coin" required class="form-control" value="<?php echo isset($battle_mode_one_entry_coin) ? $battle_mode_one_entry_coin['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- 1 vs 1 Battle Quiz Room Code Generator Characters  -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('room_code_generator_characters'); ?> <small class="text-danger"><?= lang('fixed_limit_is_6'); ?></small> </label>
+                                                    <label class="control-label"><?= lang('room_code_generator_characters'); ?> <small class="text-danger"><?= lang('fixed_limit_is_6'); ?> *</small></label>
                                                     <select id="battle_mode_one_code_char" name="battle_mode_one_code_char" class="form-control" required>
                                                         <option value="1"> <?= lang('only_numbers'); ?></option>
                                                         <option value="2"> <?= lang('only_characters'); ?></option>
@@ -550,7 +544,7 @@
 
                                                 <!-- Group Battle Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('group_battle_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('group_battle_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="battle_mode_group_in_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($battle_mode_group_in_seconds) && !empty($battle_mode_group_in_seconds['message'])) ? $battle_mode_group_in_seconds['message'] : "" ?>" required>
                                                 </div>
 
@@ -562,7 +556,7 @@
 
                                                 <!-- Group Battle Quiz Entry Coin -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('entry_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('entry_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_group_entry_coin" min="1" name="battle_mode_group_entry_coin" required class="form-control" value="<?php echo isset($battle_mode_group_entry_coin) ? $battle_mode_group_entry_coin['message'] : "" ?>">
                                                 </div>
 
@@ -574,7 +568,7 @@
 
                                                 <!-- Group Battle Quiz Room Code Generator Characters  -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('room_code_generator_characters'); ?> <small class="text-danger"><?= lang('fixed_limit_is_6'); ?> </small> </label>
+                                                    <label class="control-label"><?= lang('room_code_generator_characters'); ?> <small class="text-danger"><?= lang('fixed_limit_is_6'); ?> *</small></label>
                                                     <select id="battle_mode_group_code_char" name="battle_mode_group_code_char" class="form-control" required>
                                                         <option value="1"> <?= lang('only_numbers'); ?></option>
                                                         <option value="2"> <?= lang('only_characters'); ?></option>
@@ -625,25 +619,19 @@
 
                                                 <!-- Random Battle Quiz Seconds -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('random_battle_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('random_battle_quiz_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="battle_mode_random_in_seconds" type="number" min=1 class="form-control" value="<?php echo (isset($battle_mode_random_in_seconds) && !empty($battle_mode_random_in_seconds['message'])) ? $battle_mode_random_in_seconds['message'] : "" ?>" required>
-                                                </div>
-
-                                                <!-- Random Battle Quiz Wrong Answer Deduct Score -->
-                                                <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
-                                                    <input type="number" min=1 id="battle_mode_random_wrong_answer_deduct_score" min="1" name="battle_mode_random_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($battle_mode_random_wrong_answer_deduct_score) ? $battle_mode_random_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Random Battle Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_random_correct_answer_credit_score" min="1" name="battle_mode_random_correct_answer_credit_score" required class="form-control" value="<?php echo isset($battle_mode_random_correct_answer_credit_score) ? $battle_mode_random_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Random Battle Quiz Extra score for quickest correct answer -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('extra_score_for_quickest_correct_answer'); ?></label>
+                                                    <label class="control-label"><?= lang('extra_score_for_quickest_correct_answer'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_random_quickest_correct_answer_extra_score" min="1" name="battle_mode_random_quickest_correct_answer_extra_score" required class="form-control" value="<?php echo isset($battle_mode_random_quickest_correct_answer_extra_score) ? $battle_mode_random_quickest_correct_answer_extra_score['message'] : "" ?>">
                                                 </div>
 
@@ -655,13 +643,13 @@
 
                                                 <!-- Random Battle Quiz Opponent Search duration -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('opponent_search_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('opponent_search_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input type="number" min=1 id="battle_mode_random_search_duration" min="1" name="battle_mode_random_search_duration" required class="form-control" value="<?php echo isset($battle_mode_random_search_duration) ? $battle_mode_random_search_duration['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Random Battle Quiz Entry Coin -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('entry_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('entry_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="battle_mode_random_entry_coin" min="1" name="battle_mode_random_entry_coin" required class="form-control" value="<?php echo isset($battle_mode_random_entry_coin) ? $battle_mode_random_entry_coin['message'] : "" ?>">
                                                 </div>
 
@@ -685,13 +673,13 @@
 
                                                 <!-- Self Challenge Max Minutes -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('self_challenge_max_minutes'); ?></label>
+                                                    <label class="control-label"><?= lang('self_challenge_max_minutes'); ?> <small class="text-danger">*</small></label>
                                                     <input name="self_challenge_max_minutes" type="number" min=1 class="form-control" value="<?php echo (!empty($self_challenge_max_minutes['message'])) ? $self_challenge_max_minutes['message'] : "" ?>" required>
                                                 </div>
 
                                                 <!-- Self Challenge Max Questions -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('self_challenge_max_questions'); ?></label>
+                                                    <label class="control-label"><?= lang('self_challenge_max_questions'); ?> <small class="text-danger">*</small></label>
                                                     <input name="self_challenge_max_questions" type="number" min=1 class="form-control" value="<?php echo (!empty($self_challenge_max_questions['message'])) ? $self_challenge_max_questions['message'] : "" ?>" required>
                                                 </div>
                                             </div>
@@ -716,7 +704,7 @@
 
                                                 <!-- Exam Module Resume Exam After Close Timeout -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('resume_exam_after_close_timeout'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('resume_exam_after_close_timeout'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="exam_module_resume_exam_timeout" type="number" min=1 class="form-control" value="<?php echo (!empty($exam_module_resume_exam_timeout['message'])) ? $exam_module_resume_exam_timeout['message'] : "" ?>" required>
                                                 </div>
                                             </div>
@@ -740,13 +728,13 @@
 
                                                 <!-- Contest Quiz Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="contest_mode_wrong_deduct_score" min="1" name="contest_mode_wrong_deduct_score" required class="form-control" value="<?php echo isset($contest_mode_wrong_deduct_score) ? $contest_mode_wrong_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Contest Quiz Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="contest_mode_correct_credit_score" min="1" name="contest_mode_correct_credit_score" required class="form-control" value="<?php echo isset($contest_mode_correct_credit_score) ? $contest_mode_correct_credit_score['message'] : "" ?>">
                                                 </div>
 
@@ -783,19 +771,19 @@
 
                                                 <!-- Multi Match Durtaion -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('multi_match_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?></small></label>
+                                                    <label class="control-label"><?= lang('multi_match_duration'); ?> <small class="text-danger"><?= lang('in_seconds'); ?> *</small></label>
                                                     <input name="multi_match_duration" type="number" min=1 class="form-control" value="<?php echo (!empty($multi_match_duration['message'])) ? $multi_match_duration['message'] : "30" ?>" required>
                                                 </div>
 
                                                 <!-- Wrong Answer Deduct Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?></label>
+                                                    <label class="control-label"><?= lang('wrong_answer_deduct_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="multi_match_wrong_answer_deduct_score" min="1" name="multi_match_wrong_answer_deduct_score" required class="form-control" value="<?php echo isset($multi_match_wrong_answer_deduct_score) ? $multi_match_wrong_answer_deduct_score['message'] : "" ?>">
                                                 </div>
 
                                                 <!-- Correct Answer Credit Score -->
                                                 <div class="form-group col-md-3 col-sm-6 mt-2">
-                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?></label>
+                                                    <label class="control-label"><?= lang('correct_answer_credit_score'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 id="multi_match_correct_answer_credit_score" min="1" name="multi_match_correct_answer_credit_score" required class="form-control" value="<?php echo isset($multi_match_correct_answer_credit_score) ? $multi_match_correct_answer_credit_score['message'] : "" ?>">
                                                 </div>
                                             </div>

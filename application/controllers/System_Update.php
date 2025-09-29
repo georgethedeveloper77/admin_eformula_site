@@ -66,7 +66,7 @@ class System_Update extends CI_Controller
                             $quiz_url = $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
                             $curl = curl_init();
                             curl_setopt_array($curl, array(
-                                CURLOPT_URL => 'https://wrteam.in/validator/flutter_quiz_validator?purchase_code=' . $purchase_code . '&domain_url=' . $quiz_url,
+                                CURLOPT_URL => 'https://validator.wrteam.in/flutter_quiz_validator?purchase_code=' . $purchase_code . '&domain_url=' . $quiz_url,
                                 CURLOPT_RETURNTRANSFER => true,
                                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                                 CURLOPT_CUSTOMREQUEST => 'GET',

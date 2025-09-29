@@ -911,3 +911,5 @@ $lang['invalid_value'] = "Invalid Value";
 $lang['found_at_row'] = "Found at Row";
 $lang['of_index'] = "of Index";
 $lang['duplicate_value'] = "Duplicate Value";
+$lang['edit_payment_request'] = "Edit Payment Request";
+$lang['delete_selected_question_report'] = "Delete Selected Question Reports";

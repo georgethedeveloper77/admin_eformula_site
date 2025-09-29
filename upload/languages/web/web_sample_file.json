@@ -463,5 +463,9 @@
     "user_disabled": "User account has been disabled",
     "too_many_requests": "Too many requests, try again later",
     "operation_not_allowed": "Operation not allowed",
-    "internal_error": "Internal error occurred"
+    "internal_error": "Internal error occurred",
+    "points": "Points",
+    "you_won": "You won",
+    "speed_bonus": "Speed Bonus",
+    "timer": "Timer"
 }

@@ -34,21 +34,21 @@
                                             $quiz_url = $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
                                             ?>
                                             <input type="hidden" name="quiz_url" value="<?= $quiz_url; ?>" required />
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label><?= lang('purchase_code'); ?></label>
-                                                    <input type="text" name="purchase_code" required placeholder="<?= lang('enter_purchase_code'); ?>" class="form-control" />
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('purchase_code'); ?></label>
+                                                    <input type="text" name="purchase_code" placeholder="<?= lang('enter_purchase_code'); ?>" class="form-control" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
                                                     <label class="control-label"><?= lang('update_zip'); ?> <small class="text-danger"><?= lang('only_zip_file_allow'); ?></small></label>
                                                     <input id="file" name="file" type="file" accept=".zip,.rar" required class="form-control">
                                                     <small class="text-danger"><?= lang('your_current_version_is'); ?> <?php echo (!empty($system_version['message'])) ? $system_version['message'] : "" ?> , <?= lang('please_update_nearest_version_here_if_available'); ?></small>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-10">
+                                            <div class="row">
+                                                <div class="form-group col-sm-10">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>

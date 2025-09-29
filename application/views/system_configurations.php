@@ -36,7 +36,7 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-12 col-sm-12">
-                                                    <label class="control-label"><?= lang('system_timezone'); ?></label>
+                                                    <label class="control-label"><?= lang('system_timezone'); ?> <small class="text-danger">*</small></label>
                                                     <input type="hidden" id="system_timezone_gmt" name="system_timezone_gmt" value="<?php echo (!empty($system_timezone_gmt['message'])) ? $system_timezone_gmt['message'] : '-11:00'; ?>" aria-required="true">
                                                     <?php $options = getTimezoneOptions(); ?>
                                                     <select id="system_timezone" name="system_timezone" required class="form-control">
@@ -71,19 +71,19 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label"><?= lang('refer_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('refer_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" id="refer_coin" min="0" name="refer_coin" required class="form-control" value="<?php echo ($refer_coin) ? $refer_coin['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label"><?= lang('earn_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('earn_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" id="earn_coin" min="0" name="earn_coin" required class="form-control" value="<?php echo ($earn_coin) ? $earn_coin['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label"><?= lang('app_version_android'); ?></label>
+                                                    <label class="control-label"><?= lang('app_version_android'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" id="app_version" name="app_version" required class="form-control" value="<?php echo (!empty($app_version['message'])) ? $app_version['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label"><?= lang('app_version_ios'); ?></label>
+                                                    <label class="control-label"><?= lang('app_version_ios'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" id="app_version_ios" name="app_version_ios" required class="form-control" value="<?php echo (!empty($app_version_ios['message'])) ? $app_version_ios['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
@@ -100,15 +100,15 @@
 
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label"><?= lang('true_value'); ?></label>
+                                                    <label class="control-label"><?= lang('true_value'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" id="true_value" name="true_value" required class="form-control" value="<?php echo ($true_value) ? $true_value['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-2 col-xs-12">
-                                                    <label class="control-label"><?= lang('false_value'); ?></label>
+                                                    <label class="control-label"><?= lang('false_value'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" id="false_value" name="false_value" required class="form-control" value="<?php echo ($false_value) ? $false_value['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-xs-12">
-                                                    <label class="control-label"><?= lang('share_app_text'); ?></label>
+                                                    <label class="control-label"><?= lang('share_app_text'); ?> <small class="text-danger">*</small></label>
                                                     <textarea id="shareapp_text" name="shareapp_text" required class="form-control"><?= (!empty($shareapp_text['message'])) ? $shareapp_text['message'] : '' ?></textarea>
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">

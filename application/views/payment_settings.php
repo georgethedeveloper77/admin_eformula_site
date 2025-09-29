@@ -53,23 +53,23 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label"><?= lang('per_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('per_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 name="per_coin" value="<?= (!empty($per_coin)) ? $per_coin['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label"><?= lang('per_amount'); ?></label>
+                                                    <label class="control-label"><?= lang('per_amount'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 name="coin_amount" value="<?= (!empty($coin_amount)) ? $coin_amount['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label"><?= lang('currency_symbol'); ?></label>
+                                                    <label class="control-label"><?= lang('currency_symbol'); ?> <small class="text-danger">*</small></label>
                                                     <input type="text" name="currency_symbol" value="<?= (!empty($currency_symbol)) ? $currency_symbol['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2 col-sm-6">
-                                                    <label class="control-label"><?= lang('minimum_coins_for_request'); ?></label>
+                                                    <label class="control-label"><?= lang('minimum_coins_for_request'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 name="coin_limit" value="<?= (!empty($coin_limit)) ? $coin_limit['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-6">
-                                                    <label class="control-label"><?= lang('difference_in_hours_between_consecutive_payment_request'); ?></label>
+                                                    <label class="control-label"><?= lang('difference_in_hours_between_consecutive_payment_request'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" min=1 name="difference_hours" value="<?= (!empty($difference_hours)) ? $difference_hours['message'] : '' ?>" required class="form-control" />
                                                 </div>
                                             </div>

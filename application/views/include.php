@@ -33,8 +33,9 @@ foreach ($custom_colors as $color) {
         }
 </style>
 <!-- Bootstrap Table CSS -->
-<link href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.1/extensions/fixed-columns/bootstrap-table-fixed-columns.css" rel="stylesheet" integrity="sha512-kvkkrHuKAXVdP5Ank5mgDR9hsNnuA5eVcw+a8K5VgbKjP1UQewIrhBE+826LiXjWMlgZJ0aPZl0Pc+XrOQNa4A==" crossorigin="anonymous" />
+<link href="<?= base_url(); ?>assets/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+<link href="<?= base_url(); ?>assets/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css" rel="stylesheet" type="text/css">
+
 <!-- Light Box CSS -->
 <link href="<?= base_url(); ?>assets/lightbox/lightbox.css" rel="stylesheet" type="text/css" />
 <!-- Toast CSS -->

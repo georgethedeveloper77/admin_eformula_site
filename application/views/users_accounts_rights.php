@@ -31,34 +31,39 @@
 
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <div class="row">
-                                                <div class="col-md-4 col-sm-6 col-12">
+                                                <div class="form-group col-md-4 col-sm-6 col-12">
                                                     <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('username'); ?> <small class="text-danger">*</small></label>
+                                                            <input type="text" name="username" class="form-control" required placeholder="<?= lang('enter_username'); ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('password'); ?> <small class="text-danger">*</small></label>
+                                                            <input type="password" name="password" class="form-control" required placeholder="<?= lang('enter_password'); ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('role'); ?> <small class="text-danger">*</small></label>
+                                                            <select name="role" class="form-control" required>
+                                                                <option value=""><?= lang('select_role'); ?></option>
+                                                                <option value="editor"><?= lang('editor'); ?></option>
+                                                                <option value="admin"><?= lang('admin'); ?></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
 
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('username'); ?></label>
-                                                        <input type="text" name="username" class="form-control" required placeholder="<?= lang('enter_username'); ?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('password'); ?></label>
-                                                        <input type="password" name="password" class="form-control" required placeholder="<?= lang('enter_password'); ?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('role'); ?></label>
-                                                        <select name="role" class="form-control" required>
-                                                            <option value=""><?= lang('select_role'); ?></option>
-                                                            <option value="editor"><?= lang('editor'); ?></option>
-                                                            <option value="admin"><?= lang('admin'); ?></option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-group float-right">
-                                                        <div>
+                                                    <div class="row float-right">
+                                                        <div class="form-group col-12">
                                                             <input type="submit" name="btnadd" class="<?= BUTTON_CLASS ?> btn-block" value="<?= lang('submit'); ?>" />
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-8 col-sm-6 col-12">
+                                                <div class="form-group col-md-8 col-sm-6 col-12">
                                                     <?php $actions = ['create', 'read', 'update', 'delete']; ?>
                                                     <table class="table tableres table-responsive permission-table" aria-describedby="mydesc">
                                                         <thead>
@@ -149,28 +154,29 @@
                             <input type='hidden' name="edit_id" id="edit_id" value="" />
 
                             <div class="row">
-                                <div class="col-md-12 col-sm-12">
-
-                                    <div class="form-group row">
-                                        <div class="col-md-6 col-sm-12">
-                                            <label class="control-label"><?= lang('username'); ?></label>
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label class="control-label"><?= lang('username'); ?> <small class="text-danger">*</small></label>
                                             <input type="text" id="username" name="username" class="form-control" required placeholder="<?= lang('enter_username'); ?>">
                                         </div>
-                                        <div class="col-md-6 col-sm-12">
-                                            <label class="control-label"><?= lang('password'); ?> <small><?= lang('leave_it_blank'); ?></small></label>
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label class="control-label"><?= lang('password'); ?> <small><?= lang('leave_it_blank'); ?></small> <small class="text-danger">*</small></label>
                                             <input type="password" name="password" class="form-control" placeholder="<?= lang('enter_password'); ?>">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label"><?= lang('role'); ?></label>
-                                        <select id="role" name="role" class="form-control" required>
-                                            <option value="editor"><?= lang('editor'); ?></option>
-                                            <option value="admin"><?= lang('admin'); ?></option>
-                                        </select>
+                                    <div class="row">
+                                        <div class="form-group col-md-6 col-sm-12">
+                                            <label class="control-label"><?= lang('role'); ?></label>
+                                            <select id="role" name="role" class="form-control" required>
+                                                <option value="editor"><?= lang('editor'); ?></option>
+                                                <option value="admin"><?= lang('admin'); ?></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 col-sm-12" id="edit_user">
+                                <div class="form-group col-md-12 col-sm-12" id="edit_user">
 
                                 </div>
 

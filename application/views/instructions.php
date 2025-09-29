@@ -33,7 +33,7 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-10 col-sm-10 offset-1">
-                                                    <textarea id="message" name="message" class="form-control"><?php echo ($setting) ? $setting['message'] : '' ?></textarea>
+                                                    <textarea id="message" name="message" class="form-control"><?php echo ($setting) ? htmlspecialchars($setting['message']) : '' ?></textarea>
                                                     <input name="img" type="file" accept="image/*" id="upload" style="display: none" onchange="">
                                                 </div>
                                             </div>

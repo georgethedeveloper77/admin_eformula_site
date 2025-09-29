@@ -324,7 +324,7 @@
                             <input type="hidden" name="web_language_name" id="web_language_name">
                             <div class="form-group row">
                                 <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('language_name') ?></label>
+                                    <label class="control-label"><?= lang('language_name') ?> <small class="text-danger">*</small></label>
                                     <input id="web_update_name" name="web_update_name" type="text" class="form-control" required placeholder="<?= lang('enter_language_name') ?>" readonly>
                                 </div>
                             </div>

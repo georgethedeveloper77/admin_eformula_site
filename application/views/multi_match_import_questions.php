@@ -32,19 +32,19 @@
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-10 offset-2">
-                                                    <label><?= lang('csv_questions_file'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-10 offset-2">
+                                                    <label><?= lang('csv_questions_file'); ?> <small class="text-danger">*</small></label>
                                                     <input type="file" name="file" id="questions_file" required class="form-control" accept=".csv" />
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-3 col-sm-6 offset-2 my-1">
+                                            <div class="row">
+                                                <div class="form-group col-md-2 col-sm-10 offset-2 my-1">
                                                     <input type="submit" name="btnadd" value="<?= lang('upload_csv_file'); ?>" class="<?= BUTTON_CLASS ?>" />
 
                                                 </div>
-                                                <div class="col-md-4 col-sm-6 my-1">
-                                                    <a class="btn btn-primary" href='<?= base_url(); ?>assets/data-format-for-multi-match.csv' target="_blank" download> <em class='fas fa-download'></em> <?= lang('download_sample_file_here'); ?></a>
+                                                <div class="form-group col-md-3 col-sm-10 offset-2 my-1">
+                                                    <a class="btn btn-primary" href='<?= base_url(); ?>assets/data-format-for-multi-match.csv' target="_blank" download> <em class='fas fa-download mr-3'></em><?= lang('download_sample_file_here'); ?></a>
                                                 </div>
                                             </div>
                                         </form>

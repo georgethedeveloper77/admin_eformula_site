@@ -36,9 +36,9 @@
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                             <input type="hidden" name="type" value="<?= $this->uri->segment(1) ?>" required />
                                             <?php if (is_language_mode_enabled()) { ?>
-                                                <div class="form-group row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
+                                                <div class="row">
+                                                    <div class="form-group col-md-12 col-sm-12">
+                                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                                         <select name="language_id" class="form-control" required>
                                                             <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
@@ -48,26 +48,26 @@
                                                     </div>
                                                 </div>
                                             <?php } ?>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('image'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('image'); ?> <small class="text-danger">*</small></label>
                                                     <input id="file" name="file" type="file" accept="image/*" class="form-control" required>
                                                     <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
                                                     <p style="display: none" id="img_error_msg" class="alert alert-danger"></p>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('title'); ?></label>
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                                     <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="control-label"><?= lang('description'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
+                                                    <label class="control-label"><?= lang('description'); ?> <small class="text-danger">*</small></label>
                                                     <textarea name="description" class="form-control" placeholder="<?= lang('enter_description'); ?>" required></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
@@ -86,7 +86,7 @@
                                     <div class="card-body">
                                         <?php if (is_language_mode_enabled()) { ?>
                                             <div class="row">
-                                                <div class='col-md-4'>
+                                                <div class='form-group col-md-4'>
                                                     <select id='filter_language' class='form-control' required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -94,7 +94,7 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class='col-md-4'>
+                                                <div class='form-group col-md-4'>
                                                     <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                                 </div>
                                             </div>
@@ -148,9 +148,9 @@
                             <input type='hidden' name="edit_id" id="edit_id" value="" />
                             <input type="hidden" name='image_url' id="image_url" value="" />
                             <?php if (is_language_mode_enabled()) { ?>
-                                <div class="form-group row">
-                                    <div class="col-md-12 col-sm-12">
-                                        <label class="control-label"><?= lang('language'); ?></label>
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                         <select id="language_id" name="language_id" class="form-control" required>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
@@ -159,23 +159,23 @@
                                     </div>
                                 </div>
                             <?php } ?>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label class="control-label"><?= lang('image'); ?> <small><?= lang('leave_it_blank'); ?></small></label>
                                     <input id="update_file" name="update_file" type="file" accept="image/*" class="form-control">
                                     <small class="text-danger"><?= lang('svg_image_type_supported'); ?></small>
                                     <p style="display: none" id="up_img_error_msg" class="badge badge-danger"></p>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('title'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                     <input id="title" name="title" type="text" class="form-control" required placeholder="<?= lang('enter_title'); ?>">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('description'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('description'); ?> <small class="text-danger">*</small></label>
                                     <textarea id="description" name="description" class="form-control" required placeholder="<?= lang('enter_description'); ?>"></textarea>
                                 </div>
                             </div>

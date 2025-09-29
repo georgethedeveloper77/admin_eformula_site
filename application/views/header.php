@@ -32,7 +32,7 @@
         </li>
         <li class="dropdown">
             <a href="<?= base_url(); ?>" data-toggle="dropdown" class="nav-link dropdown-toggle  nav-link-lg nav-link-user">
-                <span class="user_profile_icon"><i class="fa fa-user-circle" aria-hidden="true"></i> </span>
+                <span class="rounded-circle mr-1"><i class="fa fa-user-circle" aria-hidden="true"></i> </span>
                 <div class="d-sm-none d-lg-inline-block"><?= lang('hi'); ?>, <?= ucwords($this->session->userdata('authName')); ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">

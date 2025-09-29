@@ -38,7 +38,7 @@
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class="row">
                                                     <div class="form-group col-md-6 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
+                                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                                         <select name="language_id" id="language_id" class="form-control" required>
                                                             <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
@@ -47,7 +47,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-6 col-sm-12">
-                                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="maincat_id" name="maincat_id" class="form-control" required>
                                                             <option value=""><?= lang('select_main_category'); ?></option>
                                                         </select>
@@ -56,7 +56,7 @@
                                             <?php } else { ?>
                                                 <div class="row">
                                                     <div class="form-group col-md-12 col-sm-12">
-                                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="maincat_id" name="maincat_id" class="form-control" required>
                                                             <option value=""><?= lang('select_main_category'); ?></option>
                                                             <?php foreach ($category as $cat) { ?>
@@ -68,11 +68,11 @@
                                             <?php } ?>
                                             <div class="row">
                                                 <div class="form-group col-md-6 col-lg-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('sub_category_name'); ?></label>
+                                                    <label class="control-label"><?= lang('sub_category_name'); ?> <small class="text-danger">*</small></label>
                                                     <input name="name" type="text" class="form-control" id="subcategory-name" placeholder="<?= lang('enter_sub_category_name'); ?>" required>
                                                 </div>
                                                 <div class="form-group col-md-6 col-lg-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('slug'); ?></label>
+                                                    <label class="control-label"><?= lang('slug'); ?> <small class="text-danger">*</small></label>
                                                     <input name="slug" id="subcategory-slug" type="text" class="form-control" placeholder="<?= lang('enter_slug'); ?>" required>
                                                     <small class="text-danger d-block"><?= lang('only_english_character_number_hypens_allowed') ?></small>
                                                     <div class="badge badge-danger m-1" id="subcategory-slug-warning" style="display:none;"></div>
@@ -104,7 +104,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <?php if (is_language_mode_enabled()) { ?>
-                                                <div class="col-md-4">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_language" class="form-control" required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -112,14 +112,14 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
 
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
-                                                <div class="col-md-4">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) { ?>
@@ -128,7 +128,7 @@
                                                     </select>
                                                 </div>
                                             <?php } ?>
-                                            <div class='col-md-4'>
+                                            <div class='form-group col-md-3'>
                                                 <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>
@@ -196,7 +196,7 @@
                             <?php if (is_language_mode_enabled()) { ?>
                                 <div class="row">
                                     <div class="form-group col-md-12 col-sm-12">
-                                        <label class="control-label"><?= lang('language'); ?></label>
+                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                         <select name="language_id" id="update_language_id" class="form-control" required>
                                             <option value=""><?= lang('select_language'); ?></option>
                                             <?php foreach ($language as $lang) { ?>
@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-12 col-sm-12">
-                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                         <select id="update_maincat_id" name="maincat_id" class="form-control" required>
                                             <option value=""><?= lang('select_main_category'); ?></option>
 
@@ -217,7 +217,7 @@
                             <?php } else { ?>
                                 <div class="row">
                                     <div class="form-group col-md-12 col-sm-12">
-                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                         <select id="update_maincat_id" name="maincat_id" class="form-control" required>
                                             <option value=""><?= lang('select_main_category'); ?></option>
                                             <?php foreach ($category as $cat) { ?>
@@ -230,13 +230,13 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('subcategory_name'); ?></label>
+                                    <label class="control-label"><?= lang('subcategory_name'); ?> <small class="text-danger">*</small></label>
                                     <input id="edit-subcategory-name" name="name" type="text" class="form-control" required placeholder="<?= lang('enter_subcategory_name'); ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label"><?= lang('slug'); ?></label>
+                                    <label class="control-label"><?= lang('slug'); ?> <small class="text-danger">*</small></label>
                                     <input name="slug" id="edit-subcategory-slug" type="text" class="form-control" placeholder="<?= lang('enter_slug'); ?>" required>
                                     <small class="text-danger d-block"><?= lang('only_english_character_number_hypens_allowed') ?></small>
                                     <div class="badge badge-danger m-1" id="edit-subcategory-slug-warning" style="display:none;"></div>

@@ -48,10 +48,10 @@
                                                 }
                                             }
                                             ?>
-                                            <div class="form-group row">
+                                            <div class="row">
                                                 <?php if (is_language_mode_enabled()) { ?>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                                         <select name="language_id" id="create_language_id" class="form-control" required>
                                                             <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
@@ -59,21 +59,21 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="category" name="category" class="form-control" required>
                                                             <option value=""><?= lang('select_main_category'); ?></option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group col-md-4 col-sm-12">
                                                         <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
                                                             <option value=""><?= lang('select_sub_category'); ?></option>
                                                         </select>
                                                     </div>
                                                 <?php } else { ?>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                                         <select id="category" name="category" class="form-control" required>
                                                             <option value=""><?= lang('select_main_category'); ?></option>
                                                             <?php foreach ($category as $cat) { ?>
@@ -81,7 +81,7 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group col-md-6 col-sm-12">
                                                         <label class="control-label"><?= lang('sub_category'); ?></label>
                                                         <select id="subcategory" name="subcategory" class="form-control">
                                                             <option value=""><?= lang('select_sub_category'); ?></option>
@@ -89,13 +89,13 @@
                                                     </div>
                                                 <?php } ?>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('title'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                                     <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                                 </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('content_type'); ?></label>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('content_type'); ?> <small class="text-danger">*</small></label>
                                                     <div>
                                                         <div class="form-check-inline bg-light p-2">
                                                             <label class="form-check-label">
@@ -107,26 +107,26 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 col-sm-12" id="youtube_content">
+                                                <div class="form-group col-md-4 col-sm-12" id="youtube_content">
                                                     <label class="control-label"><?= lang('youtube_id'); ?></label>
                                                     <input name="content_data" type="text" class="form-control" placeholder="<?= lang('youtube_id'); ?>">
                                                 </div>
-                                                <div class="col-md-4 col-sm-12" id="pdf_content">
+                                                <div class="form-group col-md-4 col-sm-12" id="pdf_content">
                                                     <label class="control-label"><?= lang('pdf'); ?></label>
                                                     <input id="file" name="file" type="file" accept="pdf" class="form-control">
                                                     <small class="text-danger"><?= lang('file_type_supported'); ?></small>
                                                     <p style="display: none" id="file_error_msg" class="badge badge-danger"></p>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
                                                     <label class="control-label"><?= lang('details'); ?></label>
                                                     <textarea id="detail" name="detail" class="form-control"></textarea>
                                                     <input name="img" type="file" accept="image/*" id="upload" style="display: none" onchange="">
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
@@ -145,7 +145,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <?php if (is_language_mode_enabled()) { ?>
-                                                <div class='col-md-3'>
+                                                <div class='form-group col-md-3'>
                                                     <select id='filter_language' class='form-control' required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -153,13 +153,13 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) { ?>
@@ -168,12 +168,12 @@
                                                     </select>
                                                 </div>
                                             <?php } ?>
-                                            <div class='col-md-3'>
+                                            <div class='form-group col-md-3'>
                                                 <select id='filter_subcategory' class='form-control' required>
                                                     <option value=''><?= lang('select_sub_category'); ?></option>
                                                 </select>
                                             </div>
-                                            <div class='col-md-3'>
+                                            <div class='form-group col-md-3'>
                                                 <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>
@@ -227,25 +227,25 @@
                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                             <input type='hidden' name="edit_id" id="edit_id" value="" />
-                            <div class="form-group row">
+                            <div class="row">
                                 <?php if (is_language_mode_enabled()) { ?>
-                                    <div class="col-md-6 col-sm-12">
-                                        <label class="control-label"><?= lang('language'); ?></label>
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                         <select id="language_id" name="language_id" class="form-control" required>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-6 col-sm-12">
-                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                         <select id="edit_category" name="category" class="form-control" required>
                                             <option value=""><?= lang('select_main_category'); ?></option>
                                         </select>
                                     </div>
                                 <?php } else { ?>
-                                    <div class="col-md-12 col-sm-12">
-                                        <label class="control-label"><?= lang('main_category'); ?></label>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
                                         <select id="edit_category" name="category" class="form-control" required>
                                             <option value=""><?= lang('select_main_category'); ?></option>
                                             <?php foreach ($category as $cat) { ?>
@@ -255,23 +255,23 @@
                                     </div>
                                 <?php } ?>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label class="control-label"><?= lang('sub_category'); ?></label>
                                     <select id="edit_subcategory" name="subcategory" class="form-control">
                                         <option value=""><?= lang('select_sub_category'); ?></option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('title'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                     <input id="title" name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-4 col-sm-12">
-                                    <label class="control-label"><?= lang('content_type'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label class="control-label"><?= lang('content_type'); ?> <small class="text-danger">*</small></label>
                                     <div>
                                         <div class="form-check-inline bg-light p-2">
                                             <label class="form-check-label">
@@ -283,11 +283,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8 col-sm-12" id="edit_youtube_content">
+                                <div class="form-group col-md-8 col-sm-12" id="edit_youtube_content">
                                     <label class="control-label"><?= lang('youtube_id'); ?></label>
                                     <input name="content_data" id="content_data" type="text" class="form-control" placeholder="<?= lang('youtube_id'); ?>">
                                 </div>
-                                <div class="col-md-8 col-sm-12" id="edit_pdf_content">
+                                <div class="form-group col-md-8 col-sm-12" id="edit_pdf_content">
                                     <label class="control-label"><?= lang('pdf'); ?></label>
                                     <input id="update_file" name="file" type="file" accept="pdf" class="form-control">
                                     <small class="text-danger"><?= lang('file_type_supported'); ?></small>
@@ -295,8 +295,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
                                     <label class="control-label"><?= lang('details'); ?></label>
                                     <textarea id="edit_detail" name="detail" class="form-control"></textarea>
                                 </div>
@@ -328,9 +328,9 @@
                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                             <input type='hidden' name="update_id" id="update_id" value="" />
 
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('status'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('status'); ?></label><br>
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-default">
                                             <input type="radio" name="status" value="1"> <?= lang('active'); ?>

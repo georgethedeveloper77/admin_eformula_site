@@ -44,25 +44,22 @@
                                                     <input type="hidden" id="in_app_ads_mode" name="in_app_ads_mode" value="<?= ($in_app_ads_mode) ? $in_app_ads_mode['message'] : 0; ?>">
                                                 </div>
                                                 <div class="form-group col-sm-12 adsHide">
-                                                    <label class="control-label">&nbsp;</label>
-                                                    <div>
-                                                        <div class="form-check-inline bg-light p-2">
-                                                            <label class="form-check-label">
-                                                                <input type="radio" class="form-check-input" name="ads_type" value="1" required <?php
-                                                                                                                                                if (!empty($ads_type) && $ads_type['message'] == '1') {
-                                                                                                                                                    echo 'checked';
-                                                                                                                                                }
-                                                                                                                                                ?>><?= lang('google_admob'); ?>
-                                                            </label>
-                                                            <label class="form-check-label">
-                                                                <input type="radio" class="form-check-input" name="ads_type" value="3" required <?php
-                                                                                                                                                if (!empty($ads_type) && $ads_type['message'] == '3') {
-                                                                                                                                                    echo 'checked';
-                                                                                                                                                }
-                                                                                                                                                ?>><?= lang('unity_ads'); ?>
-                                                            </label>
+                                                    <span class="bg-light p-2">
+                                                        <div class="form-check form-check-inline mr-0">
+                                                            <input type="radio" class="form-check-input" id="google_admob" name="ads_type" value="1" required <?php
+                                                                                                                                                                if (!empty($ads_type) && $ads_type['message'] == '1') {
+                                                                                                                                                                    echo 'checked';
+                                                                                                                                                                } ?>>
+                                                            <label class="form-check-label" for="google_admob"><?= lang('google_admob'); ?></label>
                                                         </div>
-                                                    </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="radio" class="form-check-input" id="unity_ads" name="ads_type" value="3" required <?php
+                                                                                                                                                            if (!empty($ads_type) && $ads_type['message'] == '3') {
+                                                                                                                                                                echo 'checked';
+                                                                                                                                                            } ?>>
+                                                            <label class="form-check-label" for="unity_ads"><?= lang('unity_ads'); ?></label>
+                                                        </div>
+                                                    </span>
                                                 </div>
                                             </div>
 
@@ -111,7 +108,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-sm-12 col-md-4">
-                                                    <label class="control-label"><?= lang('reward_ads_coin'); ?></label>
+                                                    <label class="control-label"><?= lang('reward_ads_coin'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" id="reward_coin" min="0" name="reward_coin" required class="form-control" value="<?php echo ($reward_coin) ? $reward_coin['message'] : ""; ?>">
                                                 </div>
                                             </div>

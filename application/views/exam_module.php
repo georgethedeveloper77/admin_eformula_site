@@ -34,10 +34,10 @@
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                                            <div class="form-group row">
+                                            <div class="row">
                                                 <?php if (is_language_mode_enabled()) { ?>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                                         <select name="language_id" id="create_language_id" class="form-control" required>
                                                             <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
@@ -45,38 +45,38 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('title'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                                         <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <label class="control-label"><?= lang('date'); ?></label>
+                                                    <div class="form-group col-md-4 col-sm-12">
+                                                        <label class="control-label"><?= lang('date'); ?> <small class="text-danger">*</small></label>
                                                         <input type="date" name="date" class="form-control" required />
                                                     </div>
                                                 <?php } else { ?>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label"><?= lang('title'); ?></label>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
                                                         <input name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <label class="control-label"><?= lang('date'); ?></label>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('date'); ?> <small class="text-danger">*</small></label>
                                                         <input type="date" name="date" class="form-control" required />
                                                     </div>
                                                 <?php } ?>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('exam_key'); ?></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('exam_key'); ?> <small class="text-danger">*</small></label>
                                                     <input type="number" name="exam_key" min="1000" max="9999" class="form-control" required />
                                                     <div class="text-small text-danger"><?= lang('minimun_1000_and_maximum_9999'); ?></div>
                                                 </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('duration'); ?> <small class="text-danger"><?= lang('in_minutes'); ?></small></label>
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('duration'); ?> <small class="text-danger"><?= lang('in_minutes'); ?></small> <small class="text-danger">*</small></label>
                                                     <input type="number" name="duration" min="1" max="180" class="form-control" required />
                                                     <div class="text-small text-danger"><?= lang('minimun_1_and_maximum_180'); ?></div>
                                                 </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('can_rechange_answer_while_in_exam'); ?></label><br />
+                                                <div class="form-group col-md-4 col-sm-12">
+                                                    <label class="control-label"><?= lang('can_rechange_answer_while_in_exam'); ?> <small class="text-danger">*</small></label><br />
                                                     <div id="status" class="btn-group">
                                                         <label class="btn btn-success">
                                                             <input type="radio" name="answer_again" value="1"> <?= lang('yes'); ?>
@@ -87,8 +87,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-sm-12">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <?php if (is_language_mode_enabled()) { ?>
-                                                <div class='col-md-3'>
+                                                <div class='form-group col-md-3'>
                                                     <select id='filter_language' class='form-control' required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -115,7 +115,7 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class='col-md-3'>
+                                                <div class='form-group col-md-3'>
                                                     <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                                 </div>
                                             <?php } ?>
@@ -170,10 +170,10 @@
                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                             <input type='hidden' name="edit_id" id="edit_id" value="" />
-                            <div class="form-group row">
+                            <div class="row">
                                 <?php if (is_language_mode_enabled()) { ?>
-                                    <div class="col-md-12 col-sm-12">
-                                        <label class="control-label"><?= lang('language'); ?></label>
+                                    <div class="form-group col-md-12 col-sm-12">
+                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                         <select id="language_id" name="language_id" class="form-control" required>
                                             <?php foreach ($language as $lang) { ?>
                                                 <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
@@ -183,34 +183,34 @@
 
                                 <?php } ?>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('title'); ?></label>
-                                    <input id="title" name="title" type="text" class="form-control" placeholder="<?= lang('ente_title'); ?>" required>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
+                                    <input id="title" name="title" type="text" class="form-control" placeholder="<?= lang('enter_title'); ?>" required>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('date'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('date'); ?> <small class="text-danger">*</small></label>
                                     <input type="date" id="date" name="date" class="form-control" required />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('exam_key'); ?></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('exam_key'); ?> <small class="text-danger">*</small></label>
                                     <input type="text" id="exam_key" name="exam_key" class="form-control" required />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('duration'); ?> <small class="text-danger"><?= lang('in_minutes'); ?></small></label>
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('duration'); ?> <small class="text-danger"><?= lang('in_minutes'); ?></small> <small class="text-danger">*</small></label>
                                     <input type="number" id="duration" name="duration" min="0" class="form-control" required />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 col-sm-12">
-                                    <label class="control-label"><?= lang('can_rechange_answer_while_in_exam'); ?></label><br />
+                            <div class="row">
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label"><?= lang('can_rechange_answer_while_in_exam'); ?> <small class="text-danger">*</small></label><br />
                                     <div id="status" class="btn-group">
                                         <label class="btn btn-success">
                                             <input type="radio" name="edit_answer_again" value="1"> <?= lang('yes'); ?>

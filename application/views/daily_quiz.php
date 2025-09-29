@@ -35,7 +35,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <?php if (is_language_mode_enabled()) { ?>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_language" class="form-control" required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -43,13 +43,13 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) {
@@ -60,18 +60,18 @@
                                                     </select>
                                                 </div>
                                             <?php } ?>
-                                            <div class='col-md-3'>
+                                            <div class='form-group col-md-3'>
                                                 <select id='filter_subcategory' class='form-control' required>
                                                     <option value=''><?= lang('select_sub_category'); ?></option>
                                                 </select>
                                             </div>
-                                            <div class='col-md-3'>
+                                            <div class='form-group col-md-3'>
                                                 <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>
                                         <hr />
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="form-group col-md-6">
                                                 <h6 class="inner_heading"><strong><?= lang('select_questions_for_daily_quiz'); ?></strong></h6>
                                                 <table aria-describedby="mydesc" class='table-striped' id='question_list' data-toggle="table" data-url="<?= base_url() . 'Table/question_without_premium' ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-search="true" data-toolbar="#toolbar" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-mobile-responsive="true" data-sort-name="id" data-sort-order="desc" data-pagination-successively-size="3" data-maintain-selected="true" data-export-types='["txt","excel"]' data-export-options='{ "fileName": "question-list-<?= date('d-m-y') ?>" }' data-query-params="queryParams_1">
                                                     <thead>
@@ -88,11 +88,11 @@
                                                     </thead>
                                                 </table>
                                             </div>
-                                            <div class="col-md-1">
+                                            <div class="form-group col-md-1">
                                                 <label class="control-label" for="add_question"><?= lang('add'); ?></label>
                                                 <a href="#" id="add_question" class="<?= BUTTON_CLASS ?> form-control"><em class="fa fa-chevron-circle-right"></em></a>
                                             </div>
-                                            <div class='col-md-5'>
+                                            <div class='form-group col-md-5'>
                                                 <h6 class="inner_heading"><strong><?= lang('selected_questions'); ?></strong></h6>
 
                                                 <form id="daily_quiz_form" method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
@@ -102,7 +102,7 @@
                                                         <?php if (is_language_mode_enabled()) { ?>
                                                             <label class="control-label"><?= lang('language'); ?></label><br>
                                                             <div class='row'>
-                                                                <div class="col-md-12">
+                                                                <div class="form-group col-md-12">
                                                                     <select id="language_id" name="language_id" required class="form-control">
                                                                         <?php foreach ($language as $lang) { ?>
                                                                             <option value="<?= $lang->id ?>"><?= $lang->language ?></option>
@@ -123,8 +123,8 @@
                                                             </ol>
                                                         </div>
                                                         <div class="ln_solid"></div>
-                                                        <div class="form-group">
-                                                            <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="form-group col-md-12">
                                                                 <input type="submit" id="submit_btn" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                             </div>
                                                         </div>

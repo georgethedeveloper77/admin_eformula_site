@@ -2514,8 +2514,6 @@ h6 .badge {
   overflow: hidden;
 }
 
-.user_profile_icon {}
-
 .navbar .nav-link.nav-link-img .flag-icon {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
   border-radius: 50%;
@@ -4432,23 +4430,17 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 @-webkit-keyframes pulsate {
   0% {
     -webkit-transform: scale(0.1, 0.1);
-    opacity: 0;
+    opacity: 0.0;
   }
 
   50% {
-    opacity: 1;
+    opacity: 1.0;
   }
 
   100% {
     -webkit-transform: scale(1.2, 1.2);
-    opacity: 0;
+    opacity: 0.0;
   }
-}
-
-.bootstrap-table .btn-secondary {
-  color: #fff;
-  background-color: var(--theme-color) !important;
-  border-color: var(--theme-color) !important;
 }
 
 .fa-2x {
@@ -4547,4 +4539,23 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   justify-content: center;
   align-items: center;
   padding-top: 0;
+}
+
+.bootstrap-table .card-view {
+  padding: 3px !important;
+}
+
+.bootstrap-table .btn-secondary {
+  color: #fff;
+  background-color: var(--theme-color) !important;
+  border-color: var(--theme-color) !important;
+}
+
+.bootstrap-table .fixed-table-toolbar .bs-bars #toolbar .btn,
+.bootstrap-table .btn-secondary {
+  height: 42px !important;
+}
+
+.bootstrap-table .fixed-table-container .table thead th .th-inner {
+  padding: 0 !important;
 }

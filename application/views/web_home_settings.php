@@ -71,7 +71,7 @@
                                             <?php if (is_language_mode_enabled()) { ?>
                                                 <div class="row">
                                                     <div class="form-group col-md-3 col-sm-12">
-                                                        <label class="control-label"><?= lang('language'); ?></label>
+                                                        <label class="control-label"><?= lang('language'); ?> <small class="text-danger">*</small></label>
                                                         <select name="language_id" class="form-control" required>
                                                             <option value=""><?= lang('select_language'); ?></option>
                                                             <?php foreach ($language as $lang) { ?>
@@ -98,21 +98,21 @@
                                                     <input type="hidden" id="section-1-mode-value" name="section_1_mode" value="<?= !empty($section_1_mode) ? $section_1_mode['message'] : 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('heading'); ?></label>
+                                                    <label class="control-label"><?= lang('heading'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section1_heading" type="text" placeholder="<?= lang('heading'); ?>" class="form-control" value="<?php echo (isset($section1_heading) && !empty($section1_heading['message'])) ? $section1_heading['message'] : "" ?>" required>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_1'); ?></label>
+                                                    <label class="control-label"><?= lang('title_1'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section1_title1" placeholder="<?= lang('title_1'); ?>" type="text" class="form-control" value='<?php echo (isset($section1_title1) && !empty($section1_title1['message'])) ? $section1_title1['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_2'); ?></label>
+                                                    <label class="control-label"><?= lang('title_2'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section1_title2" placeholder="<?= lang('title_2'); ?>" type="text" class="form-control" value='<?php echo (isset($section1_title2) && !empty($section1_title2['message'])) ? $section1_title2['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-4 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_3'); ?></label>
+                                                    <label class="control-label"><?= lang('title_3'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section1_title3" placeholder="<?= lang('title_3'); ?>" type="text" class="form-control" value='<?php echo (isset($section1_title3) && !empty($section1_title3['message'])) ? $section1_title3['message'] : "" ?>' required>
                                                 </div>
                                             </div>
@@ -185,25 +185,25 @@
                                                     <input type="hidden" id="section-2-mode-value" name="section_2_mode" value="<?= !empty($section_2_mode) ? $section_2_mode['message'] : 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('heading'); ?></label>
+                                                    <label class="control-label"><?= lang('heading'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section2_heading" placeholder="<?= lang('heading'); ?>" type="text" class="form-control" value='<?php echo (isset($section2_heading) && !empty($section2_heading['message'])) ? $section2_heading['message'] : "" ?>' required>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_1'); ?></label>
+                                                    <label class="control-label"><?= lang('title_1'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section2_title1" placeholder="<?= lang('title_1'); ?>" type="text" class="form-control" value='<?php echo (isset($section2_title1) && !empty($section2_title1['message'])) ? $section2_title1['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_2'); ?></label>
+                                                    <label class="control-label"><?= lang('title_2'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section2_title2" placeholder="<?= lang('title_2'); ?>" type="text" class="form-control" value='<?php echo (isset($section2_title2) && !empty($section2_title2['message'])) ? $section2_title2['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_3'); ?></label>
+                                                    <label class="control-label"><?= lang('title_3'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section2_title3" placeholder="<?= lang('title_3'); ?>" type="text" class="form-control" value='<?php echo (isset($section2_title3) && !empty($section2_title3['message'])) ? $section2_title3['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_4'); ?> </label>
+                                                    <label class="control-label"><?= lang('title_4'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section2_title4" placeholder="<?= lang('title_4'); ?>" type="text" class="form-control" value='<?php echo (isset($section2_title4) && !empty($section2_title4['message'])) ? $section2_title4['message'] : "" ?>' required>
                                                 </div>
                                             </div>
@@ -288,25 +288,25 @@
                                                     <input type="hidden" id="section-3-mode-value" name="section_3_mode" value="<?= !empty($section_3_mode) ? $section_3_mode['message'] : 0; ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('heading'); ?></label>
+                                                    <label class="control-label"><?= lang('heading'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section3_heading" placeholder="<?= lang('heading'); ?>" type="text" class="form-control" value="<?php echo (!empty($section3_heading['message'])) ? $section3_heading['message'] : "" ?>" required>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_1'); ?></label>
+                                                    <label class="control-label"><?= lang('title_1'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section3_title1" placeholder="<?= lang('title_1'); ?>" type="text" class="form-control" value='<?php echo (!empty($section3_title1['message'])) ? $section3_title1['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_2'); ?></label>
+                                                    <label class="control-label"><?= lang('title_2'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section3_title2" placeholder="<?= lang('title_2'); ?>" type="text" class="form-control" value='<?php echo (!empty($section3_title2['message'])) ? $section3_title2['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_3'); ?></label>
+                                                    <label class="control-label"><?= lang('title_3'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section3_title3" placeholder="<?= lang('title_3'); ?>" type="text" class="form-control" value='<?php echo (!empty($section3_title3['message'])) ? $section3_title3['message'] : "" ?>' required>
                                                 </div>
                                                 <div class="form-group col-md-3 col-sm-12">
-                                                    <label class="control-label"><?= lang('title_4'); ?></label>
+                                                    <label class="control-label"><?= lang('title_4'); ?> <small class="text-danger">*</small></label>
                                                     <input name="section3_title4" placeholder="<?= lang('title_4'); ?>" type="text" class="form-control" value='<?php echo (!empty($section3_title4['message'])) ? $section3_title4['message'] : "" ?>' required>
                                                 </div>
                                             </div>

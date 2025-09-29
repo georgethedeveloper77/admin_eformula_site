@@ -31,7 +31,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <?php if (is_language_mode_enabled()) { ?>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_language" class="form-control" required>
                                                         <option value=""><?= lang('select_language'); ?></option>
                                                         <?php foreach ($language as $lang) { ?>
@@ -39,14 +39,14 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
 
                                                     </select>
                                                 </div>
                                             <?php } else { ?>
-                                                <div class="col-md-3">
+                                                <div class="form-group col-md-3">
                                                     <select id="filter_category" class="form-control" required>
                                                         <option value=""><?= lang('select_main_category'); ?></option>
                                                         <?php foreach ($category as $cat) { ?>
@@ -55,12 +55,12 @@
                                                     </select>
                                                 </div>
                                             <?php } ?>
-                                            <div class='col-md-3'>
+                                            <div class='form-group col-md-3'>
                                                 <select id='filter_subcategory' class='form-control' required>
                                                     <option value=''><?= lang('select_sub_category'); ?></option>
                                                 </select>
                                             </div>
-                                            <div class='col-md-3'>
+                                            <div class='form-group col-md-3'>
                                                 <button class='<?= BUTTON_CLASS ?> btn-block form-control' id='filter_btn'><?= lang('filter_data'); ?></button>
                                             </div>
                                         </div>

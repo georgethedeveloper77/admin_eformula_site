@@ -28,52 +28,64 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="row">
-                                        <div class="col-md-6 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <div class="card-body">
                                                 <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                                     <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
                                                     <textarea id="selected_list" name="selected_list" style='display:none'></textarea>
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('select_users'); ?></label>
-                                                        <select name='users' id='users' class='form-control'>
-                                                            <option value='all'><?= lang('all'); ?></option>
-                                                            <option value='selected'><?= lang('selected_only'); ?></option>
-                                                        </select>
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('select_users'); ?></label>
+                                                            <select name='users' id='users' class='form-control'>
+                                                                <option value='all'><?= lang('all'); ?></option>
+                                                                <option value='selected'><?= lang('selected_only'); ?></option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('type'); ?></label>
-                                                        <select name="type" id="type" class="form-control" required>
-                                                            <option value="default"><?= lang('default'); ?></option>
-                                                            <option value="main-category"><?= lang('quiz_zone_category'); ?></option>
-                                                            <option value="fun-n-learn-category"><?= lang('fun_n_learn_category'); ?></option>
-                                                            <option value="guess-the-word-category"><?= lang('guess_the_word_category'); ?></option>
-                                                            <option value="audio-question-category"><?= lang('audio_questions_category'); ?></option>
-                                                        </select>
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('type'); ?> <small class="text-danger">*</small></label>
+                                                            <select name="type" id="type" class="form-control" required>
+                                                                <option value="default"><?= lang('default'); ?></option>
+                                                                <option value="main-category"><?= lang('quiz_zone_category'); ?></option>
+                                                                <option value="fun-n-learn-category"><?= lang('fun_n_learn_category'); ?></option>
+                                                                <option value="guess-the-word-category"><?= lang('guess_the_word_category'); ?></option>
+                                                                <option value="audio-question-category"><?= lang('audio_questions_category'); ?></option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('title'); ?></label>
-                                                        <input type="text" name="title" required class="form-control">
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('title'); ?> <small class="text-danger">*</small></label>
+                                                            <input type="text" name="title" required class="form-control">
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label"><?= lang('message'); ?></label>
-                                                        <textarea id="message" name="message" required class="form-control"></textarea>
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <label class="control-label"><?= lang('message'); ?> <small class="text-danger">*</small></label>
+                                                            <textarea id="message" name="message" required class="form-control"></textarea>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <input name="include_image" id="include_image" type="checkbox"> <?= lang('include_image'); ?>
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <input name="include_image" id="include_image" type="checkbox"> <?= lang('include_image'); ?>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <input type="file" name="file" id="file" accept="image/*" style='display:none;' class="form-control">
+                                                    <div class="row">
+                                                        <div class="form-group col-12">
+                                                            <input type="file" name="file" id="file" accept="image/*" style='display:none;' class="form-control">
+                                                        </div>
                                                     </div>
 
-                                                    <div class="form-group row float-right">
-                                                        <div class="col-md-12 col-sm-12">
+                                                    <div class="row float-right">
+                                                        <div class="form-group col-md-12 col-sm-12">
                                                             <input type="submit" name="btnadd" class="<?= BUTTON_CLASS ?> btn-block" value="<?= lang('submit'); ?>" />
                                                         </div>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-12">
                                             <div class="card-body">
                                                 <button type='button' id='get_selections' class='<?= BUTTON_CLASS ?>'><?= lang('get_selected_users'); ?></button>
                                                 <div id="toolbar">
@@ -97,7 +109,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

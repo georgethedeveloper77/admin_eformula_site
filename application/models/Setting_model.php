@@ -91,7 +91,6 @@ class Setting_model extends CI_Model
             'battle_mode_one_fix_question',
             'battle_mode_one_total_question',
             'battle_mode_one_in_seconds',
-            'battle_mode_one_wrong_answer_deduct_score',
             'battle_mode_one_correct_answer_credit_score',
             'battle_mode_one_quickest_correct_answer_extra_score',
             'battle_mode_one_second_quickest_correct_answer_extra_score',
@@ -113,7 +112,6 @@ class Setting_model extends CI_Model
             'battle_mode_random_fix_question',
             'battle_mode_random_total_question',
             'battle_mode_random_in_seconds',
-            'battle_mode_random_wrong_answer_deduct_score',
             'battle_mode_random_correct_answer_credit_score',
             'battle_mode_random_quickest_correct_answer_extra_score',
             'battle_mode_random_second_quickest_correct_answer_extra_score',
@@ -557,6 +555,7 @@ class Setting_model extends CI_Model
                 'tbl_fun_n_learn' => FUN_LEARN_IMG_PATH,
                 'tbl_fun_n_learn_question' => FUN_LEARN_QUESTION_IMG_PATH,
                 'tbl_multi_match' => MULTIMATCH_QUESTION_IMG_PATH,
+                'tbl_guess_the_word' => GUESS_WORD_IMG_PATH,
             );
             if ($table == 'tbl_audio_question') {
                 $query = $this->db->query("SELECT `audio` FROM " . $table . " WHERE id in ( " . $ids . " )");

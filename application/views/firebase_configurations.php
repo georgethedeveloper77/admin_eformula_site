@@ -30,8 +30,8 @@
                                     <div class="card-body mt-4">
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                                            <div class="form-group row">
-                                                <div class="col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-sm-12">
                                                     <?php
                                                     $target_path = getcwd() . DIRECTORY_SEPARATOR;
                                                     $file_name = $target_path . 'assets/firebase_config.json';
@@ -43,14 +43,14 @@
                                                     <label class="control-label"><?= lang('current_file_status'); ?> : <?= ($is_file) ? '<small class="badge badge-success">' . lang('file_exists') . '</small>' : '<small class="badge badge-danger">' . lang('file_not_exists_please_upload') . '</small>' ?></label>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('update_file'); ?> <small class="text-danger"><?= lang('only_json_file_allow'); ?></small></label>
+                                            <div class="row">
+                                                <div class="form-group col-md-6 col-sm-12">
+                                                    <label class="control-label"><?= lang('update_file'); ?> <small class="text-danger"><?= lang('only_json_file_allow'); ?> *</small></label>
                                                     <input id="file" name="file" type="file" accept=".json" required class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-10">
+                                            <div class="row">
+                                                <div class="form-group col-sm-10">
                                                     <input type="submit" name="btnadd" value="<?= lang('submit'); ?>" class="<?= BUTTON_CLASS ?>" />
                                                 </div>
                                             </div>

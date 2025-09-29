@@ -29,37 +29,42 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-3 col-sm-6 col-xs-12">
-                                                <div class="form-group">
-                                                    <?php
-                                                    $yearArray = range(2020, date('Y'));
-                                                    ?>
-                                                    <label class="control-label" for="year"><?= lang('select_filter_by_year'); ?></label>
-                                                    <select name="year" id="year" class="form-control">
-                                                        <?php foreach ($yearArray as $year) { ?>
-                                                            <option value="<?= $year; ?>"><?= $year; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
+                                            <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                                                <?php
+                                                $yearArray = range(2020, date('Y'));
+                                                ?>
+                                                <label class="control-label" for="year"><?= lang('select_filter_by_year'); ?></label>
+                                                <select name="year" id="year" class="form-control">
+                                                    <?php foreach ($yearArray as $year) { ?>
+                                                        <option value="<?= $year; ?>"><?= $year; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
-                                            <div class="col-md-3 col-sm-6 col-xs-12">
-                                                <div class="form-group">
-                                                    <?php
-                                                    $monthArray = array(
-                                                        "01" => "January", "02" => "February", "03" => "March", "04" => "April",
-                                                        "05" => "May", "06" => "June", "07" => "July", "08" => "August",
-                                                        "09" => "September", "10" => "October", "11" => "November", "12" => "December",
-                                                    );
-                                                    ?>
-                                                    <label class="control-label" for="month"><?= lang('select_filter_by_month'); ?></label>
-                                                    <select name="month" id="month" class="form-control">
-                                                        <?php foreach ($monthArray as $key => $month) { ?>
-                                                            <option value="<?= $key; ?>"><?= $month; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
+                                            <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                                                <?php
+                                                $monthArray = array(
+                                                    "01" => "January",
+                                                    "02" => "February",
+                                                    "03" => "March",
+                                                    "04" => "April",
+                                                    "05" => "May",
+                                                    "06" => "June",
+                                                    "07" => "July",
+                                                    "08" => "August",
+                                                    "09" => "September",
+                                                    "10" => "October",
+                                                    "11" => "November",
+                                                    "12" => "December",
+                                                );
+                                                ?>
+                                                <label class="control-label" for="month"><?= lang('select_filter_by_month'); ?></label>
+                                                <select name="month" id="month" class="form-control">
+                                                    <?php foreach ($monthArray as $key => $month) { ?>
+                                                        <option value="<?= $key; ?>"><?= $month; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
-                                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                            <div class="form-group col-md-3 col-sm-6 col-xs-12">
                                                 <label class="col-xs-12"><?= lang('filter'); ?></label>
                                                 <button type="button" class="<?= BUTTON_CLASS ?> form-control" name="submit" id="filler_btn"><?= lang('filter_now'); ?></button>
                                             </div>
