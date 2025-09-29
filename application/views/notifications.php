@@ -176,10 +176,10 @@
             'change :checkbox': function(e, value, row, index) {
                 row.state = $(e.target).prop('checked')
                 if ($(e.target).is(":checked")) {
-                    checkedID.push(row.fcm_id);
+                    checkedID.push(row.id);
                 } else {
                     checkedID = checkedID.filter(function(data) {
-                        return data !== row.fcm_id;
+                        return data !== row.id;
                     });
                 }
             }
@@ -191,7 +191,7 @@
                 var i;
                 var final_selection = [];
                 for (i = 0; i < arr.length; ++i) {
-                    final_selection.push(arr[i]['fcm_id']);
+                    final_selection.push(arr[i]['id']);
                 }
                 let mArray = [...final_selection, ...checkedID];
                 let mergedArr = [...new Set(mArray)]
@@ -202,7 +202,7 @@
             $('#users_list').on('load-success.bs.table', function(e, data, status) {
                 $.each(checkedID, function(element, ID) {
                     let row = data.rows.find(function(row) {
-                        return ID == row.fcm_id;
+                        return ID == row.id;
                     });
                     let index = data.rows.indexOf(row);
                     if (index > -1) {

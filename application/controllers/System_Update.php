@@ -181,66 +181,10 @@ class System_Update extends CI_Controller
                             redirect('system-updates', 'refresh');
                         }
                     }
-                    $this->replace_keys_in_web_json_files();
                     redirect('system-updates', 'refresh');
                 }
-                $this->replace_keys_in_web_json_files();
                 $this->result['system_version'] = $this->db->where('type', 'system_version')->get('tbl_settings')->row_array();
                 $this->load->view('system_updates', $this->result);
-            }
-        }
-    }
-
-    public function replace_keys_in_web_json_files()
-    {
-        $directory_path = FCPATH . 'upload/languages/web/';
-
-        if (!is_dir($directory_path)) {
-            echo "Directory does not exist.";
-            return;
-        }
-        $json_files = glob($directory_path . '*.json');
-
-        if (empty($json_files)) {
-            echo "No JSON files found in the directory.";
-            return;
-        }
-
-        $keys = [
-            "t&c"
-        ];
-
-        $change_with_keys = [
-            "t_c"
-        ];
-
-        foreach ($json_files as $file_path) {
-            $json_data = file_get_contents($file_path);
-            $dataArray = json_decode($json_data, true);
-
-            foreach ($keys as $index => $oldKey) {
-                if (array_key_exists($oldKey, $dataArray)) {
-                    $newKey = $change_with_keys[$index];
-                    $dataArray[$newKey] = $dataArray[$oldKey];
-                    unset($dataArray[$oldKey]);
-                }
-            }
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                echo "Error decoding JSON in file: " . basename($file_path) . "\n";
-                continue;
-            }
-            // Encode the updated array back to JSON
-            $updatedJsonData = json_encode($dataArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                echo "Error encoding JSON data!";
-                return;
-            }
-
-            // Save the updated JSON back to the file
-            if (!file_put_contents($file_path, $updatedJsonData)) {
-                echo "Failed to write the updated JSON file!";
             }
         }
     }

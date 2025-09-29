@@ -123,6 +123,7 @@ class Payments extends CI_Controller
                     } else {
                         $user_res = $this->db->where('id', $user_id)->get('tbl_users')->row_array();
                         $fcm_id = $user_res['fcm_id'];
+                        $web_fcm_id = $user_res['web_fcm_id'];
                         if ($status == 2) {
                             $net_coins = $user_res['coins'] + $coins;
                             $data = [
@@ -167,6 +168,14 @@ class Payments extends CI_Controller
                             );
                             if ($fcm_id != '') {
                                 $registrationID = explode(',', $fcm_id);
+                                $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
+                                $messaging = $factory->createMessaging();
+                                $message = CloudMessage::new();
+                                $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
+                                $messaging->sendMulticast($message, $registrationID);
+                            }
+                            if ($web_fcm_id != '') {
+                                $registrationID = explode(',', $web_fcm_id);
                                 $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
                                 $messaging = $factory->createMessaging();
                                 $message = CloudMessage::new();

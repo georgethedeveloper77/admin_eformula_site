@@ -241,10 +241,11 @@ class Contest extends CI_Controller
         ];
     }
 
-    function send_badges_notification($user_id, $type)
+    public function send_badges_notification($user_id, $type)
     {
-        $res = $this->db->select('id,fcm_id,app_language')->where('id', $user_id)->get('tbl_users')->row_array();
+        $res = $this->db->select('id,fcm_id,web_fcm_id,app_language,web_language')->where('id', $user_id)->get('tbl_users')->row_array();
         $fcm_id = $res['fcm_id'];
+        $web_fcm_id = $res['web_fcm_id'];
 
         $user_app_language = $res['app_language'];
 
@@ -269,6 +270,32 @@ class Contest extends CI_Controller
             $messaging = $factory->createMessaging();
             $message = CloudMessage::new();
             $message = $message->withNotification($fcmMsg)->withData($fcmMsg);
+            $messaging->sendMulticast($message, $registrationID);
+        }
+
+        $user_web_language = $res['web_language'];
+
+        $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
+        $default_web_language = $get_web_default_language['name'];
+
+        $web_notificationData = $this->getBadgeNotificationData($user_web_language, $type, WEB_LANGUAGE_FILE_PATH, 'web_sample_file.json', $default_web_language);
+
+        $web_notification_title_message = $web_notificationData['notification_title'] ?? 'Congratulations!!';
+        $web_notification_body_message = $web_notificationData['notification_body'] ?? 'You have unlocked new badge.';
+        $web_fcmMsg = array(
+            'click_action' => 'WEB_NOTIFICATION_CLICK',
+            'type' => 'badges',
+            'badge_type' => $type,
+            'title' => $web_notification_title_message,
+            'body' => $web_notification_body_message,
+        );
+
+        if ($web_fcm_id && $web_fcm_id != '' && $web_fcm_id != 'empty') {
+            $registrationID = explode(',', $web_fcm_id);
+            $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
+            $messaging = $factory->createMessaging();
+            $message = CloudMessage::new();
+            $message = $message->withNotification($web_fcmMsg)->withData($web_fcmMsg);
             $messaging->sendMulticast($message, $registrationID);
         }
     }

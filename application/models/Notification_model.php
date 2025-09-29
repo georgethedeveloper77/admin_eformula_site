@@ -82,12 +82,10 @@ class Notification_model extends CI_Model
         $this->db->insert('tbl_notifications', $frm_data);
         $insert_id = $this->db->insert_id();
         //notification 
+        $fcm_ids = [];
+        $user_ids = [];
         if ($users == 'all') {
-            $res = $this->db->select("fcm_id")->where('fcm_id!=', '')->where('fcm_id!=', 'empty')->where('fcm_id IS NOT NULL')->get("tbl_users")->result_array();
-            $fcm_ids = array();
-            foreach ($res as $fcm_id) {
-                $fcm_ids[] = $fcm_id['fcm_id'];
-            }
+            $getFCM = $this->db->select("id,fcm_id,web_fcm_id")->get("tbl_users")->result_array();
         } elseif ($users == 'selected') {
             $selected_list = $this->input->post('selected_list');
             if (empty($selected_list)) {
@@ -96,24 +94,38 @@ class Notification_model extends CI_Model
                 echo json_encode($response);
                 return false;
             }
-            $fcm_ids = array();
-            $fcm_ids = explode(",", $selected_list);
-            if ($insert_id) {
-                $getID = $this->db->select('id')->where('fcm_id !=', '')->where('fcm_id!=', 'empty')->where('fcm_id IS NOT NULL')->where_in('fcm_id', $fcm_ids)->get("tbl_users")->result_array();
-                $comma_separated_ids = '';
-                if (!empty($getID)) {
-                    $getIds = array_column($getID, 'id');
-                    $comma_separated_ids = implode(',', $getIds);
+            $getFCM = $this->db->select('id,fcm_id,web_fcm_id')
+                ->where_in('id', explode(',', $selected_list))->get("tbl_users")->result_array();
+        }
+
+        if ($getFCM) {
+            foreach ($getFCM as $row) {
+                if (!empty($row['fcm_id']) && $row['fcm_id'] !== 'empty') {
+                    $fcm_ids = array_merge($fcm_ids, explode(',', $row['fcm_id']));
+                    $user_ids = array_merge($user_ids, explode(',', $row['id']));
                 }
-                $userID = array(
-                    'user_id' => $comma_separated_ids,
-                );
-                $this->db->where('id', $insert_id)->update('tbl_notifications', $userID);
+                if (!empty($row['web_fcm_id']) && $row['web_fcm_id'] !== 'empty') {
+                    $fcm_ids = array_merge($fcm_ids, explode(',', $row['web_fcm_id']));
+                    $user_ids = array_merge($user_ids, explode(',', $row['id']));
+                }
             }
         }
 
-        $registrationIDs = $fcm_ids;
+        $fcm_ids = array_values(array_unique(array_filter($fcm_ids)));
+        $user_ids = array_values(array_unique(array_filter($user_ids)));
 
+        if ($insert_id && $users == 'selected') {
+            $comma_separated_ids = '';
+            if (!empty($user_ids)) {
+                $comma_separated_ids = implode(',', $user_ids);
+            }
+            $userID = array(
+                'user_id' => $comma_separated_ids,
+            );
+            $this->db->where('id', $insert_id)->update('tbl_notifications', $userID);
+        }
+
+        $registrationIDs = $fcm_ids;
         $registrationIDs_chunks = array_chunk($registrationIDs, 500);
         $factory = (new Factory)->withServiceAccount('assets/firebase_config.json');
         $messaging = $factory->createMessaging();
