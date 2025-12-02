@@ -185,13 +185,42 @@ class AiService
             } elseif ($httpCode < 200 || $httpCode >= 300) {
                 $decoded = json_decode($response, true);
                 $errorMsg = $decoded['error']['message'] ?? "HTTP Error ($httpCode)";
-
-                $result = [
-                    'error'     => true,
-                    'http_code' => $httpCode,
-                    'msg'       => $errorMsg,
-                    'response'  => $response,
-                ];
+                if ($httpCode === 400) {
+                    $result = [
+                        'error'     => true,
+                        'msg'       => "Invalid request or model name.",
+                        'http_code' => $httpCode,
+                        'response'  => $response,
+                    ];
+                } else if ($httpCode === 401) {
+                    return [
+                        'error'     => true,
+                        'msg'       => "Invalid API key",
+                        'http_code' => $httpCode,
+                        'response'  => $response,
+                    ];
+                } else if ($httpCode === 403) {
+                    $result = [
+                        'error'     => true,
+                        'msg'       => "Invalid or unauthorized API key.",
+                        'http_code' => $httpCode,
+                        'response'  => $response,
+                    ];
+                } else if ($httpCode === 404) {
+                    $result = [
+                        'error'     => true,
+                        'msg'       => "Check Model not found.",
+                        'http_code' => $httpCode,
+                        'response'  => $response,
+                    ];
+                } else {
+                    $result = [
+                        'error'     => true,
+                        'http_code' => $httpCode,
+                        'msg'       => $errorMsg,
+                        'response'  => $response,
+                    ];
+                }
                 log_message('error', "HTTP Error ($httpCode): $errorMsg");
             }
 

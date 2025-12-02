@@ -73,7 +73,7 @@
             <li>
                 <a class="nav-link" href="<?= base_url(); ?>dashboard"><em class="fas fa-home"></em> <span><?= lang('dashboard'); ?></span></a>
             </li>
-            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'questions') || has_permissions('read', 'questions') || has_permissions('read', 'import_question') || has_permissions('read', 'question_report')) { ?>
+            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('read', 'questions') || has_permissions('read', 'import_question') || has_permissions('read', 'question_report')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-gift"></em><span><?= lang('quiz_zone'); ?></span></a>
                     <ul class="dropdown-menu">
@@ -86,7 +86,7 @@
                         <?php if (has_permissions('read', 'category_order')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
-                        <?php if (has_permissions('create', 'questions')) { ?>
+                        <?php if (has_permissions('read', 'questions')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>create-questions"><?= lang('create_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'questions')) { ?>
@@ -214,7 +214,7 @@
                     </ul>
                 </li>
             <?php } ?>
-            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'maths_questions') || has_permissions('read', 'maths_questions')) { ?>
+            <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('read', 'maths_questions')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-book-open"></em><span><?= lang('maths_quiz'); ?></span></a>
                     <ul class="dropdown-menu">
@@ -227,7 +227,7 @@
                         <?php if (has_permissions('read', 'category_order')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>maths-question-category-order"><?= lang('category_order'); ?></a></li>
                         <?php } ?>
-                        <?php if (has_permissions('create', 'maths_questions')) { ?>
+                        <?php if (has_permissions('read', 'maths_questions')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>create-maths-questions"><?= lang('create_questions'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'maths_questions')) { ?>

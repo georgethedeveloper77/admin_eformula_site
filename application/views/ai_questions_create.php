@@ -71,37 +71,19 @@
 
                                                     </select>
                                                 </div>
+                                                <div class="form-group col-md-3 col-sm-12 no_contest_exam">
+                                                    <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
+                                                    <select id="category" name="category" class="form-control">
+                                                        <option value=""><?= lang('select_main_category'); ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-3 col-sm-12 no_contest_exam">
+                                                    <label class="control-label"><?= lang('sub_category'); ?></label>
+                                                    <select id="subcategory" name="subcategory" class="form-control">
+                                                        <option value=""><?= lang('select_sub_category'); ?></option>
+                                                    </select>
+                                                </div>
 
-                                                <?php if (is_language_mode_enabled()) { ?>
-                                                    <div class="form-group col-md-3 col-sm-12 no_contest_exam">
-                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
-                                                        <select id="category" name="category" class="form-control">
-                                                            <option value=""><?= lang('select_main_category'); ?></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-3 col-sm-12 no_contest_exam">
-                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
-                                                        <select id="subcategory" name="subcategory" class="form-control">
-                                                            <option value=""><?= lang('select_sub_category'); ?></option>
-                                                        </select>
-                                                    </div>
-                                                <?php } else { ?>
-                                                    <div class="form-group col-md-3 col-sm-12 no_contest_exam">
-                                                        <label class="control-label"><?= lang('main_category'); ?> <small class="text-danger">*</small></label>
-                                                        <select id="category" name="category" class="form-control">
-                                                            <option value=""><?= lang('select_main_category'); ?></option>
-                                                            <?php foreach ($category as $cat) { ?>
-                                                                <option value="<?= $cat->id ?>"><?= $cat->is_premium == 1 ? $cat->category_name . ' - Premium' : $cat->category_name ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-3 col-sm-12 no_contest_exam">
-                                                        <label class="control-label"><?= lang('sub_category'); ?></label>
-                                                        <select id="subcategory" name="subcategory" class="form-control">
-                                                            <option value=""><?= lang('select_sub_category'); ?></option>
-                                                        </select>
-                                                    </div>
-                                                <?php } ?>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3 col-sm-12 questionType">
@@ -191,22 +173,12 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-2 filter_no_contest_exam">
-                                                    <select id="filter_category" class="form-control" required>
-                                                        <option value=""><?= lang('select_main_category'); ?></option>
-
-                                                    </select>
-                                                </div>
-                                            <?php } else { ?>
-                                                <div class="form-group col-md-2 filter_no_contest_exam">
-                                                    <select id="filter_category" class="form-control" required>
-                                                        <option value=""><?= lang('select_main_category'); ?></option>
-                                                        <?php foreach ($category as $cat) { ?>
-                                                            <option value="<?= $cat->id ?>"><?= $cat->category_name ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
                                             <?php } ?>
+                                            <div class="form-group col-md-2 filter_no_contest_exam">
+                                                <select id="filter_category" class="form-control" required>
+                                                    <option value=""><?= lang('select_main_category'); ?></option>
+                                                </select>
+                                            </div>
                                             <div class='form-group col-md-2 filter_no_contest_exam'>
                                                 <select id='filter_subcategory' class='form-control' required>
                                                     <option value=''><?= lang('select_sub_category'); ?></option>
@@ -604,13 +576,40 @@
                     $('#contest_id').removeAttr('required');
                     $('#exam_id').removeAttr('required');
             }
-            $('#language_id').val('').trigger("change");
+
+            <?php if (is_language_mode_enabled()) { ?>
+                $('#language_id').val('').trigger("change");
+            <?php } else { ?>
+                getCategorySubcategoryData(0, quizType)
+            <?php } ?>
 
         });
 
         $('#language_id').on('change', function(e, row_language_id, row_category, row_subcategory) {
             var language_id = $('#language_id').val();
-            var quizType = $('#quiz_type').val()
+            var quizType = $('#quiz_type').val();
+            getCategorySubcategoryData(language_id = 0, quizType, row_language_id = 0, row_category = 0, row_subcategory = 0)
+        });
+
+
+        $('#category').on('change', function(e, row_category, row_subcategroy) {
+            var category_id = $('#category').val();
+            $.ajax({
+                type: 'POST',
+                url: base_url + 'get_subcategories_of_category',
+                data: 'category_id=' + category_id,
+                beforeSend: function() {
+                    $('#subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
+                },
+                success: function(result) {
+                    $('#subcategory').html(result);
+                    if (category_id == row_category && row_subcategroy != 0)
+                        $('#subcategory').val(row_subcategroy);
+                }
+            });
+        });
+
+        function getCategorySubcategoryData(language_id, quizType, row_language_id, row_category, row_subcategory) {
             if (quizType != 7 && quizType != 8) {
                 $.ajax({
                     type: 'POST',
@@ -650,24 +649,7 @@
                     }
                 });
             }
-        });
-
-        $('#category').on('change', function(e, row_category, row_subcategroy) {
-            var category_id = $('#category').val();
-            $.ajax({
-                type: 'POST',
-                url: base_url + 'get_subcategories_of_category',
-                data: 'category_id=' + category_id,
-                beforeSend: function() {
-                    $('#subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
-                },
-                success: function(result) {
-                    $('#subcategory').html(result);
-                    if (category_id == row_category && row_subcategroy != 0)
-                        $('#subcategory').val(row_subcategroy);
-                }
-            });
-        });
+        }
     </script>
 
     <script type="text/javascript">
@@ -840,14 +822,38 @@
 
             }
 
-            $('#filter_language').val('').trigger("change");
+            <?php if (is_language_mode_enabled()) { ?>
+                $('#filter_language').val('').trigger("change");
+            <?php } else { ?>
+                getFilterCategorySubcategoryData(0, filter_quiz_type)
+            <?php } ?>
 
         });
 
         $('#filter_language').on('change', function(e, row_language_id, row_category, row_subcategory) {
             var language_id = $('#filter_language').val();
             var filterQuizType = $('#filter_quiz_type').val()
+            getFilterCategorySubcategoryData(language_id, filterQuizType, row_language_id, row_category, row_subcategory);
+        });
 
+        $('#filter_category').on('change', function(e, row_category, row_subcategroy) {
+            var category_id = $('#filter_category').val();
+            $.ajax({
+                type: 'POST',
+                url: base_url + 'get_subcategories_of_category',
+                data: 'category_id=' + category_id,
+                beforeSend: function() {
+                    $('#filter_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
+                },
+                success: function(result) {
+                    $('#filter_subcategory').html(result);
+                    if (category_id == row_category && row_subcategroy != 0)
+                        $('#filter_subcategory').val(row_subcategroy);
+                }
+            });
+        });
+
+        function getFilterCategorySubcategoryData(language_id = 0, filterQuizType, row_language_id = 0, row_category = 0, row_subcategory = 0) {
             if (filterQuizType != 7 && filterQuizType != 8) {
                 $.ajax({
                     type: 'POST',
@@ -887,24 +893,7 @@
                     }
                 });
             }
-        });
-
-        $('#filter_category').on('change', function(e, row_category, row_subcategroy) {
-            var category_id = $('#filter_category').val();
-            $.ajax({
-                type: 'POST',
-                url: base_url + 'get_subcategories_of_category',
-                data: 'category_id=' + category_id,
-                beforeSend: function() {
-                    $('#filter_subcategory').html('<option value=""><?= lang('please_wait'); ?></option>');
-                },
-                success: function(result) {
-                    $('#filter_subcategory').html(result);
-                    if (category_id == row_category && row_subcategroy != 0)
-                        $('#filter_subcategory').val(row_subcategroy);
-                }
-            });
-        });
+        }
 
         $('#filter_btn').on('click', function(e) {
             $('#question_list').bootstrapTable('refresh');

@@ -42,7 +42,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4 col-lg-4 col-sm-12 col-12 geminiData">
                                                     <label class="control-label"><?= lang('ai_model'); ?></label><br>
-                                                    <input type="text" name="gemini_model" class="form-control" value="<?= $gemini_model['message'] ?? '' ?>">
+                                                    <input type="text" name="gemini_model" id="gemini_model" class="form-control" value="<?= $gemini_model['message'] ?? '' ?>">
                                                 </div>
                                                 <div class="form-group col-md-4 col-lg-4 col-sm-12 col-12 geminiData">
                                                     <label class="control-label"><?= lang('ai_api_key'); ?></label><br>
@@ -57,7 +57,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4 col-lg-4 col-sm-12 col-12 openaiData">
                                                     <label class="control-label"><?= lang('ai_model'); ?></label><br>
-                                                    <input type="text" name="openai_model" class="form-control" value="<?= $openai_model['message'] ?? '' ?>">
+                                                    <input type="text" name="openai_model" id="openai_model" class="form-control" value="<?= $openai_model['message'] ?? '' ?>">
                                                 </div>
                                                 <div class="form-group col-md-4 col-lg-4 col-sm-12 col-12 openaiData">
                                                     <label class="control-label"><?= lang('ai_api_key'); ?></label><br>
@@ -95,10 +95,18 @@
         function providerData(ai_provider) {
             if (ai_provider == 'gemini') {
                 $('.geminiData').show();
+                $('#gemini_model').attr('required', true);
+                $('#gemini_api_key').attr('required', true);
                 $('.openaiData').hide();
+                $('#openai_model').removeAttr('required');
+                $('#openai_api_key').removeAttr('required');
             } else if (ai_provider == 'openai') {
                 $('.openaiData').show();
+                $('#openai_model').attr('required', true);
+                $('#openai_api_key').attr('required', true);
                 $('.geminiData').hide();
+                $('#gemini_model').removeAttr('required');
+                $('#gemini_api_key').removeAttr('required');
             }
         }
         $('#ai_provider').on('change', function() {
