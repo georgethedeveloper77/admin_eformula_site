@@ -1503,7 +1503,7 @@ class Api extends REST_Controller
             $data_m = $this->db->get('tbl_leaderboard_monthly m')->result_array();
             $total = count($data_m);
 
-            $other_user_rank_sql = "SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly WHERE MONTH(last_updated) = '$month' AND YEAR(last_updated) = '$year' GROUP BY user_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 LIMIT $offset, $limit";
+            $other_user_rank_sql = "SELECT * FROM (SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly WHERE MONTH(last_updated) = '$month' AND YEAR(last_updated) = '$year' GROUP BY user_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1) AS ranked LIMIT $offset, $limit";
             $data = $this->db->query($other_user_rank_sql)->result_array();
             if ($user_id) {
                 if (!empty($data)) {
@@ -1594,7 +1594,7 @@ class Api extends REST_Controller
 
 
             // show data of all user except logged in user
-            $other_user_rank_sql = "SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.date_created,u.name,u.profile FROM (SELECT lbd.user_id,lbd.score,lbd.date_created FROM tbl_leaderboard_daily lbd WHERE DATE(lbd.date_created) = '$this->toDate' ORDER BY lbd.score DESC, lbd.date_created ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 LIMIT $offset, $limit";
+            $other_user_rank_sql = "SELECT * FROM (SELECT  @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.date_created,u.name,u.profile FROM (SELECT  lbd.user_id, lbd.score, lbd.date_created FROM tbl_leaderboard_daily lbd WHERE DATE(lbd.date_created) = '$this->toDate' ORDER BY lbd.score DESC, lbd.date_created ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1) AS ranked LIMIT $offset, $limit";
             $data = $this->db->query($other_user_rank_sql)->result_array();
             if ($user_id) {
                 if (!empty($data)) {
@@ -1687,7 +1687,7 @@ class Api extends REST_Controller
             $data_g = $this->db->get('tbl_leaderboard_monthly m')->result_array();
             $total = count($data_g);
 
-            $other_user_rank_sql = "SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,SUM(score) AS score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly GROUP BY user_id ORDER BY SUM(score) DESC, MAX(last_updated) ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 LIMIT $offset, $limit";
+            $other_user_rank_sql = "SELECT * FROM (SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,SUM(score) AS score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly GROUP BY user_id ORDER BY SUM(score) DESC, MAX(last_updated) ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1) AS ranked LIMIT $offset, $limit";
             $data = $this->db->query($other_user_rank_sql)->result_array();
             if ($user_id) {
 
@@ -1903,7 +1903,7 @@ class Api extends REST_Controller
 
                 $response['total'] = $total;
 
-                $other_user_rank_sql = "SELECT ru.user_id,ru.score,ru.last_updated,u.name,u.profile,@rank := IF(@prev_score = ru.score, @rank, @rank_counter) AS user_rank,@rank_counter := @rank_counter + 1,@prev_score := ru.score FROM (SELECT user_id, score, last_updated FROM tbl_contest_leaderboard WHERE contest_id = $contest_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id AND u.status = 1,(SELECT @rank := 0, @rank_counter := 1, @prev_score := NULL) AS vars LIMIT $offset, $limit";
+                $other_user_rank_sql = "SELECT * FROM (SELECT ru.user_id,ru.score,ru.last_updated,u.name,u.profile,@rank := IF(@prev_score = ru.score, @rank, @rank_counter) AS user_rank,@rank_counter := @rank_counter + 1,@prev_score := ru.score FROM (SELECT user_id, score, last_updated FROM tbl_contest_leaderboard WHERE contest_id = $contest_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id AND u.status = 1,(SELECT @rank := 0, @rank_counter := 1, @prev_score := NULL) AS vars) AS ranked LIMIT $offset, $limit";
                 $res = $this->db->query($other_user_rank_sql)->result_array();
                 for ($i = 0; $i < count($res); $i++) {
                     if (filter_var($res[$i]['profile'], FILTER_VALIDATE_URL) === false) {
