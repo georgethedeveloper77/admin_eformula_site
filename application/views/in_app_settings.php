@@ -34,12 +34,7 @@
                                             <div class="row">
                                                 <div class="form-group col-md-3 col-sm-6">
                                                     <label class="control-label"><?= lang('in_app_purchase'); ?></label><br>
-                                                    <input type="checkbox" id="in_app_purchase_mode_btn" data-plugin="switchery" <?php
-                                                                                                                                    if (!empty($in_app_purchase_mode) && $in_app_purchase_mode['message'] == '1') {
-                                                                                                                                        echo 'checked';
-                                                                                                                                    }
-                                                                                                                                    ?>>
-
+                                                    <input type="checkbox" id="in_app_purchase_mode_btn" data-plugin="switchery" <?= (!empty($in_app_purchase_mode) && $in_app_purchase_mode['message'] == '1') ? 'checked' : '' ?>>
                                                     <input type="hidden" id="in_app_purchase_mode" name="in_app_purchase_mode" value="<?= ($in_app_purchase_mode) ? $in_app_purchase_mode['message'] : 0; ?>">
                                                 </div>
                                             </div>

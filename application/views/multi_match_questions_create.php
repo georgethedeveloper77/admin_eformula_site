@@ -396,15 +396,11 @@
                 $('#answer1').removeAttr("required");
                 $('#c').attr("required", "required");
                 $('#d').attr("required", "required");
-                if (answer != '') {
-                    answerType = answer;
-                } else {
-                    answerType = 'a,b,c,d';
-                    <?php if (is_option_e_mode_enabled()) { ?>
-                        $('#e').attr("required", "required");
-                        answerType += ',e';
-                    <?php } ?>
-                }
+                answerType = 'a,b,c,d';
+                <?php if (is_option_e_mode_enabled()) { ?>
+                    $('#e').attr("required", "required");
+                    answerType += ',e';
+                <?php } ?>
                 $('.answer_type2').val(answerType).attr('readonly', 'readonly');
             } else if (questionType == 2 && answerType == 1) {
                 $('#option2_answer1').show('fast');
@@ -427,11 +423,7 @@
                 <?php if (is_option_e_mode_enabled()) { ?>
                     $('#e').removeAttr('required');
                 <?php } ?>
-                if (answer != '') {
-                    answerType = answer;
-                } else {
-                    answerType = 'a,b';
-                }
+                answerType = 'a,b';
                 $('.answer_type2').val(answerType).attr('readonly', 'readonly');
             }
         }
@@ -442,6 +434,7 @@
             $('input[name="question_type"], input[name="answer_type"]').on("click", function() {
                 var questionType = $('input[name="question_type"]:checked').val();
                 var answerType = $('input[name="answer_type"]:checked').val();
+                $('.answer_type2').val('').removeAttr('readonly');
                 updateOptions(questionType, answerType);
             });
         });

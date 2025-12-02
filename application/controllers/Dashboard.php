@@ -42,18 +42,17 @@ class Dashboard extends CI_Controller
         }
 
         $year = date('Y');
-        $month = date('m');
 
         $register_month_sql = "SELECT m.name AS month_name,(SELECT COUNT(id) FROM tbl_users u WHERE status = 1 AND YEAR(u.date_registered) = {$year} AND MONTHNAME(date_registered) = m.name) AS user_count FROM tbl_month_week m WHERE m.type = 1";
         $month_register_query = $this->db->query($register_month_sql)->result();
         $this->result['month_data'] = $month_register_query;
 
-        $register_week_sql = "SELECT m.name AS day_name,(SELECT COUNT(id) FROM tbl_users u WHERE status = 1 AND YEAR(u.date_registered) = {$year} AND MONTH(u.date_registered) ={$month} AND DAYNAME(u.date_registered) = m.name) AS user_count FROM tbl_month_week m WHERE m.type = 2";
+        $register_week_sql = "SELECT day_name,COUNT(u.id) AS user_count FROM (SELECT 'Monday' AS day_name UNION ALL SELECT 'Tuesday' UNION ALL SELECT 'Wednesday' UNION ALL SELECT 'Thursday' UNION ALL SELECT 'Friday' UNION ALL SELECT 'Saturday' UNION ALL SELECT 'Sunday') AS days LEFT JOIN tbl_users u ON DAYNAME(u.date_registered) = days.day_name AND u.status = 1 AND YEARWEEK(u.date_registered, 1) = YEARWEEK(CURDATE(), 1) GROUP BY day_name ORDER BY FIELD(day_name, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')";
         $week_register_query = $this->db->query($register_week_sql)->result();
         $this->result['week_data'] = $week_register_query;
 
-        $this->db->select('HOUR(date_registered) as day_name, COUNT(*) as user_count')->from('tbl_users')->where('status', 1)->where('DATE(date_registered) =' . $this->toDate, null, false)->group_by('HOUR(date_registered)')->order_by('day_name');
-        $day_register_query = $this->db->get()->result();
+        $day_register_sql = "SELECT DATE_FORMAT(dates.hour, '%Y-%m-%d %H:00:00') AS hour,COALESCE(COUNT(u.id), 0) AS user_count,DATE_FORMAT(dates.hour, '%H') AS day_name FROM (SELECT '" . $this->toDate . "' + INTERVAL a.a HOUR AS hour FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15 UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19 UNION ALL SELECT 20 UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 ) a ) dates LEFT JOIN tbl_users u ON dates.hour = DATE_FORMAT(u.date_registered, '%Y-%m-%d %H:00:00') AND DATE(u.date_registered) = '" . $this->toDate . "' AND u.status = 1 GROUP BY hour, day_name ORDER BY hour";
+        $day_register_query = $this->db->query($day_register_sql)->result();
         $this->result['day_data'] = $day_register_query;
 
         $this->load->view('dashboard', $this->result);

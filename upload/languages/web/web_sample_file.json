@@ -467,5 +467,6 @@
     "points": "Points",
     "you_won": "You won",
     "speed_bonus": "Speed Bonus",
-    "timer": "Timer"
+    "timer": "Timer",
+    "cannot_join_with_this_room_code": "You can not join with this room code"
 }

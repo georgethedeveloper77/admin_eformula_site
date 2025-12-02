@@ -347,7 +347,6 @@ class Api extends REST_Controller
                         $this->db->insert('tbl_battle_questions', $frm_data);
                         foreach ($res as $row) {
                             $row['image'] = (!empty($row['image'])) ? base_url() . QUESTION_IMG_PATH . $row['image'] : '';
-                            // $row = $this->suffleOptions($row, $firebase_id);
                             $row['answer'] = $this->encrypt_data($firebase_id, trim($row['answer']));
 
                             unset($row['session_answer']);
@@ -409,7 +408,6 @@ class Api extends REST_Controller
                 }
                 foreach ($res as $row) {
                     $row['image'] = (!empty($row['image'])) ? base_url() . QUESTION_IMG_PATH . $row['image'] : '';
-                    // $row = $this->suffleOptions($row, $firebase_id);
                     $row['answer'] = $this->encrypt_data($firebase_id, trim($row['answer']));
                     $temp[] = $row;
                 }
@@ -1498,13 +1496,27 @@ class Api extends REST_Controller
             $month = date('m', strtotime($this->toDate));
             $year = date('Y', strtotime($this->toDate));
 
-            $this->db->join('tbl_users u', 'u.id=m.user_id')->where('u.status', 1);
-            $this->db->where('MONTH(m.last_updated)', $month)->where('YEAR(m.last_updated)', $year);
-            $data_m = $this->db->get('tbl_leaderboard_monthly m')->result_array();
-            $total = count($data_m);
+            $sort = 'r.user_rank';
+            $order = 'ASC';
 
-            $other_user_rank_sql = "SELECT * FROM (SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly WHERE MONTH(last_updated) = '$month' AND YEAR(last_updated) = '$year' GROUP BY user_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1) AS ranked LIMIT $offset, $limit";
-            $data = $this->db->query($other_user_rank_sql)->result_array();
+            $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT m.id, user_id, SUM(score) as score,date_created, MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m join tbl_users u on u.id = m.user_id WHERE YEAR(m.last_updated)=$year AND MONTH(m.last_updated)=$month AND u.status=1 GROUP BY user_id) s, (SELECT @user_rank := 0) init ORDER BY score DESC, last_updated ASC";
+
+            $this->db->reset_query();
+            $this->db->from("($sub_query) r");
+            $this->db->join('tbl_users u', 'u.id = r.user_id');
+
+            $total = $this->db->count_all_results('', false);
+
+            $this->db->select('r.*, u.name, u.profile');
+            $this->db->order_by($sort, $order);
+
+            if ($limit) {
+                $this->db->limit($limit, $offset);
+            }
+
+            $other_user_rank_sql = $this->db->get();
+            $data = $other_user_rank_sql->result_array();
+
             if ($user_id) {
                 if (!empty($data)) {
                     for ($i = 0; $i < count($data); $i++) {
@@ -1514,8 +1526,14 @@ class Api extends REST_Controller
                         }
                     }
 
-                    $topThree_sql = "SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly WHERE MONTH(last_updated) = '$month' AND YEAR(last_updated) = '$year' GROUP BY user_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 LIMIT 3";
-                    $topThreeUsersData = $this->db->query($topThree_sql)->result_array();
+                    $this->db->reset_query();
+                    $this->db->from("($sub_query) r");
+                    $this->db->join('tbl_users u', 'u.id = r.user_id');
+                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->order_by($sort, $order);
+                    $this->db->limit(3);
+                    $topThree_sql = $this->db->get();
+                    $topThreeUsersData = $topThree_sql->result_array();
 
                     for ($i = 0; $i < count($topThreeUsersData); $i++) {
                         if (filter_var($topThreeUsersData[$i]['profile'], FILTER_VALIDATE_URL) === false) {
@@ -1524,8 +1542,15 @@ class Api extends REST_Controller
                         }
                     }
 
-                    $user_rank_sql = "SELECT * FROM (SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly WHERE MONTH(last_updated) = '$month' AND YEAR(last_updated) = '$year' GROUP BY user_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 ) AS ranked WHERE user_id = ?";
-                    $my_rank = $this->db->query($user_rank_sql, [$user_id])->row_array();
+                    $this->db->reset_query();
+                    $this->db->from("($sub_query) r");
+                    $this->db->join('tbl_users u', 'u.id = r.user_id');
+                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->where('r.user_id', $user_id);
+                    $this->db->limit(1);
+                    $user_rank_sql = $this->db->get();
+                    $my_rank = $user_rank_sql->row_array();
+
                     if (!empty($my_rank)) {
                         if (filter_var($my_rank['profile'], FILTER_VALIDATE_URL) === false) {
                             // Not a valid URL. Its a image only or empty
@@ -1587,15 +1612,30 @@ class Api extends REST_Controller
             $offset = ($this->post('offset')) ? $this->post('offset') : 0;
             $limit = ($this->post('limit')) ? $this->post('limit') : 25;
 
-            $this->db->join('tbl_users u', 'u.id=d.user_id')->where('u.status', 1);
-            $this->db->where('DATE(d.date_created)', $this->toDate);
-            $data_d = $this->db->get('tbl_leaderboard_daily d')->result_array();
-            $total = count($data_d);
+            $sort = 'r.user_rank';
+            $order = 'ASC';
 
+            $this->db->select('id, user_id, score, date_created, @user_rank := @user_rank + 1 AS user_rank', false);
+            $this->db->from("(SELECT @user_rank := 0) init, tbl_leaderboard_daily d");
+            $this->db->where('DATE(date_created)', $this->toDate);
+            $this->db->order_by('score', 'DESC');
+            $this->db->order_by('date_created', 'ASC');
+            $subQuery = $this->db->get_compiled_select();
 
-            // show data of all user except logged in user
-            $other_user_rank_sql = "SELECT * FROM (SELECT  @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.date_created,u.name,u.profile FROM (SELECT  lbd.user_id, lbd.score, lbd.date_created FROM tbl_leaderboard_daily lbd WHERE DATE(lbd.date_created) = '$this->toDate' ORDER BY lbd.score DESC, lbd.date_created ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1) AS ranked LIMIT $offset, $limit";
-            $data = $this->db->query($other_user_rank_sql)->result_array();
+            $this->db->reset_query();
+            $this->db->from("($subQuery) r");
+            $this->db->join('tbl_users u', 'u.id = r.user_id');
+            $this->db->where('u.status', 1);
+
+            $total = $this->db->count_all_results('', false);
+
+            $this->db->select('r.*, u.email, u.name, u.profile');
+            $this->db->order_by($sort, $order);
+            if ($limit) {
+                $this->db->limit($limit, $offset);
+            }
+            $query = $this->db->get();
+            $data = $query->result_array();
             if ($user_id) {
                 if (!empty($data)) {
                     for ($i = 0; $i < count($data); $i++) {
@@ -1606,9 +1646,15 @@ class Api extends REST_Controller
                     }
 
 
-                    $topThree_sql = "SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.date_created,u.name,u.profile FROM (SELECT user_id, score, date_created FROM tbl_leaderboard_daily WHERE DATE(date_created) = '$this->toDate' ORDER BY score DESC, date_created ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 LIMIT 3";
-                    $topThreeUsersData = $this->db->query($topThree_sql)->result_array();
-
+                    $this->db->reset_query();
+                    $this->db->from("($subQuery) r");
+                    $this->db->join('tbl_users u', 'u.id = r.user_id');
+                    $this->db->where('u.status', 1);
+                    $this->db->select('r.*, u.email, u.name, u.profile');
+                    $this->db->order_by($sort, $order);
+                    $this->db->limit(3);
+                    $topThree_sql = $this->db->get();
+                    $topThreeUsersData = $topThree_sql->result_array();
                     for ($i = 0; $i < count($topThreeUsersData); $i++) {
                         if (filter_var($topThreeUsersData[$i]['profile'], FILTER_VALIDATE_URL) === false) {
                             // Not a valid URL. Its a image only or empty
@@ -1616,8 +1662,16 @@ class Api extends REST_Controller
                         }
                     }
 
-                    $my_rank_sql = "SELECT ru.*, u.name, u.profile FROM (SELECT user_id, score, @rank := @rank + 1 AS user_rank FROM (SELECT user_id, score FROM tbl_leaderboard_daily WHERE DATE(date_created) = '$this->toDate' ORDER BY score DESC) AS sorted_scores JOIN (SELECT @rank := 0) r) AS ru JOIN tbl_users u ON u.id = ru.user_id WHERE ru.user_id = ?";
-                    $my_rank = $this->db->query($my_rank_sql, [$user_id])->row_array();
+
+                    $this->db->reset_query();
+                    $this->db->from("($subQuery) r");
+                    $this->db->join('tbl_users u', 'u.id = r.user_id');
+                    $this->db->where('u.status', 1);
+                    $this->db->where('u.id', $user_id);
+                    $this->db->select('r.*, u.email, u.name, u.profile');
+                    $this->db->limit(1);
+                    $my_rank_sql = $this->db->get();
+                    $my_rank = $my_rank_sql->row_array();
 
                     if (!empty($my_rank)) {
                         if (filter_var($my_rank['profile'], FILTER_VALIDATE_URL) === false) {
@@ -1636,11 +1690,9 @@ class Api extends REST_Controller
                         );
                         $user_rank = $my_rank;
                     }
-                    // array_unshift($data, $user_rank); // no need of shifting user_rank in data variable
                 }
                 $response['error'] = false;
                 $response['total'] = "$total";
-                // making user's rank and other user's rank in seperate indexes
                 $response['data'] = array(
                     'my_rank' => $user_rank ?? array(
                         'user_id' => $user_id,
@@ -1681,14 +1733,22 @@ class Api extends REST_Controller
             $offset = ($this->post('offset')) ? $this->post('offset') : 0;
             $limit = ($this->post('limit')) ? $this->post('limit') : 25;
 
-            $this->db->where('u.status', 1);
-            $this->db->join('tbl_users u', 'u.id=m.user_id');
-            $this->db->group_by('user_id');
-            $data_g = $this->db->get('tbl_leaderboard_monthly m')->result_array();
-            $total = count($data_g);
+            $sort = 'r.user_rank';
+            $order = 'ASC';
 
-            $other_user_rank_sql = "SELECT * FROM (SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id,SUM(score) AS score,MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly GROUP BY user_id ORDER BY SUM(score) DESC, MAX(last_updated) ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1) AS ranked LIMIT $offset, $limit";
-            $data = $this->db->query($other_user_rank_sql)->result_array();
+            $this->db->select('r.*, u.email, u.name,u.status,u.profile');
+            $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC) r", false);
+            $this->db->join('tbl_users u', 'u.id = r.user_id');
+            $this->db->where('u.status', 1);
+
+            $total = $this->db->count_all_results('', false);
+            $this->db->order_by($sort, $order);
+            if ($limit) {
+                $this->db->limit($limit, $offset);
+            }
+
+            $other_user_rank_sql = $this->db->get();
+            $data = $other_user_rank_sql->result_array();
             if ($user_id) {
 
                 if (!empty($data)) {
@@ -1699,8 +1759,15 @@ class Api extends REST_Controller
                         }
                     }
 
-                    $top_three_user_rank_sql = "SELECT @rank := @rank + 1 AS user_rank,ru.user_id,ru.score,ru.last_updated,u.name,u.profile FROM (SELECT user_id, SUM(score) AS score, MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly GROUP BY user_id ORDER BY SUM(score) DESC, MAX(last_updated) ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id JOIN (SELECT @rank := 0) r WHERE u.status = 1 LIMIT 3";
-                    $topThreeUsersData = $this->db->query($top_three_user_rank_sql)->result_array();
+                    $this->db->reset_query();
+                    $this->db->select('r.*, u.email, u.name,u.status,u.profile');
+                    $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC) r", false);
+                    $this->db->join('tbl_users u', 'u.id = r.user_id');
+                    $this->db->where('u.status', 1);
+                    $this->db->order_by($sort, $order);
+                    $this->db->limit(3);
+                    $top_three_user_rank_sql = $this->db->get();
+                    $topThreeUsersData = $top_three_user_rank_sql->result_array();
 
                     for ($i = 0; $i < count($topThreeUsersData); $i++) {
                         if (filter_var($topThreeUsersData[$i]['profile'], FILTER_VALIDATE_URL) === false) {
@@ -1731,7 +1798,6 @@ class Api extends REST_Controller
                 }
                 $response['error'] = false;
                 $response['total'] = "$total";
-                // making user's rank and other user's rank in seperate indexes
                 $response['data'] = array(
                     'my_rank' => $user_rank ?? array(
                         'user_id' => $user_id,
@@ -1827,6 +1893,194 @@ class Api extends REST_Controller
         $this->response($response, REST_Controller::HTTP_OK);
     }
 
+    public function get_contest_post()
+    {
+        try {
+            $is_user = $this->verify_token();
+            if (!$is_user['error']) {
+                $user_id = $is_user['user_id'];
+                $firebase_id = $is_user['firebase_id'];
+            } else {
+                $this->response($is_user, REST_Controller::HTTP_OK);
+                return false;
+            }
+
+            if ($user_id) {
+                $timezone = $this->post('timezone') ? $this->post('timezone') : $this->systemTimezone;
+                $today = new DateTime('now', new DateTimeZone($timezone));
+                $today_date = $today->format('Y-m-d H:i:00');
+                $gmt_format = $this->post('gmt_format') ? $this->post('gmt_format') : $this->systemTimezoneGMT;
+
+                $toDateTime = (new DateTime("now", new DateTimeZone($timezone)))->format("Y-m-d H:i:00");
+
+                $language_id = ($this->post('language_id') && is_numeric($this->post('language_id'))) ? $this->post('language_id') : '0';
+
+                /* selecting live quiz ids */
+                if ($language_id) {
+                    $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND language_id = $language_id AND (CONVERT_TZ('" . $toDateTime . "', '+00:00', '" . $gmt_format . "') BETWEEN CONVERT_TZ(start_date, '+00:00', '" . $gmt_format . "') AND CONVERT_TZ(end_date, '+00:00', '" . $gmt_format . "'))")->result_array();
+                } else {
+                    $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND (CONVERT_TZ('" . $toDateTime . "', '+00:00', '" . $gmt_format . "') BETWEEN CONVERT_TZ(start_date, '+00:00', '" . $gmt_format . "') AND CONVERT_TZ(end_date, '+00:00', '" . $gmt_format . "'))")->result_array();
+                }
+
+
+                $live_type_ids = $past_type_ids = '';
+                if (!empty($result)) {
+                    foreach ($result as $type_id) {
+                        $live_type_ids .= $type_id['id'] . ', ';
+                    }
+                    $live_type_ids = rtrim($live_type_ids, ', ');
+
+                    /* getting past quiz ids & its data which user has played */
+                    $result = $this->db->query("SELECT contest_id FROM tbl_contest_leaderboard WHERE contest_id in ($live_type_ids) and user_id = $user_id ORDER BY id DESC")->result_array();
+                    if (!empty($result)) {
+                        foreach ($result as $type_id) {
+                            $past_type_ids .= $type_id['contest_id'] . ', ';
+                        }
+                        $past_type_ids = rtrim($past_type_ids, ', ');
+
+                        $past_result = $this->db->query("SELECT *, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id = c.id ) as participants FROM tbl_contest c WHERE c.id in ($past_type_ids) ORDER BY c.id DESC")->result_array();
+                        unset($result);
+                        foreach ($past_result as $quiz) {
+                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
+                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
+                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
+
+                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
+                            $quiz['points'] = $points;
+                            $result[] = $quiz;
+                        }
+                        $past_result = $result;
+                        $response['past_contest']['error'] = false;
+                        $response['past_contest']['message'] = "117";
+                        $response['past_contest']['data'] = (!empty($past_result)) ? $past_result : '';
+                    } else {
+                        if ($language_id) {
+                            $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id = '$user_id' and l.contest_id = c.id and c.language_id = $language_id ORDER BY c.id DESC")->result_array();
+                        } else {
+                            $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id = '$user_id' and l.contest_id = c.id ORDER BY c.id DESC")->result_array();
+                        }
+                        if (!empty($past_result)) {
+                            foreach ($past_result as $quiz) {
+                                $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
+                                $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
+                                $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
+                                $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
+                                $quiz['points'] = $points;
+                                $result[] = $quiz;
+                            }
+                            $past_result = $result;
+                            $response['past_contest']['error'] = false;
+                            $response['past_contest']['message'] = "117";
+                            $response['past_contest']['data'] = (!empty($past_result)) ? $past_result : '';
+                        } else {
+                            $response['past_contest']['error'] = true;
+                            $response['past_contest']['message'] = "116";
+                        }
+                    }
+
+                    /* getting all quiz details by ids retrieved */
+                    $sql = (empty($past_type_ids)) ?
+                        "SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl WHERE tcl.contest_id=c.id ) as participants FROM tbl_contest c WHERE id IN ($live_type_ids) AND status='1' ORDER BY `id` DESC" :
+                        "SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl WHERE tcl.contest_id=c.id ) as participants FROM tbl_contest c WHERE id IN ($live_type_ids) and id NOT IN ($past_type_ids) AND status='1' ORDER BY `id` DESC";
+                    $live_result = $this->db->query($sql)->result_array();
+
+                    $result = array();
+
+                    if (!empty($live_result)) {
+                        foreach ($live_result as $quiz) {
+                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
+                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
+                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
+
+                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
+                            $quiz['points'] = $points;
+                            $result[] = $quiz;
+                        }
+                        $live_result = $result;
+                        $response['live_contest']['error'] = false;
+                        $response['live_contest']['message'] = "118";
+                        $response['live_contest']['data'] = (!empty($live_result)) ? $live_result : '';
+                    } else {
+                        $response['live_contest']['error'] = true;
+                        $response['live_contest']['message'] = "115";
+                    }
+                } else {
+                    if ($language_id) {
+                        $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id='$user_id' and l.contest_id=c.id and c.language_id = $language_id ORDER BY c.id DESC")->result_array();
+                    } else {
+                        $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id='$user_id' and l.contest_id=c.id ORDER BY c.id DESC")->result_array();
+                    }
+                    if (!empty($past_result)) {
+                        foreach ($past_result as $quiz) {
+                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
+                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
+                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
+
+                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
+                            $quiz['points'] = $points;
+                            $result[] = $quiz;
+                        }
+                        $past_result = $result;
+                        $response['past_contest']['error'] = false;
+                        $response['past_contest']['message'] = "117";
+                        $response['past_contest']['data'] = (!empty($past_result)) ? $past_result : '';
+                    } else {
+                        $response['past_contest']['error'] = true;
+                        $response['past_contest']['message'] = "116";
+                    }
+                    $response['live_contest']['error'] = true;
+                    $response['live_contest']['message'] = "115";
+                }
+
+                /* selecting upcoming quiz ids */
+                if ($language_id) {
+                    $result = $this->db->query("SELECT id FROM tbl_contest where language_id = $language_id and ((start_date) > '$this->toContestDateTime')")->result_array();
+                } else {
+                    $result = $this->db->query("SELECT id FROM tbl_contest where (CAST(start_date AS DATE) > '$this->toDate')")->result_array();
+                }
+                $upcoming_type_ids = '';
+                if (!empty($result)) {
+
+                    foreach ($result as $type_id) {
+                        $upcoming_type_ids .= $type_id['id'] . ', ';
+                    }
+                    $upcoming_type_ids = rtrim($upcoming_type_ids, ', ');
+
+                    /* getting all quiz details by ids retrieved */
+                    $upcoming_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users FROM tbl_contest c WHERE id IN ($upcoming_type_ids) ORDER BY id DESC")->result_array();
+                    $result = array();
+                    if (!empty($upcoming_result)) {
+                        foreach ($upcoming_result as $quiz) {
+                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
+                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
+                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
+
+                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
+                            $quiz['points'] = $points;
+                            $quiz['participants'] = "";
+                            $result[] = $quiz;
+                        }
+                        $upcoming_result = $result;
+                    }
+                    $response['upcoming_contest']['error'] = false;
+                    $response['upcoming_contest']['message'] = "118";
+                    $response['upcoming_contest']['data'] = (!empty($upcoming_result)) ? $upcoming_result : '';
+                } else {
+                    $response['upcoming_contest']['error'] = true;
+                    $response['upcoming_contest']['message'] = "114";
+                }
+            } else {
+                $response['error'] = true;
+                $response['message'] = "103";
+            }
+        } catch (Exception $e) {
+            $response['error'] = true;
+            $response['message'] = "122";
+            $response['error_msg'] = $e->getMessage();
+        }
+        $this->response($response, REST_Controller::HTTP_OK);
+    }
+
     public function get_questions_by_contest_post()
     {
         try {
@@ -1895,16 +2149,25 @@ class Api extends REST_Controller
                 $offset = ($this->post('offset') && is_numeric($this->post('offset'))) ? $this->post('offset') : 0;
                 $limit = ($this->post('limit') && is_numeric($this->post('limit'))) ? $this->post('limit') : 25;
 
+                $sort = 'r.user_rank';
+                $order = 'ASC';
+                $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT c.* FROM tbl_contest_leaderboard c join tbl_users u on u.id = c.user_id where contest_id='" . $contest_id . "') s, (SELECT @user_rank := 0) init ORDER BY score DESC,last_updated ASC ";
+
+                $this->db->select('r.*, u.name, u.profile');
+                $this->db->from("($sub_query) r");
+                $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
                 $this->db->where('contest_id', $contest_id);
                 $this->db->where('u.status', 1);
-                $this->db->join('tbl_users u', 'u.id=cl.user_id');
-                $getTotal = $this->db->get('tbl_contest_leaderboard cl')->result_array();
-                $total = count($getTotal);
+
+                $total = $this->db->count_all_results('', false);
+                $this->db->order_by($sort, $order);
+                if ($limit) {
+                    $this->db->limit($limit, $offset);
+                }
+                $other_user_rank_sql = $this->db->get();
+                $res = $other_user_rank_sql->result_array();
 
                 $response['total'] = $total;
-
-                $other_user_rank_sql = "SELECT * FROM (SELECT ru.user_id,ru.score,ru.last_updated,u.name,u.profile,@rank := IF(@prev_score = ru.score, @rank, @rank_counter) AS user_rank,@rank_counter := @rank_counter + 1,@prev_score := ru.score FROM (SELECT user_id, score, last_updated FROM tbl_contest_leaderboard WHERE contest_id = $contest_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id AND u.status = 1,(SELECT @rank := 0, @rank_counter := 1, @prev_score := NULL) AS vars) AS ranked LIMIT $offset, $limit";
-                $res = $this->db->query($other_user_rank_sql)->result_array();
                 for ($i = 0; $i < count($res); $i++) {
                     if (filter_var($res[$i]['profile'], FILTER_VALIDATE_URL) === false) {
                         // Not a valid URL. Its a image only or empty
@@ -1912,8 +2175,16 @@ class Api extends REST_Controller
                     }
                 }
                 if ($user_id) {
-                    $my_rank_sql = "SELECT * FROM (SELECT ru.user_id,ru.score,u.name,u.profile,@rank := IF(@prev_score = ru.score, @rank, @rank_counter) AS user_rank,@rank_counter := @rank_counter + 1,@prev_score := ru.score FROM (SELECT user_id, score FROM tbl_contest_leaderboard WHERE contest_id = $contest_id ORDER BY score DESC) AS ru JOIN tbl_users u ON u.id = ru.user_id AND u.status = 1,(SELECT @rank := 0, @rank_counter := 1, @prev_score := NULL) AS vars) AS ranked WHERE user_id = ?";
-                    $my_rank = $this->db->query($my_rank_sql, [$user_id])->row_array();
+                    $this->db->reset_query();
+                    $this->db->from("($sub_query) r");
+                    $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
+                    $this->db->where('contest_id', $contest_id);
+                    $this->db->where('u.id', $user_id);
+                    $this->db->where('u.status', 1);
+                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->limit(1);
+                    $my_rank_sql = $this->db->get();
+                    $my_rank = $my_rank_sql->row_array();
 
                     if (!empty($my_rank)) {
                         if (filter_var($my_rank['profile'], FILTER_VALIDATE_URL) === false) {
@@ -1930,8 +2201,16 @@ class Api extends REST_Controller
                     $response['error'] = false;
                     $response['data'] = $res;
 
-                    $topThree_rank_sql = " SELECT * FROM (SELECT ru.user_id,ru.score,ru.last_updated,u.name,u.profile,@rank := IF(@prev_score = ru.score AND @prev_time = ru.last_updated, @rank, @rank_counter) AS user_rank,@rank_counter := @rank_counter + 1,@prev_score := ru.score,@prev_time := ru.last_updated FROM (SELECT user_id, score, last_updated FROM tbl_contest_leaderboard WHERE contest_id = $contest_id ORDER BY score DESC, last_updated ASC) AS ru JOIN tbl_users u ON u.id = ru.user_id AND u.status = 1,(SELECT @rank := 0, @rank_counter := 1, @prev_score := NULL, @prev_time := NULL) AS vars) AS ranked ORDER BY user_rank ASC LIMIT 3";
-                    $topThreeUsersdata = $this->db->query($topThree_rank_sql)->result_array();
+                    $this->db->reset_query();
+                    $this->db->from("($sub_query) r");
+                    $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
+                    $this->db->where('contest_id', $contest_id);
+                    $this->db->where('u.status', 1);
+                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->order_by($sort, $order);
+                    $this->db->limit(3);
+                    $topThree_rank_sql = $this->db->get();
+                    $topThreeUsersdata = $topThree_rank_sql->result_array();
 
                     for ($i = 0; $i < count($topThreeUsersdata); $i++) {
                         if (filter_var($topThreeUsersdata[$i]['profile'], FILTER_VALIDATE_URL) === false) {
@@ -2124,194 +2403,6 @@ class Api extends REST_Controller
                 } else {
                     $response['error'] = true;
                     $response['message'] = "102";
-                }
-            } else {
-                $response['error'] = true;
-                $response['message'] = "103";
-            }
-        } catch (Exception $e) {
-            $response['error'] = true;
-            $response['message'] = "122";
-            $response['error_msg'] = $e->getMessage();
-        }
-        $this->response($response, REST_Controller::HTTP_OK);
-    }
-
-    public function get_contest_post()
-    {
-        try {
-            $is_user = $this->verify_token();
-            if (!$is_user['error']) {
-                $user_id = $is_user['user_id'];
-                $firebase_id = $is_user['firebase_id'];
-            } else {
-                $this->response($is_user, REST_Controller::HTTP_OK);
-                return false;
-            }
-
-            if ($user_id) {
-                $timezone = $this->post('timezone') ? $this->post('timezone') : $this->systemTimezone;
-                $today = new DateTime('now', new DateTimeZone($timezone));
-                $today_date = $today->format('Y-m-d H:i:00');
-                $gmt_format = $this->post('gmt_format') ? $this->post('gmt_format') : $this->systemTimezoneGMT;
-
-                $toDateTime = (new DateTime("now", new DateTimeZone($timezone)))->format("Y-m-d H:i:00");
-
-                $language_id = ($this->post('language_id') && is_numeric($this->post('language_id'))) ? $this->post('language_id') : '0';
-
-                /* selecting live quiz ids */
-                if ($language_id) {
-                    $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND language_id = $language_id AND (CONVERT_TZ('" . $toDateTime . "', '+00:00', '" . $gmt_format . "') BETWEEN CONVERT_TZ(start_date, '+00:00', '" . $gmt_format . "') AND CONVERT_TZ(end_date, '+00:00', '" . $gmt_format . "'))")->result_array();
-                } else {
-                    $result = $this->db->query("SELECT id FROM tbl_contest WHERE status=1 AND (CONVERT_TZ('" . $toDateTime . "', '+00:00', '" . $gmt_format . "') BETWEEN CONVERT_TZ(start_date, '+00:00', '" . $gmt_format . "') AND CONVERT_TZ(end_date, '+00:00', '" . $gmt_format . "'))")->result_array();
-                }
-
-
-                $live_type_ids = $past_type_ids = '';
-                if (!empty($result)) {
-                    foreach ($result as $type_id) {
-                        $live_type_ids .= $type_id['id'] . ', ';
-                    }
-                    $live_type_ids = rtrim($live_type_ids, ', ');
-
-                    /* getting past quiz ids & its data which user has played */
-                    $result = $this->db->query("SELECT contest_id FROM tbl_contest_leaderboard WHERE contest_id in ($live_type_ids) and user_id = $user_id ORDER BY id DESC")->result_array();
-                    if (!empty($result)) {
-                        foreach ($result as $type_id) {
-                            $past_type_ids .= $type_id['contest_id'] . ', ';
-                        }
-                        $past_type_ids = rtrim($past_type_ids, ', ');
-
-                        $past_result = $this->db->query("SELECT *, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id = c.id ) as participants FROM tbl_contest c WHERE c.id in ($past_type_ids) ORDER BY c.id DESC")->result_array();
-                        unset($result);
-                        foreach ($past_result as $quiz) {
-                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
-                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
-                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
-
-                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
-                            $quiz['points'] = $points;
-                            $result[] = $quiz;
-                        }
-                        $past_result = $result;
-                        $response['past_contest']['error'] = false;
-                        $response['past_contest']['message'] = "117";
-                        $response['past_contest']['data'] = (!empty($past_result)) ? $past_result : '';
-                    } else {
-                        if ($language_id) {
-                            $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id = '$user_id' and l.contest_id = c.id and c.language_id = $language_id ORDER BY c.id DESC")->result_array();
-                        } else {
-                            $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id = '$user_id' and l.contest_id = c.id ORDER BY c.id DESC")->result_array();
-                        }
-                        if (!empty($past_result)) {
-                            foreach ($past_result as $quiz) {
-                                $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
-                                $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
-                                $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
-                                $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
-                                $quiz['points'] = $points;
-                                $result[] = $quiz;
-                            }
-                            $past_result = $result;
-                            $response['past_contest']['error'] = false;
-                            $response['past_contest']['message'] = "117";
-                            $response['past_contest']['data'] = (!empty($past_result)) ? $past_result : '';
-                        } else {
-                            $response['past_contest']['error'] = true;
-                            $response['past_contest']['message'] = "116";
-                        }
-                    }
-
-                    /* getting all quiz details by ids retrieved */
-                    $sql = (empty($past_type_ids)) ?
-                        "SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl WHERE tcl.contest_id=c.id ) as participants FROM tbl_contest c WHERE id IN ($live_type_ids) AND status='1' ORDER BY `id` DESC" :
-                        "SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl WHERE tcl.contest_id=c.id ) as participants FROM tbl_contest c WHERE id IN ($live_type_ids) and id NOT IN ($past_type_ids) AND status='1' ORDER BY `id` DESC";
-                    $live_result = $this->db->query($sql)->result_array();
-
-                    $result = array();
-
-                    if (!empty($live_result)) {
-                        foreach ($live_result as $quiz) {
-                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
-                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
-                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
-
-                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
-                            $quiz['points'] = $points;
-                            $result[] = $quiz;
-                        }
-                        $live_result = $result;
-                        $response['live_contest']['error'] = false;
-                        $response['live_contest']['message'] = "118";
-                        $response['live_contest']['data'] = (!empty($live_result)) ? $live_result : '';
-                    } else {
-                        $response['live_contest']['error'] = true;
-                        $response['live_contest']['message'] = "115";
-                    }
-                } else {
-                    if ($language_id) {
-                        $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id='$user_id' and l.contest_id=c.id and c.language_id = $language_id ORDER BY c.id DESC")->result_array();
-                    } else {
-                        $past_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users,(SELECT COUNT(*) from tbl_contest_leaderboard tcl where tcl.contest_id=c.id ) as participants FROM tbl_contest_leaderboard as l, tbl_contest as c WHERE l.user_id='$user_id' and l.contest_id=c.id ORDER BY c.id DESC")->result_array();
-                    }
-                    if (!empty($past_result)) {
-                        foreach ($past_result as $quiz) {
-                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
-                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
-                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
-
-                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
-                            $quiz['points'] = $points;
-                            $result[] = $quiz;
-                        }
-                        $past_result = $result;
-                        $response['past_contest']['error'] = false;
-                        $response['past_contest']['message'] = "117";
-                        $response['past_contest']['data'] = (!empty($past_result)) ? $past_result : '';
-                    } else {
-                        $response['past_contest']['error'] = true;
-                        $response['past_contest']['message'] = "116";
-                    }
-                    $response['live_contest']['error'] = true;
-                    $response['live_contest']['message'] = "115";
-                }
-
-                /* selecting upcoming quiz ids */
-                if ($language_id) {
-                    $result = $this->db->query("SELECT id FROM tbl_contest where language_id = $language_id and ((start_date) > '$this->toContestDateTime')")->result_array();
-                } else {
-                    $result = $this->db->query("SELECT id FROM tbl_contest where (CAST(start_date AS DATE) > '$this->toDate')")->result_array();
-                }
-                $upcoming_type_ids = '';
-                if (!empty($result)) {
-
-                    foreach ($result as $type_id) {
-                        $upcoming_type_ids .= $type_id['id'] . ', ';
-                    }
-                    $upcoming_type_ids = rtrim($upcoming_type_ids, ', ');
-
-                    /* getting all quiz details by ids retrieved */
-                    $upcoming_result = $this->db->query("SELECT c.*, (select SUM(points) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as points, (select count(contest_id) FROM tbl_contest_prize tcp WHERE tcp.contest_id=c.id) as top_users FROM tbl_contest c WHERE id IN ($upcoming_type_ids) ORDER BY id DESC")->result_array();
-                    $result = array();
-                    if (!empty($upcoming_result)) {
-                        foreach ($upcoming_result as $quiz) {
-                            $quiz['image'] = (!empty($quiz['image'])) ? base_url() . CONTEST_IMG_PATH . $quiz['image'] : '';
-                            $quiz['start_date'] = date("d-M", strtotime($quiz['start_date']));
-                            $quiz['end_date'] = date("d-M", strtotime($quiz['end_date']));
-
-                            $points = $this->db->query("SELECT top_winner, points FROM tbl_contest_prize WHERE contest_id=" . $quiz['id'])->result_array();
-                            $quiz['points'] = $points;
-                            $quiz['participants'] = "";
-                            $result[] = $quiz;
-                        }
-                        $upcoming_result = $result;
-                    }
-                    $response['upcoming_contest']['error'] = false;
-                    $response['upcoming_contest']['message'] = "118";
-                    $response['upcoming_contest']['data'] = (!empty($upcoming_result)) ? $upcoming_result : '';
-                } else {
-                    $response['upcoming_contest']['error'] = true;
-                    $response['upcoming_contest']['message'] = "114";
                 }
             } else {
                 $response['error'] = true;
@@ -2807,62 +2898,59 @@ class Api extends REST_Controller
                 return false;
             }
             if ($user_id) {
-                $badges = [
-                    'dashing_debut',
-                    'combat_winner',
-                    'clash_winner',
-                    'most_wanted_winner',
-                    'ultimate_player',
-                    'quiz_warrior',
-                    'super_sonic',
-                    'flashback',
-                    'brainiac',
-                    'big_thing',
-                    'elite',
-                    'thirsty',
-                    'power_elite',
-                    'sharing_caring',
-                    'streak',
-                ];
-                // Get the language_id from the post data or default to 14
-                $language_id = $this->post('language_id') ? $this->post('language_id') : 14;
-                foreach ($badges as $key => $row) {
-                    $res[$key] = $this->db->where('type', $row)->where('language_id', $language_id)->get('tbl_badges')->row_array();
-                    if (empty($res[$key])) {
-                        $res[$key] = $this->db->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
-                    } else {
-                        // // Check if label is empty then take label of english language
-                        // if (empty($res[$key]['badge_label'])) {
-                        //     $res[$key]['badge_label'] = $this->db->select('badge_label')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
-                        // }
-                        // // Check if note is empty then take note of english language
-                        // if (empty($res[$key]['badge_note'])) {
-                        //     $res[$key]['badge_note'] = $this->db->select('badge_note')->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
-                        // }
+                $res1 = $this->db->select('id')->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
+                if ($res1) {
+                    $badges = [
+                        'dashing_debut',
+                        'combat_winner',
+                        'clash_winner',
+                        'most_wanted_winner',
+                        'ultimate_player',
+                        'quiz_warrior',
+                        'super_sonic',
+                        'flashback',
+                        'brainiac',
+                        'big_thing',
+                        'elite',
+                        'thirsty',
+                        'power_elite',
+                        'sharing_caring',
+                        'streak',
+                    ];
+                    // Get the language_id from the post data or default to 14
+                    $language_id = $this->post('language_id') ? $this->post('language_id') : 14;
+                    foreach ($badges as $key => $row) {
+                        $res[$key] = $this->db->where('type', $row)->where('language_id', $language_id)->get('tbl_badges')->row_array();
+                        if (empty($res[$key])) {
+                            $res[$key] = $this->db->where('type', $row)->where('language_id', 14)->get('tbl_badges')->row_array();
+                        }
+                        $get_user_language = $this->db->select('id,app_language,web_language')->where('id', $user_id)->get('tbl_users')->row_array();
+                        $user_app_language = $get_user_language['app_language'];
+                        $user_web_language = $get_user_language['web_language'];
+
+                        $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
+                        $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
+                        $default_app_language = $get_app_default_language['name'] ?? '';
+                        $default_web_language = $get_web_default_language['name'] ?? '';
+
+                        $app_data = $this->getBadgeNotificationData($user_app_language, $row, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
+                        $web_data = $this->getBadgeNotificationData($user_web_language, $row, WEB_LANGUAGE_FILE_PATH, 'web_sample_file.json', $default_web_language);
+
+                        $res[$key]['badge_label'] = $web_data['notification_title'] ?? 'Congratulations!';
+                        $res[$key]['badge_note'] = $web_data['notification_body'] ?? 'You have unlocked new badge.';
+
+                        $res[$key]['app_badge_label'] = $app_data['notification_title'] ?? 'Congratulations!';
+                        $res[$key]['app_badge_note'] = $app_data['notification_body'] ?? 'You have unlocked new badge.';
+                        $res[$key]['badge_icon'] = (isset($res[$key]['badge_icon']) && !empty($res[$key]['badge_icon'])) ? base_url() . BADGE_IMG_PATH . $res[$key]['badge_icon'] : "";
+                        $res1 = $this->db->select($row)->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
+                        $res[$key]['status'] = $res1[$row];
                     }
-                    $get_user_language = $this->db->select('id,app_language,web_language')->where('id', $user_id)->get('tbl_users')->row_array();
-                    $user_app_language = $get_user_language['app_language'];
-                    $user_web_language = $get_user_language['web_language'];
-
-                    $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
-                    $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
-                    $default_app_language = $get_app_default_language['name'];
-                    $default_web_language = $get_web_default_language['name'];
-
-                    $app_data = $this->getBadgeNotificationData($user_app_language, $row, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
-                    $web_data = $this->getBadgeNotificationData($user_web_language, $row, WEB_LANGUAGE_FILE_PATH, 'web_sample_file.json', $default_web_language);
-
-                    $res[$key]['badge_label'] = $web_data['notification_title'] ?? 'Congratulations!';
-                    $res[$key]['badge_note'] = $web_data['notification_body'] ?? 'You have unlocked new badge.';
-
-                    $res[$key]['app_badge_label'] = $app_data['notification_title'] ?? 'Congratulations!';
-                    $res[$key]['app_badge_note'] = $app_data['notification_body'] ?? 'You have unlocked new badge.';
-                    $res[$key]['badge_icon'] = (isset($res[$key]['badge_icon']) && !empty($res[$key]['badge_icon'])) ? base_url() . BADGE_IMG_PATH . $res[$key]['badge_icon'] : "";
-                    $res1 = $this->db->select($row)->where('user_id', $user_id)->get('tbl_users_badges')->row_array();
-                    $res[$key]['status'] = $res1[$row];
+                    $response['error'] = false;
+                    $response['data'] = $res;
+                } else {
+                    $response['error'] = true;
+                    $response['message'] = "102";
                 }
-                $response['error'] = false;
-                $response['data'] = $res;
             } else {
                 $response['error'] = true;
                 $response['message'] = "103";
@@ -5104,6 +5192,7 @@ class Api extends REST_Controller
             $user2Points = 0;
             $winner_user_id = 0;
             $is_drawn = 0;
+            $leftUser = 0;
             $score = 0;
             $user1_earnCoin = $user2_earnCoin = 0;
 
@@ -5126,14 +5215,15 @@ class Api extends REST_Controller
             } else if ($user1Points < $user2Points) {
                 $winner_user_id = $user2_id;
                 $score = $user2Points;
-            } else if (($user1Points == $user2Points) && $user1Points != 0 && $user2Points != 0) {
+            } else if (($user1Points == $user2Points) && ($user1_id && $user2_id)) {
                 $is_drawn = 1;
                 $score = ($user_id == $user1_id) ? $user1Points : (($user_id == $user2_id) ? $user2Points : 0);
-            } else  if ($user1Points == 0 && $user2Points == 0) {
-                if ($user1_id != 0) {
+            } else if ($user1_id == 0 || $user2_id == 0) {
+                $leftUser = 1;
+                if ($user1_id) {
                     $winner_user_id = $user1_id;
                     $score = $user1Points;
-                } else if ($user2_id != 0) {
+                } else if ($user2_id) {
                     $winner_user_id = $user2_id;
                     $score = $user2Points;
                 }
@@ -5150,22 +5240,21 @@ class Api extends REST_Controller
                     $this->set_tracker_data($user_id, $entry_coin, 'wonBattle', 0); //0: add
                     $this->set_users_battle_statistics($user1_id, $user2_id, $is_drawn, $winner_user_id);
                 }
-            } else {
-                if ($winner_user_id) {
-                    $earnCoinVal = $entry_coin * 2;
-                    $earnCoin = floor($earnCoinVal);
-                    if ($winner_user_id == $user1_id) {
-                        $user1_earnCoin = $earnCoin;
-                    } else if ($winner_user_id == $user2_id) {
-                        $user2_earnCoin = $earnCoin;
-                    }
-                    if ($is_bot == 0 && $user_id == $winner_user_id) {
-                        $this->set_coins($user_id, $earnCoin);
-                        $this->set_tracker_data($user_id, $earnCoin, 'wonBattle', 0); //0: add
-                        $this->set_users_battle_statistics($user1_id, $user2_id, $is_drawn, $winner_user_id);
-                    }
+            } else if ($winner_user_id) {
+                $earnCoinVal = $entry_coin * 2;
+                $earnCoin = floor($earnCoinVal);
+                if ($winner_user_id == $user1_id) {
+                    $user1_earnCoin = $earnCoin;
+                } else if ($winner_user_id == $user2_id) {
+                    $user2_earnCoin = $earnCoin;
+                }
+                if ($is_bot == 0 && $user_id == $winner_user_id) {
+                    $this->set_coins($user_id, $earnCoin);
+                    $this->set_tracker_data($user_id, $earnCoin, 'wonBattle', 0); //0: add
+                    $this->set_users_battle_statistics($user1_id, $user2_id, $is_drawn, $winner_user_id);
                 }
             }
+
             if ($is_bot == 0) {
                 if ($user1Quickest && $user_id == $user1_id) {
                     $this->set_badges($user_id, $this->ULTIMATE_PLAYER, 1);
@@ -5180,7 +5269,16 @@ class Api extends REST_Controller
                 $this->db->where('id', $checkData['id'])->update('tbl_battle_questions', ['set_user2' => $user_id]);
             }
 
-            $this->db->where('id', $checkData['id'])->where('set_user1!=', 0)->where('set_user2!=', 0)->delete('tbl_battle_questions');
+            if ($user1_id == 0 && $user2_id != 0) {
+                $this->db->where('id', $checkData['id'])->where('set_user1', 0)->where('set_user2!=', 0)->delete('tbl_battle_questions');
+            } else if ($user2_id == 0 && $user1_id != 0) {
+                $this->db->where('id', $checkData['id'])->where('set_user1!=', 0)->where('set_user2', 0)->delete('tbl_battle_questions');
+            } else if ($user1_id == 0 && $user2_id == 0) {
+                $this->db->where('id', $checkData['id'])->delete('tbl_battle_questions');
+            } else {
+                $this->db->where('id', $checkData['id'])->where('set_user1!=', 0)->where('set_user2!=', 0)->delete('tbl_battle_questions');
+            }
+
 
             $user1Data = [
                 'correctAnswer' => $user1CorrectAnswer ?? 0,
@@ -5209,6 +5307,7 @@ class Api extends REST_Controller
                 'winner_user_id' => $winner_user_id ?? 0,
                 'winner_coin' => (float)$earnCoin ?? 0,
                 'is_drawn' => $is_drawn ?? 0,
+                'leftUser' => $leftUser ?? 0,
                 'user1_data' => $user1Data ?? [],
                 'user2_data' => $user2Data ?? [],
             ];
@@ -5241,6 +5340,7 @@ class Api extends REST_Controller
             $user2Points = 0;
             $winner_user_id = 0;
             $is_drawn = 0;
+            $leftUser = 0;
             $score = 0;
             $user1_earnCoin = $user2_earnCoin = 0;
 
@@ -5263,18 +5363,21 @@ class Api extends REST_Controller
             } else if ($user1Points < $user2Points) {
                 $winner_user_id = $user2_id;
                 $score = $user2Points;
-            } else if ($user1Points == $user2Points && $user1Points != 0 && $user2Points != 0) {
+            } else if (($user1Points == $user2Points) && ($user1_id && $user2_id)) {
                 $is_drawn = 1;
                 $score = ($user_id == $user1_id) ? $user1Points : (($user_id == $user2_id) ? $user2Points : 0);
-            } else  if ($user1Points == 0 && $user2Points == 0) {
-                if ($user1_id != 0) {
+            } else if ($user1_id == 0 || $user2_id == 0) {
+                $leftUser = 1;
+                if ($user1_id) {
                     $winner_user_id = $user1_id;
                     $score = $user1Points;
-                } else if ($user2_id != 0) {
+                } else if ($user2_id) {
                     $winner_user_id = $user2_id;
                     $score = $user2Points;
                 }
             }
+
+
 
             if ($score) {
                 $this->set_monthly_leaderboard($user_id, $score);
@@ -5285,20 +5388,18 @@ class Api extends REST_Controller
                 $this->set_coins($user_id, $entry_coin);
                 $this->set_tracker_data($user_id, $entry_coin, 'wonBattle', 0); //0: add
                 $this->set_users_battle_statistics($user1_id, $user2_id, $is_drawn, $winner_user_id);
-            } else {
-                if ($winner_user_id) {
-                    $earnCoinVal = $entry_coin * 2;
-                    $earnCoin = floor($earnCoinVal);
-                    if ($winner_user_id == $user1_id) {
-                        $user1_earnCoin = $earnCoin;
-                    } else if ($winner_user_id == $user2_id) {
-                        $user2_earnCoin = $earnCoin;
-                    }
-                    if ($user_id == $winner_user_id) {
-                        $this->set_coins($user_id, $earnCoin);
-                        $this->set_tracker_data($user_id, $earnCoin, 'wonBattle', 0); //0: add
-                        $this->set_users_battle_statistics($user1_id, $user2_id, $is_drawn, $winner_user_id);
-                    }
+            } else if ($winner_user_id) {
+                $earnCoinVal = $entry_coin * 2;
+                $earnCoin = floor($earnCoinVal);
+                if ($winner_user_id == $user1_id) {
+                    $user1_earnCoin = $earnCoin;
+                } else if ($winner_user_id == $user2_id) {
+                    $user2_earnCoin = $earnCoin;
+                }
+                if ($user_id == $winner_user_id) {
+                    $this->set_coins($user_id, $earnCoin);
+                    $this->set_tracker_data($user_id, $earnCoin, 'wonBattle', 0); //0: add
+                    $this->set_users_battle_statistics($user1_id, $user2_id, $is_drawn, $winner_user_id);
                 }
             }
 
@@ -5314,7 +5415,16 @@ class Api extends REST_Controller
                 $this->db->where('id', $checkData['id'])->update('tbl_battle_questions', ['set_user2' => $user_id]);
             }
 
-            $this->db->where('id', $checkData['id'])->where('set_user1!=', 0)->where('set_user2!=', 0)->delete('tbl_battle_questions');
+
+            if ($user1_id == 0 && $user2_id != 0) {
+                $this->db->where('id', $checkData['id'])->where('set_user1', 0)->where('set_user2!=', 0)->delete('tbl_battle_questions');
+            } else if ($user2_id == 0 && $user1_id != 0) {
+                $this->db->where('id', $checkData['id'])->where('set_user1!=', 0)->where('set_user2', 0)->delete('tbl_battle_questions');
+            } else if ($user1_id == 0 && $user2_id == 0) {
+                $this->db->where('id', $checkData['id'])->delete('tbl_battle_questions');
+            } else {
+                $this->db->where('id', $checkData['id'])->where('set_user1!=', 0)->where('set_user2!=', 0)->delete('tbl_battle_questions');
+            }
 
             $user1Data = [
                 'correctAnswer' => $user1CorrectAnswer ?? 0,
@@ -5340,6 +5450,8 @@ class Api extends REST_Controller
                 'total_questions' => $total_questions ?? 0,
                 'user1_id' => $user1_id ?? 0,
                 'user2_id' => $user2_id ?? 0,
+                'is_drawn' => $is_drawn ?? 0,
+                'leftUser' => $leftUser ?? 0,
                 'winner_user_id' => $winner_user_id ?? 0,
                 'winner_coin' => (float)$earnCoin ?? 0,
                 'user1_data' => $user1Data ?? [],
@@ -5354,6 +5466,7 @@ class Api extends REST_Controller
     // 1.5
     function groupBattle($user_id, $room_id, $playQuestions, $joined_users_count)
     {
+
         $batchSize = 500;
 
         do {
@@ -5437,9 +5550,12 @@ class Api extends REST_Controller
             $earnCoin =  ($totalWinner > 0) ? floor($entry_coin * ($joined_users_count / $totalWinner)) : 0;
             if ($earnCoin) {
                 foreach ($firstRankWinners as $winnerUser) {
-                    $this->set_coins($winnerUser, $earnCoin);
-                    $this->set_tracker_data($winnerUser, $earnCoin, 'wonGroupBattle', 0);
-                    $this->set_badges($winnerUser, $this->CLASH_WINNER, 0);
+                    if ($winnerUser == $user_id) {
+                        $this->set_coins($user_id, $earnCoin);
+                        $this->set_tracker_data($user_id, $earnCoin, 'wonGroupBattle', 0);
+                        $this->set_badges($user_id, $this->CLASH_WINNER, 0);
+                        break;
+                    }
                 }
             }
 
@@ -5453,8 +5569,6 @@ class Api extends REST_Controller
             } else if ($user_id == $user4_id) {
                 $this->db->where('room_id', $room_id)->update('tbl_rooms', ['set_user4' => $user_id]);
             }
-
-            // $this->db->where('room_id', $room_id)->where('set_user1!=', 0)->where('set_user2!=', 0)->where('set_user3!=', 0)->where('set_user4!=', 0)->delete('tbl_rooms');
 
             $sql = "DELETE FROM tbl_rooms WHERE room_id = ? AND ((set_user1 != 0) + (set_user2 != 0) + (set_user3 != 0) + (set_user4 != 0)) >= ?";
             $this->db->query($sql, [$room_id, $total_user_count]);
@@ -5996,30 +6110,28 @@ class Api extends REST_Controller
                     }
                 }
                 $questions_answered = count($play_questions);
-                $quiz_winning_percentage = is_settings('quiz_winning_percentage');
                 $winningPer = ($correctAnswer * 100) / $total_questions;
 
-                if ($winningPer >= $quiz_winning_percentage) {
-                    $wrongAnswer = $total_questions - $correctAnswer;
-                    $contest_mode_correct_credit_score = is_settings('contest_mode_correct_credit_score');
-                    $contest_mode_wrong_deduct_score = is_settings('contest_mode_wrong_deduct_score');
+                $wrongAnswer = $total_questions - $correctAnswer;
+                $contest_mode_correct_credit_score = is_settings('contest_mode_correct_credit_score');
+                $contest_mode_wrong_deduct_score = is_settings('contest_mode_wrong_deduct_score');
 
-                    $userScore = ($correctAnswer * $contest_mode_correct_credit_score) - ($wrongAnswer * $contest_mode_wrong_deduct_score);
+                $userScore = ($correctAnswer * $contest_mode_correct_credit_score) - ($wrongAnswer * $contest_mode_wrong_deduct_score);
 
-                    if ($userScore) {
-                        $this->set_monthly_leaderboard($user_id, $userScore);
-                    }
-                    $data = array(
-                        'user_id' => $user_id,
-                        'contest_id' => $contest_id,
-                        'questions_attended' => $questions_answered,
-                        'correct_answers' => $correctAnswer,
-                        'score' => $userScore,
-                        'last_updated' => $this->toDateTime,
-                        'date_created' => $this->toDateTime,
-                    );
-                    $this->db->insert('tbl_contest_leaderboard', $data);
+                if ($userScore) {
+                    $this->set_monthly_leaderboard($user_id, $userScore);
                 }
+
+                $data = array(
+                    'user_id' => $user_id,
+                    'contest_id' => $contest_id,
+                    'questions_attended' => $questions_answered,
+                    'correct_answers' => $correctAnswer,
+                    'score' => $userScore,
+                    'last_updated' => $this->toDateTime,
+                    'date_created' => $this->toDateTime,
+                );
+                $this->db->insert('tbl_contest_leaderboard', $data);
             }
 
 
@@ -6043,11 +6155,13 @@ class Api extends REST_Controller
     {
         $file = $path . $language . '.json';
 
-        if (!file_exists($file)) {
+        if (!file_exists($file) && $defaultFile) {
             $file = $path . $defaultFile;
             if (!file_exists($file)) {
                 $file = $path . $sampleFile;
             }
+        } else {
+            $file = $path . $sampleFile;
         }
 
         $content = file_get_contents($file);
@@ -6240,7 +6354,7 @@ class Api extends REST_Controller
         $user_app_language = $res['app_language'];
 
         $get_app_default_language = $this->db->select('id,name,app_default')->where('app_default', 1)->get('tbl_upload_languages')->row_array();
-        $default_app_language = $get_app_default_language['name'];
+        $default_app_language = $get_app_default_language['name'] ?? '';
 
         $notificationData = $this->getBadgeNotificationData($user_app_language, $type, APP_LANGUAGE_FILE_PATH, 'app_sample_file.json', $default_app_language);
 
@@ -6266,7 +6380,7 @@ class Api extends REST_Controller
         $user_web_language = $res['web_language'];
 
         $get_web_default_language = $this->db->select('id,name,web_default')->where('web_default', 1)->get('tbl_upload_languages')->row_array();
-        $default_web_language = $get_web_default_language['name'];
+        $default_web_language = $get_web_default_language['name'] ?? '';
 
         $web_notificationData = $this->getBadgeNotificationData($user_web_language, $type, WEB_LANGUAGE_FILE_PATH, 'web_sample_file.json', $default_web_language);
 
@@ -6571,8 +6685,15 @@ class Api extends REST_Controller
 
     function myGlobalRank($user_id)
     {
-        $my_rank_sql = "SELECT * FROM (SELECT ru.user_id,ru.score,ru.last_updated,u.name,u.profile,@rank := IF(@prev_score = ru.score, @rank, @rank_counter) AS user_rank,@rank_counter := @rank_counter + 1,@prev_score := ru.score FROM (SELECT user_id, SUM(score) AS score, MAX(last_updated) AS last_updated FROM tbl_leaderboard_monthly GROUP BY user_id) AS ru JOIN tbl_users u ON u.id = ru.user_id AND u.status = 1,(SELECT @rank := 0, @rank_counter := 1, @prev_score := NULL) AS vars ORDER BY ru.score DESC, ru.last_updated ASC) AS ranked_users WHERE user_id = ?";
-        $my_rank = $this->db->query($my_rank_sql, [$user_id])->row_array();
+        $this->db->reset_query();
+        $this->db->select('r.*, u.email, u.name,u.status,u.profile');
+        $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score,MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC,s.last_updated ASC) r", false);
+        $this->db->join('tbl_users u', 'u.id = r.user_id');
+        $this->db->where('u.status', 1);
+        $this->db->where('u.id', $user_id);
+        $this->db->limit(1);
+        $my_rank_sql = $this->db->get();
+        $my_rank = $my_rank_sql->row_array();
         return  $my_rank;
     }
 }
