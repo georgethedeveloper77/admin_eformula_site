@@ -22,6 +22,27 @@
                 <section class="section">
                     <div class="section-header">
                         <h1><?= lang('create_and_manage_questions_for_exam_module'); ?></h1>
+                        <?php
+                        $url = '';
+                        if ($this->uri->segment(2) && $this->uri->segment(1) == 'exam-module-questions-edit') {
+                            $exam_module_id = (!empty($data)) ? $data[0]->exam_module_id : "";
+                            $url = base_url('exam-module-questions-list/' . $exam_module_id);
+                        } else if ($this->uri->segment(2) && $this->uri->segment(1) == 'exam-module-questions') {
+                            $url = base_url('exam-module');
+                        }
+                        if ($url) {
+                        ?>
+                            <div class="section-header-breadcrumb">
+                                <a href="<?= $url ?>" class="footer_dev_link text-decoration-none">
+                                    <h6>
+                                        <i class="fa fa-arrow-left"></i>
+                                        <?= lang('back'); ?>
+                                    </h6>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -33,7 +54,6 @@
                                     <div class="card-body">
                                         <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
                                             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-                                            <input type="hidden" id="exam_module_id" name="exam_module_id" value="<?= $this->uri->segment(2) ?>" />
                                             <?php
                                             $question_id = (!empty($data)) ? $data[0]->id : "";
                                             $sess_question_type = (!empty($data)) ? $data[0]->question_type : "";
@@ -41,6 +61,7 @@
                                                 <input type="hidden" id="edit_id" name="edit_id" required value="<?= $question_id ?>" aria-required="true">
                                                 <input type="hidden" id="image_url" name="image_url" value="<?= ($question_id != '') ? ((!empty($data)) ? (($data[0]->image != '') ? EXAM_QUESTION_IMG_PATH . $data[0]->image : '') : '') : '' ?>">
                                             <?php } ?>
+                                            <input type="hidden" id="exam_module_id" name="exam_module_id" value="<?= $this->uri->segment(2) ?>" />
                                             <div class="form-group row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <label class="control-label"><?= lang('question'); ?></label>

@@ -361,6 +361,7 @@
             $(`ol#${listId} li`).each(function() {
                 selectedOrder.push($(this).attr("id"));
             });
+
             // Update the value of .answer_type2 with the selected order
             $('.answer_type2').val(selectedOrder.join(','));
         }
@@ -375,7 +376,7 @@
             });
         });
 
-        function updateOptions(questionType, answerType) {
+        function updateOptions(questionType, answerType, changeType = 0) {
             $('#option1_answer1,#option1_answer2, #option2_answer1, #option2_answer2').hide('fast');
 
             if (questionType == 1 && answerType == 1) {
@@ -401,7 +402,10 @@
                     $('#e').attr("required", "required");
                     answerType += ',e';
                 <?php } ?>
-                $('.answer_type2').val(answerType).attr('readonly', 'readonly');
+                $('.answer_type2').attr('readonly', 'readonly');
+                if (changeType) {
+                    $('.answer_type2').val(answerType);
+                }
             } else if (questionType == 2 && answerType == 1) {
                 $('#option2_answer1').show('fast');
                 $('#tf').hide('fast');
@@ -424,8 +428,13 @@
                     $('#e').removeAttr('required');
                 <?php } ?>
                 answerType = 'a,b';
-                $('.answer_type2').val(answerType).attr('readonly', 'readonly');
+                $('.answer_type2').attr('readonly', 'readonly');
+                if (changeType) {
+                    $('.answer_type2').val(answerType);
+                }
             }
+
+
         }
         $(document).ready(function() {
             if (!<?= json_encode($question_id) ?>) {
@@ -435,15 +444,27 @@
                 var questionType = $('input[name="question_type"]:checked').val();
                 var answerType = $('input[name="answer_type"]:checked').val();
                 $('.answer_type2').val('').removeAttr('readonly');
-                updateOptions(questionType, answerType);
+                updateOptions(questionType, answerType, 1);
+                sortOptionData(answer, questionType, answerType, 1)
             });
         });
 
         if (<?= json_encode($question_id) ?>) {
             var questionType = "<?= $sess_question_type ?>"
             var answerType = "<?= $sess_answer_type ?>"
+            sortOptionData(answer, questionType, answerType)
+            updateOptions(questionType, answerType);
+        }
+
+        function sortOptionData(answer, questionType, answerType, changeType = 0) {
             if (answerType == 2) {
                 if (questionType == 1) {
+                    if (changeType) {
+                        answer = 'a,b,c,d';
+                        <?php if (is_option_e_mode_enabled()) { ?>
+                            answer += ',e';
+                        <?php } ?>
+                    }
                     var elems = $('ol#sortable-row').children('li');
                     $('ol#sortable-row').html();
                     var newOrder = (answer).split(',');
@@ -460,6 +481,9 @@
                     $('ol#sortable-row').prepend(temp);
 
                 } else if (questionType == 2) {
+                    if (changeType) {
+                        answer = 'a,b';
+                    }
                     var elems = $('ol#sortable-row-1').children('li');
                     $('ol#sortable-row-1').html();
                     var newOrder = (answer).split(',');
@@ -476,7 +500,6 @@
                     $('ol#sortable-row-1').prepend(temp);
                 }
             }
-            updateOptions(questionType, answerType);
         }
     </script>
 

@@ -4,12 +4,63 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Setting_model extends CI_Model
 {
-
-    public function get_quiz_list()
+    public function delete_multiple($ids, $is_image, $table)
     {
-        return $this->db->order_by('id', 'ASC')->get('tbl_quiz_list')->result();
+        if ($is_image) {
+            $path = array(
+                'tbl_category' => CATEGORY_IMG_PATH,
+                'tbl_subcategory' => SUBCATEGORY_IMG_PATH,
+                'tbl_question' => QUESTION_IMG_PATH,
+                'tbl_notifications' => NOTIFICATION_IMG_PATH,
+                'tbl_contest' => CONTEST_IMG_PATH,
+                'tbl_contest_question' => CONTEST_QUESTION_IMG_PATH,
+                'tbl_audio_question' => QUESTION_AUDIO_PATH,
+                'tbl_exam_module_question' => EXAM_QUESTION_IMG_PATH,
+                'tbl_maths_question' => MATHS_QUESTION_IMG_PATH,
+                'tbl_slider' => SLIDER_IMG_PATH,
+                'tbl_coin_store' => COIN_STORE_IMG_PATH,
+                'tbl_fun_n_learn' => FUN_LEARN_IMG_PATH,
+                'tbl_fun_n_learn_question' => FUN_LEARN_QUESTION_IMG_PATH,
+                'tbl_multi_match' => MULTIMATCH_QUESTION_IMG_PATH,
+                'tbl_guess_the_word' => GUESS_WORD_IMG_PATH,
+            );
+            if ($table == 'tbl_audio_question') {
+                $query = $this->db->query("SELECT `audio` FROM " . $table . " WHERE id in ( " . $ids . " )");
+                $res = $query->result();
+                foreach ($res as $audio) {
+                    if (!empty($audio->audio) && file_exists($path[$table] . $audio->audio)) {
+                        unlink($path[$table] . $audio->audio);
+                    }
+                }
+            } else if ($table == 'tbl_fun_n_learn') {
+                $query = $this->db->query("SELECT id,content_data FROM " . $table . " WHERE id in ( " . $ids . " )");
+                $res = $query->result();
+                foreach ($res as $contentData) {
+                    if (!empty($contentData->content_data) && file_exists($path[$table] . $contentData->content_data)) {
+                        unlink($path[$table] . $contentData->content_data);
+                    }
+                    $id = $contentData->id;
+                    $question_data = $this->db->select('image')->where('fun_n_learn_id', $id)->get('tbl_fun_n_learn_question')->result_array();
+                    foreach ($question_data as $que1) {
+                        if (!empty($que1->image) && file_exists(FUN_LEARN_QUESTION_IMG_PATH . $que1->image)) {
+                            unlink(FUN_LEARN_QUESTION_IMG_PATH . $que1->image);
+                        }
+                    }
+                    $this->db->where('fun_n_learn_id', $id)->delete('tbl_fun_n_learn_question');
+                }
+            } else {
+                $query = $this->db->query("SELECT `image` FROM " . $table . " WHERE id in ( " . $ids . " )");
+                $res = $query->result();
+                foreach ($res as $image) {
+                    if (!empty($image->image) && file_exists($path[$table] . $image->image)) {
+                        unlink($path[$table] . $image->image);
+                    }
+                }
+            }
+        }
+        $delete = $this->db->query("DELETE FROM `" . $table . "` WHERE `id` in ( " . $ids . " ) ");
+        return $delete ? 1 : 0;
     }
-
 
     public function firebase_configurations()
     {
@@ -157,9 +208,9 @@ class Setting_model extends CI_Model
             'system_timezone',
             'system_timezone_gmt',
             'app_link',
-            'more_apps',
+            // 'more_apps',
             'ios_app_link',
-            'ios_more_apps',
+            // 'ios_more_apps',
             'refer_coin',
             'earn_coin',
             'app_version',
@@ -301,7 +352,15 @@ class Setting_model extends CI_Model
             'daily_ads_visibility',
             'daily_ads_coins',
             'daily_ads_counter',
-            'reward_coin'
+            'reward_coin',
+            'app_key_android_iron_source',
+            'app_key_ios_iron_source',
+            'rewarded_id_android_iron_source',
+            'rewarded_id_ios_iron_source',
+            'interstitial_id_android_iron_source',
+            'interstitial_id_ios_iron_source',
+            'banner_id_android_iron_source',
+            'banner_id_ios_iron_source',
         ];
 
         foreach ($settings as $type) {
@@ -535,64 +594,6 @@ class Setting_model extends CI_Model
         }
 
         return TRUE;
-    }
-
-    public function delete_multiple($ids, $is_image, $table)
-    {
-        if ($is_image) {
-            $path = array(
-                'tbl_category' => CATEGORY_IMG_PATH,
-                'tbl_subcategory' => SUBCATEGORY_IMG_PATH,
-                'tbl_question' => QUESTION_IMG_PATH,
-                'tbl_notifications' => NOTIFICATION_IMG_PATH,
-                'tbl_contest' => CONTEST_IMG_PATH,
-                'tbl_contest_question' => CONTEST_QUESTION_IMG_PATH,
-                'tbl_audio_question' => QUESTION_AUDIO_PATH,
-                'tbl_exam_module_question' => EXAM_QUESTION_IMG_PATH,
-                'tbl_maths_question' => MATHS_QUESTION_IMG_PATH,
-                'tbl_slider' => SLIDER_IMG_PATH,
-                'tbl_coin_store' => COIN_STORE_IMG_PATH,
-                'tbl_fun_n_learn' => FUN_LEARN_IMG_PATH,
-                'tbl_fun_n_learn_question' => FUN_LEARN_QUESTION_IMG_PATH,
-                'tbl_multi_match' => MULTIMATCH_QUESTION_IMG_PATH,
-                'tbl_guess_the_word' => GUESS_WORD_IMG_PATH,
-            );
-            if ($table == 'tbl_audio_question') {
-                $query = $this->db->query("SELECT `audio` FROM " . $table . " WHERE id in ( " . $ids . " )");
-                $res = $query->result();
-                foreach ($res as $audio) {
-                    if (!empty($audio->audio) && file_exists($path[$table] . $audio->audio)) {
-                        unlink($path[$table] . $audio->audio);
-                    }
-                }
-            } else if ($table == 'tbl_fun_n_learn') {
-                $query = $this->db->query("SELECT id,content_data FROM " . $table . " WHERE id in ( " . $ids . " )");
-                $res = $query->result();
-                foreach ($res as $contentData) {
-                    if (!empty($contentData->content_data) && file_exists($path[$table] . $contentData->content_data)) {
-                        unlink($path[$table] . $contentData->content_data);
-                    }
-                    $id = $contentData->id;
-                    $question_data = $this->db->select('image')->where('fun_n_learn_id', $id)->get('tbl_fun_n_learn_question')->result_array();
-                    foreach ($question_data as $que1) {
-                        if (!empty($que1->image) && file_exists(FUN_LEARN_QUESTION_IMG_PATH . $que1->image)) {
-                            unlink(FUN_LEARN_QUESTION_IMG_PATH . $que1->image);
-                        }
-                    }
-                    $this->db->where('fun_n_learn_id', $id)->delete('tbl_fun_n_learn_question');
-                }
-            } else {
-                $query = $this->db->query("SELECT `image` FROM " . $table . " WHERE id in ( " . $ids . " )");
-                $res = $query->result();
-                foreach ($res as $image) {
-                    if (!empty($image->image) && file_exists($path[$table] . $image->image)) {
-                        unlink($path[$table] . $image->image);
-                    }
-                }
-            }
-        }
-        $delete = $this->db->query("DELETE FROM `" . $table . "` WHERE `id` in ( " . $ids . " ) ");
-        return $delete ? 1 : 0;
     }
 
     public function update_contact_us()
@@ -1065,6 +1066,32 @@ class Setting_model extends CI_Model
             'email_login',
             'phone_login',
             'apple_login'
+        ];
+
+        foreach ($settings as $type) {
+            $message = $this->input->post($type);
+            $res = $this->db->where('type', $type)->get('tbl_settings')->row_array();
+            if ($res) {
+                $data = ['message' => $message];
+                $this->db->where('type', $type)->update('tbl_settings', $data);
+            } else {
+                $data = array(
+                    'type' => $type,
+                    'message' => $message
+                );
+                $this->db->insert('tbl_settings', $data);
+            }
+        }
+    }
+
+    public function ai_settings()
+    {
+        $settings = [
+            'ai_provider',
+            'gemini_model',
+            'gemini_api_key',
+            'openai_model',
+            'openai_api_key'
         ];
 
         foreach ($settings as $type) {

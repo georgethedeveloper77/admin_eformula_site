@@ -466,6 +466,8 @@ $config['csrf_exclude_uris'] = array(
   'fun_learn_upload_img',
   'get_subcategories_of_category',
   'get_categories_of_language',
+  'get_contest_of_language',
+  'get_exam_of_language',
   'delete_multiple',
   'delete_language',
   'delete_category',
@@ -499,7 +501,9 @@ $config['csrf_exclude_uris'] = array(
   'delete-app-system-languages',
   'delete-web-system-languages',
   'delete_multi_match',
-  'delete_multi_match_report'
+  'delete_multi_match_report',
+  'delete-ai-questions',
+  'moveQuestion'
 );
 
 /*

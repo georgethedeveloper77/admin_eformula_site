@@ -106,6 +106,11 @@
                     <a class="nav-link" href="<?= base_url(); ?>daily-quiz"><em class="fas fa-question"></em> <span><?= lang('daily_quiz'); ?></span></a>
                 </li>
             <?php } ?>
+            <?php if (has_permissions('read', 'ai_question_bank')) { ?>
+                <li>
+                    <a class="nav-link" href="<?= base_url() ?>create-ai-questions"><em class="fas fa-user-secret"></em> <span><?= lang('ai_question_bank'); ?></span></a>
+                </li>
+            <?php } ?>
 
             <?php if (has_permissions('read', 'categories') || has_permissions('read', 'subcategories') || has_permissions('read', 'category_order') || has_permissions('create', 'multi_match') || has_permissions('read', 'multi_match') || has_permissions('read', 'multi_match_import_question') || has_permissions('read', 'multi_match_question_report')) { ?>
                 <li class="nav-item dropdown">
@@ -283,7 +288,7 @@
                     <a class="nav-link" href="<?= base_url() ?>system-languages"><em class="fas fa-language"></em> <span><?= lang('system_languages') ?></span></a>
                 </li>
             <?php } ?>
-            <?php if (has_permissions('read', 'in_app_settings') || has_permissions('read', 'coin_store_settings') || has_permissions('read', 'badges_settings') || has_permissions('read', 'ads_settings') || has_permissions('read', 'payment_settings') || has_permissions('read', 'firebase_configurations') || has_permissions('read', 'system_configuration') || has_permissions('read', 'system_utilities') || has_permissions('read', 'authentication_settings')) { ?>
+            <?php if (has_permissions('read', 'in_app_settings') || has_permissions('read', 'coin_store_settings') || has_permissions('read', 'badges_settings') || has_permissions('read', 'ads_settings') || has_permissions('read', 'payment_settings') || has_permissions('read', 'firebase_configurations') || has_permissions('read', 'system_configuration') || has_permissions('read', 'system_utilities') || has_permissions('read', 'authentication_settings') || has_permissions('read', 'ai_settings')) { ?>
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link has-dropdown"><em class="fas fa-cog"></em><span><?= lang('settings'); ?></span></a>
                     <ul class="dropdown-menu">
@@ -313,6 +318,9 @@
                         <?php } ?>
                         <?php if (has_permissions('read', 'in_app_settings')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>in-app-settings"><?= lang('in_app_settings'); ?></a></li>
+                        <?php } ?>
+                        <?php if (has_permissions('read', 'ai_settings')) { ?>
+                            <li><a class="nav-link" href="<?= base_url(); ?>ai-settings"><?= lang('ai_settings'); ?></a></li>
                         <?php } ?>
                         <?php if (has_permissions('read', 'about_us')) { ?>
                             <li><a class="nav-link" href="<?= base_url(); ?>about-us"><?= lang('about_us'); ?></a></li>

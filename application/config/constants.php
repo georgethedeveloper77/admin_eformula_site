@@ -87,8 +87,11 @@ defined('EXIT__AUTO_MAX') or define('EXIT__AUTO_MAX', 125); // highest automatic
 
 /* * ************************ Application Configuration ******************* */
 define('ALLOW_MODIFICATION', 1);
-//define('PERMISSION_ERROR_MSG', 'You are not authorize to operate on the module');
-define('PERMISSION_ERROR_MSG', 'Modification_in_demo_version_is_not_allowed');
+if (ALLOW_MODIFICATION) {
+  define('PERMISSION_ERROR_MSG', 'You_are_not_authorize_to_operate_on_the_module');
+} else {
+  define('PERMISSION_ERROR_MSG', 'Modification_in_demo_version_is_not_allowed');
+}
 
 //Image paths
 define('FILE_ALLOWED_TYPES', 'pdf|PDF');

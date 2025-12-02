@@ -53,6 +53,13 @@
                                                             <label class="form-check-label" for="google_admob"><?= lang('google_admob'); ?></label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
+                                                            <input type="radio" class="form-check-input" id="iron_source" name="ads_type" value="2" required <?php
+                                                                                                                                                                if (!empty($ads_type) && $ads_type['message'] == '2') {
+                                                                                                                                                                    echo 'checked';
+                                                                                                                                                                } ?>>
+                                                            <label class="form-check-label" for="iron_source"><?= lang('iron_source'); ?></label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
                                                             <input type="radio" class="form-check-input" id="unity_ads" name="ads_type" value="3" required <?php
                                                                                                                                                             if (!empty($ads_type) && $ads_type['message'] == '3') {
                                                                                                                                                                 echo 'checked';
@@ -106,6 +113,54 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="ironSource">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('app_key_android_iron_source'); ?></label>
+                                                        <input type="text" id="app_key_android_iron_source" name="app_key_android_iron_source" class="form-control ironAtt" value="<?= (!empty($app_key_android_iron_source['message'])) ? $app_key_android_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('app_key_ios_iron_source'); ?></label>
+                                                        <input type="text" id="app_key_ios_iron_source" name="app_key_ios_iron_source" class="form-control ironAtt" value="<?= (!empty($app_key_ios_iron_source['message'])) ? $app_key_ios_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('rewarded_id_android_iron_source'); ?></label>
+                                                        <input type="text" id="rewarded_id_android_iron_source" name="rewarded_id_android_iron_source" class="form-control ironAtt" value="<?= (!empty($rewarded_id_android_iron_source['message'])) ? $rewarded_id_android_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('rewarded_id_ios_iron_source'); ?></label>
+                                                        <input type="text" id="rewarded_id_ios_iron_source" name="rewarded_id_ios_iron_source" class="form-control ironAtt" value="<?= (!empty($rewarded_id_ios_iron_source['message'])) ? $rewarded_id_ios_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('interstitial_id_android_iron_source'); ?></label>
+                                                        <input type="text" id="interstitial_id_android_iron_source" name="interstitial_id_android_iron_source" class="form-control ironAtt" value="<?= (!empty($interstitial_id_android_iron_source['message'])) ? $interstitial_id_android_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('interstitial_id_ios_iron_source'); ?></label>
+                                                        <input type="text" id="interstitial_id_ios_iron_source" name="interstitial_id_ios_iron_source" class="form-control ironAtt" value="<?= (!empty($interstitial_id_ios_iron_source['message'])) ? $interstitial_id_ios_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('banner_id_android_iron_source'); ?></label>
+                                                        <input type="text" id="banner_id_android_iron_source" name="banner_id_android_iron_source" class="form-control ironAtt" value="<?= (!empty($banner_id_android_iron_source['message'])) ? $banner_id_android_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                    <div class="form-group col-md-6 col-sm-12">
+                                                        <label class="control-label"><?= lang('banner_id_ios_iron_source'); ?></label>
+                                                        <input type="text" id="banner_id_ios_iron_source" name="banner_id_ios_iron_source" class="form-control ironAtt" value="<?= (!empty($banner_id_ios_iron_source['message'])) ? $banner_id_ios_iron_source['message'] : "" ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="form-group col-sm-12 col-md-4">
                                                     <label class="control-label"><?= lang('reward_ads_coin'); ?> <small class="text-danger">*</small></label>
@@ -165,22 +220,9 @@
             $('.adsHide').hide(100);
             $('.adsgoogle').hide(100);
             $('.adsunity').hide(100);
-            $('.adsHide').hide(100);
-
-
-            var que = $('#fix_question').val();
-            if (que == '1') {
-                $('#fix_que').show(200);
-            } else {
-                $('#fix_que').hide(100);
-            }
+            $('.ironSource').hide(100);
 
             var ads = $('#in_app_ads_mode').val();
-
-
-
-
-
             if (ads === '1' || ads === 1) {
                 $('.adsHide').show(200);
                 var ads_type = $("input:radio[name=ads_type]:checked").val();
@@ -202,15 +244,15 @@
             } else {
                 $('.adsHide').hide(100);
                 $('.adsgoogle').hide(100);
-                $('.googleAtt').removeAttr('required');
                 $('.adsunity').hide(100);
+                $('.ironSource').hide(100);
+                $('.googleAtt').removeAttr('required');
                 $('.unityAtt').removeAttr('required');
+                $('.ironAtt').removeAttr('required');
 
             }
             var ads_type = $("input:radio[name=ads_type]:checked").val();
             ads_type_manage(ads_type);
-
-
         });
 
         function ads_type_manage(ads_type) {
@@ -220,31 +262,41 @@
             if (ads == "0" || ads == 0) {
                 $('.adsHide').hide(100);
                 $('.adsgoogle').hide(100);
-                $('.googleAtt').removeAttr('required');
                 $('.adsunity').hide(100);
+                $('.ironSource').hide(100);
+                $('.googleAtt').removeAttr('required');
                 $('.unityAtt').removeAttr('required');
+                $('.ironAtt').removeAttr('required');
             } else {
                 if (ads_type === '1' || ads_type === 1) {
                     $('.adsgoogle').show(200);
                     $('.googleAtt').attr('required', 'required');
                     $('.adsunity').hide(200);
                     $('.unityAtt').removeAttr('required');
+                    $('.ironSource').hide(200);
+                    $('.ironAtt').removeAttr('required');
                 } else if (ads_type === '2' || ads_type === 2) {
-                    $('.adsgoogle').hide(100);
-                    $('.googleAtt').removeAttr('required');
+                    $('.ironSource').show(200);
+                    $('.ironAtt').attr('required', 'required');
                     $('.adsunity').hide(100);
                     $('.unityAtt').removeAttr('required');
+                    $('.adsgoogle').hide(100);
+                    $('.googleAtt').removeAttr('required');
                 } else if (ads_type === '3' || ads_type === 3) {
                     $('.adsgoogle').hide(100);
                     $('.googleAtt').removeAttr('required');
                     $('.adsunity').show(200);
                     $('.unityAtt').attr('required', 'required');
+                    $('.ironSource').hide(200);
+                    $('.ironAtt').removeAttr('required');
                 } else {
                     $('.adsHide').hide(100);
                     $('.adsgoogle').hide(100);
                     $('.googleAtt').removeAttr('required');
                     $('.adsunity').hide(100);
                     $('.unityAtt').removeAttr('required');
+                    $('.ironSource').hide(200);
+                    $('.ironAtt').removeAttr('required');
                 }
             }
 
@@ -252,8 +304,6 @@
         }
 
         $(document).on('click', 'input[name="ads_type"]', function() {
-
-
             var ads_type = $(this).val();
             ads_type_manage(ads_type);
         });

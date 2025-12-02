@@ -22,6 +22,24 @@
                 <section class="section">
                     <div class="section-header">
                         <h1><?= lang('exam_module_result'); ?></h1>
+                        <?php
+                        $url = '';
+                        if ($this->uri->segment(2)) {
+                            $url = base_url('exam-module');
+                        }
+                        if ($url) {
+                        ?>
+                            <div class="section-header-breadcrumb">
+                                <a href="<?= $url ?>" class="footer_dev_link text-decoration-none">
+                                    <h6>
+                                        <i class="fa fa-arrow-left"></i>
+                                        <?= lang('back'); ?>
+                                    </h6>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <div class="section-body">
                         <div class="row">
@@ -40,8 +58,8 @@
                                                     <th scope="col" data-field="id" data-sortable="true"><?= lang('id'); ?></th>
                                                     <th scope="col" data-field="exam_module_id" data-sortable="true" data-visible='false'><?= lang('exam_module_id'); ?></th>
                                                     <th scope="col" data-field="user_id" data-sortable="true" data-visible='false'><?= lang('user_id'); ?></th>
-                                                    <th scope="col" data-field="u_name" data-sortable="true"><?= lang('name'); ?></th>
-                                                    <th scope="col" data-field="rank" data-sortable="true"><?= lang('rank'); ?></th>
+                                                    <th scope="col" data-field="u_name" data-sortable="false"><?= lang('name'); ?></th>
+                                                    <th scope="col" data-field="rank" data-sortable="false"><?= lang('rank'); ?></th>
                                                     <th scope="col" data-field="obtained_marks" data-sortable="true"><?= lang('obtain_marks'); ?></th>
                                                     <th scope="col" data-field="total_duration" data-sortable="true"><?= lang('duration'); ?></th>
                                                     <th scopr="col" data-field="rules_violated" data-sortable="false" data-events="actionEvents"><?= lang('rules_violated'); ?></th>

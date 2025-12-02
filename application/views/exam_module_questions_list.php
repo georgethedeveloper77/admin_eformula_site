@@ -25,6 +25,20 @@
                 <section class="section">
                     <div class="section-header">
                         <h1><?= lang('manage_exam_questions'); ?></h1>
+                        <?php
+                        if ($this->uri->segment(2)) {
+                        ?>
+                            <div class="section-header-breadcrumb">
+                                <a href="<?= base_url('exam-module') ?>" class="footer_dev_link text-decoration-none">
+                                    <h6>
+                                        <i class="fa fa-arrow-left"></i>
+                                        <?= lang('back'); ?>
+                                    </h6>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <div class="section-body">
                         <div class="row">

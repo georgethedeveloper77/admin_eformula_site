@@ -56,7 +56,7 @@ class Settings extends CI_Controller
                 'maximum_winning_coins',
                 'minimum_coins_winning_percentage',
                 'quiz_winning_percentage',
-                'score',
+                // 'score',
                 'answer_mode',
                 'welcome_bonus_coin',
                 'review_answers_deduct_coin',
@@ -181,9 +181,9 @@ class Settings extends CI_Controller
                     'system_timezone',
                     'system_timezone_gmt',
                     'app_link',
-                    'more_apps',
+                    // 'more_apps',
                     'ios_app_link',
-                    'ios_more_apps',
+                    // 'ios_more_apps',
                     'refer_coin',
                     'earn_coin',
                     'app_version',
@@ -241,7 +241,15 @@ class Settings extends CI_Controller
                     'daily_ads_visibility',
                     'daily_ads_coins',
                     'daily_ads_counter',
-                    'reward_coin'
+                    'reward_coin',
+                    'app_key_android_iron_source',
+                    'app_key_ios_iron_source',
+                    'rewarded_id_android_iron_source',
+                    'rewarded_id_ios_iron_source',
+                    'interstitial_id_android_iron_source',
+                    'interstitial_id_ios_iron_source',
+                    'banner_id_android_iron_source',
+                    'banner_id_ios_iron_source',
                 ];
                 foreach ($settings as $row) {
                     $data = $this->db->where('type', $row)->get('tbl_settings')->row_array();
@@ -774,6 +782,41 @@ class Settings extends CI_Controller
                 }
 
                 $this->load->view('authentication_settings', $this->result);
+            }
+        }
+    }
+
+    public function ai_settings()
+    {
+        if (!$this->session->userdata('isLoggedIn')) {
+            redirect('/');
+        } else {
+            if (!has_permissions('read', 'ai_settings')) {
+                redirect('/');
+            } else {
+                if ($this->input->post('btnadd')) {
+                    if (!has_permissions('update', 'ai_settings')) {
+                        $this->session->set_flashdata('error', lang(PERMISSION_ERROR_MSG));
+                    } else {
+                        $this->Setting_model->ai_settings();
+                        $this->session->set_flashdata('success', lang('data_updated_successfully'));
+                    }
+                    redirect('ai-settings');
+                }
+
+                $settings = [
+                    'ai_provider',
+                    'gemini_model',
+                    'gemini_api_key',
+                    'openai_model',
+                    'openai_api_key'
+                ];
+                foreach ($settings as $row) {
+                    $data = $this->db->where('type', $row)->get('tbl_settings')->row_array();
+                    $this->result[$row] = $data;
+                }
+
+                $this->load->view('ai_settings', $this->result);
             }
         }
     }

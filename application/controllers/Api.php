@@ -99,6 +99,7 @@ class Api extends REST_Controller
                 }
                 $res = $this->db->where('firebase_id', $firebase_id)->get('tbl_users')->row_array();
                 if (!empty($res)) {
+                    // login
                     if ($res['status'] == 1) {
                         $user_id = $res['id'];
                         $refer_code = $this->random_string(4) . $res['refer_code'];
@@ -157,6 +158,7 @@ class Api extends REST_Controller
                         $response['message'] = "126";
                     }
                 } else {
+                    // register
                     if ($this->post('app_language') && !empty($this->post('app_language'))) {
                         $default_app_language = $this->post('app_language');
                     } else {
@@ -1499,15 +1501,14 @@ class Api extends REST_Controller
             $sort = 'r.user_rank';
             $order = 'ASC';
 
-            $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT m.id, user_id, SUM(score) as score,date_created, MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m join tbl_users u on u.id = m.user_id WHERE YEAR(m.last_updated)=$year AND MONTH(m.last_updated)=$month AND u.status=1 GROUP BY user_id) s, (SELECT @user_rank := 0) init ORDER BY score DESC, last_updated ASC";
+            $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT m.id, user_id,u.email, u.name,u.profile, SUM(score) as score,date_created, MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m join tbl_users u on u.id = m.user_id WHERE u.status=1 AND YEAR(last_updated)=$year AND MONTH(last_updated)=$month AND u.status=1 GROUP BY user_id) s, (SELECT @user_rank := 0) init ORDER BY score DESC, last_updated ASC";
 
             $this->db->reset_query();
             $this->db->from("($sub_query) r");
-            $this->db->join('tbl_users u', 'u.id = r.user_id');
 
             $total = $this->db->count_all_results('', false);
 
-            $this->db->select('r.*, u.name, u.profile');
+            $this->db->select('r.*');
             $this->db->order_by($sort, $order);
 
             if ($limit) {
@@ -1528,8 +1529,7 @@ class Api extends REST_Controller
 
                     $this->db->reset_query();
                     $this->db->from("($sub_query) r");
-                    $this->db->join('tbl_users u', 'u.id = r.user_id');
-                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->select('r.*');
                     $this->db->order_by($sort, $order);
                     $this->db->limit(3);
                     $topThree_sql = $this->db->get();
@@ -1544,8 +1544,7 @@ class Api extends REST_Controller
 
                     $this->db->reset_query();
                     $this->db->from("($sub_query) r");
-                    $this->db->join('tbl_users u', 'u.id = r.user_id');
-                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->select('r.*');
                     $this->db->where('r.user_id', $user_id);
                     $this->db->limit(1);
                     $user_rank_sql = $this->db->get();
@@ -1615,8 +1614,10 @@ class Api extends REST_Controller
             $sort = 'r.user_rank';
             $order = 'ASC';
 
-            $this->db->select('id, user_id, score, date_created, @user_rank := @user_rank + 1 AS user_rank', false);
+            $this->db->select('d.id, user_id, u.email, u.name, u.profile,score, date_created, @user_rank := @user_rank + 1 AS user_rank', false);
             $this->db->from("(SELECT @user_rank := 0) init, tbl_leaderboard_daily d");
+            $this->db->join('tbl_users u', 'u.id = d.user_id');
+            $this->db->where('u.status', 1);
             $this->db->where('DATE(date_created)', $this->toDate);
             $this->db->order_by('score', 'DESC');
             $this->db->order_by('date_created', 'ASC');
@@ -1624,12 +1625,10 @@ class Api extends REST_Controller
 
             $this->db->reset_query();
             $this->db->from("($subQuery) r");
-            $this->db->join('tbl_users u', 'u.id = r.user_id');
-            $this->db->where('u.status', 1);
 
             $total = $this->db->count_all_results('', false);
 
-            $this->db->select('r.*, u.email, u.name, u.profile');
+            $this->db->select('r.*');
             $this->db->order_by($sort, $order);
             if ($limit) {
                 $this->db->limit($limit, $offset);
@@ -1648,9 +1647,7 @@ class Api extends REST_Controller
 
                     $this->db->reset_query();
                     $this->db->from("($subQuery) r");
-                    $this->db->join('tbl_users u', 'u.id = r.user_id');
-                    $this->db->where('u.status', 1);
-                    $this->db->select('r.*, u.email, u.name, u.profile');
+                    $this->db->select('r.*');
                     $this->db->order_by($sort, $order);
                     $this->db->limit(3);
                     $topThree_sql = $this->db->get();
@@ -1665,10 +1662,8 @@ class Api extends REST_Controller
 
                     $this->db->reset_query();
                     $this->db->from("($subQuery) r");
-                    $this->db->join('tbl_users u', 'u.id = r.user_id');
-                    $this->db->where('u.status', 1);
-                    $this->db->where('u.id', $user_id);
-                    $this->db->select('r.*, u.email, u.name, u.profile');
+                    $this->db->where('r.user_id', $user_id);
+                    $this->db->select('r.*');
                     $this->db->limit(1);
                     $my_rank_sql = $this->db->get();
                     $my_rank = $my_rank_sql->row_array();
@@ -1736,10 +1731,9 @@ class Api extends REST_Controller
             $sort = 'r.user_rank';
             $order = 'ASC';
 
-            $this->db->select('r.*, u.email, u.name,u.status,u.profile');
-            $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC) r", false);
-            $this->db->join('tbl_users u', 'u.id = r.user_id');
-            $this->db->where('u.status', 1);
+            $sub_query = "(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id,u.email, u.name,u.profile, SUM(m.score) AS score,MAX(m.last_updated) as last_updated FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id WHERE u.status = 1 GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC, s.last_updated ASC)";
+            $this->db->select('r.*');
+            $this->db->from("$sub_query r", false);
 
             $total = $this->db->count_all_results('', false);
             $this->db->order_by($sort, $order);
@@ -1760,10 +1754,8 @@ class Api extends REST_Controller
                     }
 
                     $this->db->reset_query();
-                    $this->db->select('r.*, u.email, u.name,u.status,u.profile');
-                    $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC) r", false);
-                    $this->db->join('tbl_users u', 'u.id = r.user_id');
-                    $this->db->where('u.status', 1);
+                    $this->db->from("($sub_query) r");
+                    $this->db->select('r.*');
                     $this->db->order_by($sort, $order);
                     $this->db->limit(3);
                     $top_three_user_rank_sql = $this->db->get();
@@ -2151,13 +2143,12 @@ class Api extends REST_Controller
 
                 $sort = 'r.user_rank';
                 $order = 'ASC';
-                $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT c.* FROM tbl_contest_leaderboard c join tbl_users u on u.id = c.user_id where contest_id='" . $contest_id . "') s, (SELECT @user_rank := 0) init ORDER BY score DESC,last_updated ASC ";
 
-                $this->db->select('r.*, u.name, u.profile');
+                $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT c.*,u.name,u.profile FROM tbl_contest_leaderboard c join tbl_users u on u.id = c.user_id where u.status=1 AND contest_id='" . $contest_id . "') s, (SELECT @user_rank := 0) init ORDER BY score DESC,last_updated ASC";
+
+                $this->db->select('r.*');
                 $this->db->from("($sub_query) r");
-                $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
                 $this->db->where('contest_id', $contest_id);
-                $this->db->where('u.status', 1);
 
                 $total = $this->db->count_all_results('', false);
                 $this->db->order_by($sort, $order);
@@ -2177,11 +2168,9 @@ class Api extends REST_Controller
                 if ($user_id) {
                     $this->db->reset_query();
                     $this->db->from("($sub_query) r");
-                    $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
                     $this->db->where('contest_id', $contest_id);
-                    $this->db->where('u.id', $user_id);
-                    $this->db->where('u.status', 1);
-                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->where('r.user_id', $user_id);
+                    $this->db->select('r.*');
                     $this->db->limit(1);
                     $my_rank_sql = $this->db->get();
                     $my_rank = $my_rank_sql->row_array();
@@ -2203,10 +2192,8 @@ class Api extends REST_Controller
 
                     $this->db->reset_query();
                     $this->db->from("($sub_query) r");
-                    $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
                     $this->db->where('contest_id', $contest_id);
-                    $this->db->where('u.status', 1);
-                    $this->db->select('r.*, u.name, u.profile');
+                    $this->db->select('r.*');
                     $this->db->order_by($sort, $order);
                     $this->db->limit(3);
                     $topThree_rank_sql = $this->db->get();
@@ -2444,6 +2431,14 @@ class Api extends REST_Controller
                 'ios_rewarded_id',
                 'android_game_id',
                 'ios_game_id',
+                'app_key_android_iron_source',
+                'app_key_ios_iron_source',
+                'rewarded_id_android_iron_source',
+                'rewarded_id_ios_iron_source',
+                'interstitial_id_android_iron_source',
+                'interstitial_id_ios_iron_source',
+                'banner_id_android_iron_source',
+                'banner_id_ios_iron_source',
                 'payment_mode',
                 'per_coin',
                 'coin_amount',
@@ -2454,8 +2449,8 @@ class Api extends REST_Controller
                 'daily_ads_visibility',
                 'daily_ads_coins',
                 'daily_ads_counter',
-                'maximum_winning_coins',
-                'minimum_coins_winning_percentage',
+                // 'maximum_winning_coins',
+                // 'minimum_coins_winning_percentage',
                 'quiz_winning_percentage',
                 'score',
                 'answer_mode',
@@ -2463,37 +2458,37 @@ class Api extends REST_Controller
                 'quiz_zone_mode',
                 'quiz_zone_duration',
                 'quiz_zone_lifeline_deduct_coin',
-                'quiz_zone_wrong_answer_deduct_score',
-                'quiz_zone_correct_answer_credit_score',
+                // 'quiz_zone_wrong_answer_deduct_score',
+                // 'quiz_zone_correct_answer_credit_score',
                 'guess_the_word_question',
                 'guess_the_word_seconds',
                 'guess_the_word_max_hints',
-                'guess_the_word_max_winning_coin',
-                'guess_the_word_wrong_answer_deduct_score',
-                'guess_the_word_correct_answer_credit_score',
+                // 'guess_the_word_max_winning_coin',
+                // 'guess_the_word_wrong_answer_deduct_score',
+                // 'guess_the_word_correct_answer_credit_score',
                 'guess_the_word_hint_deduct_coin',
                 'audio_mode_question',
                 'audio_quiz_seconds',
-                'audio_quiz_wrong_answer_deduct_score',
-                'audio_quiz_correct_answer_credit_score',
+                // 'audio_quiz_wrong_answer_deduct_score',
+                // 'audio_quiz_correct_answer_credit_score',
                 'maths_quiz_mode',
                 'maths_quiz_seconds',
-                'maths_quiz_wrong_answer_deduct_score',
-                'maths_quiz_correct_answer_credit_score',
+                // 'maths_quiz_wrong_answer_deduct_score',
+                // 'maths_quiz_correct_answer_credit_score',
                 'fun_n_learn_question',
                 'fun_and_learn_time_in_seconds',
-                'fun_n_learn_quiz_wrong_answer_deduct_score',
-                'fun_n_learn_quiz_correct_answer_credit_score',
+                // 'fun_n_learn_quiz_wrong_answer_deduct_score',
+                // 'fun_n_learn_quiz_correct_answer_credit_score',
                 'true_false_mode',
                 'true_false_quiz_in_seconds',
-                'true_false_quiz_wrong_answer_deduct_score',
-                'true_false_quiz_correct_answer_credit_score',
+                // 'true_false_quiz_wrong_answer_deduct_score',
+                // 'true_false_quiz_correct_answer_credit_score',
                 'battle_mode_one',
                 'battle_mode_one_category',
                 'battle_mode_one_in_seconds',
-                'battle_mode_one_correct_answer_credit_score',
-                'battle_mode_one_quickest_correct_answer_extra_score',
-                'battle_mode_one_second_quickest_correct_answer_extra_score',
+                // 'battle_mode_one_correct_answer_credit_score',
+                // 'battle_mode_one_quickest_correct_answer_extra_score',
+                // 'battle_mode_one_second_quickest_correct_answer_extra_score',
                 'battle_mode_one_code_char',
                 'battle_mode_one_entry_coin',
                 'battle_mode_group',
@@ -2508,9 +2503,9 @@ class Api extends REST_Controller
                 'battle_mode_random',
                 'battle_mode_random_category',
                 'battle_mode_random_in_seconds',
-                'battle_mode_random_correct_answer_credit_score',
-                'battle_mode_random_quickest_correct_answer_extra_score',
-                'battle_mode_random_second_quickest_correct_answer_extra_score',
+                // 'battle_mode_random_correct_answer_credit_score',
+                // 'battle_mode_random_quickest_correct_answer_extra_score',
+                // 'battle_mode_random_second_quickest_correct_answer_extra_score',
                 'battle_mode_random_search_duration',
                 'battle_mode_random_entry_coin',
                 'self_challenge_mode',
@@ -2519,14 +2514,14 @@ class Api extends REST_Controller
                 'exam_module',
                 'exam_module_resume_exam_timeout',
                 'contest_mode',
-                'contest_mode_wrong_deduct_score',
-                'contest_mode_correct_credit_score',
+                // 'contest_mode_wrong_deduct_score',
+                // 'contest_mode_correct_credit_score',
                 'multi_match_mode',
                 'multi_match_fix_level_question',
                 'multi_match_total_level_question',
                 'multi_match_duration',
-                'multi_match_wrong_answer_deduct_score',
-                'multi_match_correct_answer_credit_score',
+                // 'multi_match_wrong_answer_deduct_score',
+                // 'multi_match_correct_answer_credit_score',
                 'latex_mode',
                 'exam_latex_mode',
                 'gmail_login',
@@ -6604,6 +6599,16 @@ class Api extends REST_Controller
         return $data;
     }
 
+    public function decrypt_data($key, $text, $iv)
+    {
+        $decrypted_data = '';
+        if ($iv) {
+            $key .= "0000";
+            $decrypted_data = openssl_decrypt($text, 'aes-256-cbc', $key, 0, hex2bin($iv));
+        }
+        return $decrypted_data;
+    }
+
     function suffleOptions($data, $firebase_id)
     {
         // Create an associative array of options
@@ -6686,11 +6691,9 @@ class Api extends REST_Controller
     function myGlobalRank($user_id)
     {
         $this->db->reset_query();
-        $this->db->select('r.*, u.email, u.name,u.status,u.profile');
-        $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score,MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC,s.last_updated ASC) r", false);
-        $this->db->join('tbl_users u', 'u.id = r.user_id');
-        $this->db->where('u.status', 1);
-        $this->db->where('u.id', $user_id);
+        $this->db->select('r.*');
+        $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id,u.email, u.name,u.status,u.profile, SUM(m.score) AS score,MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id WHERE u.status=1 GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC,s.last_updated ASC) r", false);
+        $this->db->where('r.user_id', $user_id);
         $this->db->limit(1);
         $my_rank_sql = $this->db->get();
         $my_rank = $my_rank_sql->row_array();

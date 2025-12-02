@@ -849,22 +849,20 @@ class Table extends REST_Controller
 
     public function contest_leaderboard_get()
     {
-        $sort = $this->get('sort') ?? 'id';
+        $sort = $this->get('sort') ?? 'r.user_rank';
         $order = $this->get('order') ?? 'DESC';
 
         $contest_id = $this->get('contest_id');
 
-        $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT c.* FROM tbl_contest_leaderboard c join tbl_users u on u.id = c.user_id where contest_id='" . $contest_id . "') s, (SELECT @user_rank := 0) init ORDER BY score DESC ";
+        $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT c.*,u.name FROM tbl_contest_leaderboard c join tbl_users u on u.id = c.user_id where u.status=1 AND contest_id='" . $contest_id . "') s, (SELECT @user_rank := 0) init ORDER BY score DESC,last_updated ASC";
 
-        $this->db->select('r.*, u.name, u.profile');
+        $this->db->select('r.*');
         $this->db->from("($sub_query) r");
-        $this->db->join('tbl_users u', 'u.id = r.user_id', 'inner');
         $this->db->where('contest_id', $contest_id);
-        $this->db->where('u.status', 1);
 
         if ($this->get('search')) {
             $search = $this->db->escape_like_str($this->get('search'));
-            $this->db->group_start()->like('id', $search)->or_like('score', $search)->or_like('user_id', $search)->group_end();
+            $this->db->group_start()->like('id', $search)->or_like('score', $search)->or_like('user_id', $search)->or_like('r.name', $search)->group_end();
         }
 
         $total = $this->db->count_all_results('', false);
@@ -1420,27 +1418,27 @@ class Table extends REST_Controller
 
     public function exam_module_result_get()
     {
-        $sort = $this->get('sort') ?? 'id';
+        $sort = $this->get('sort') ?? 'r.user_rank';
         $order = $this->get('order') ?? 'DESC';
 
         $exam_module_id = $this->get('exam_module_id');
 
-        $sub_query = "SELECT emr.*, u.id AS u_id, u.name AS u_name, @user_rank := @user_rank + 1 AS rank FROM (SELECT * FROM tbl_exam_module_result WHERE exam_module_id = $exam_module_id) emr LEFT JOIN tbl_users u ON u.id = emr.user_id,(SELECT @user_rank := 0) init ORDER BY CAST(obtained_marks AS SIGNED) DESC, CAST(total_duration AS SIGNED) ASC";
-        $this->db->select('r.*, u_name, rank');
+        $sub_query = "SELECT emr.*, u.id AS u_id, u.name AS u_name, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT * FROM tbl_exam_module_result WHERE exam_module_id = $exam_module_id) emr LEFT JOIN tbl_users u ON u.id = emr.user_id,(SELECT @user_rank := 0) init WHERE u.status=1 ORDER BY CAST(obtained_marks AS SIGNED) DESC, CAST(total_duration AS SIGNED) ASC";
+
+        $this->db->select('r.*');
         $this->db->from("($sub_query) r");
-        $this->db->join('tbl_users u', 'u.id = r.u_id', 'left');
 
         if ($this->get('search')) {
             $search = $this->db->escape_like_str($this->get('search'));
             $this->db->group_start()->like('r.id', $search)
                 ->or_like('total_duration', $search)
                 ->or_like('obtained_marks', $search)
-                ->or_like('u.name', $search)
+                ->or_like('u_name', $search)
                 ->group_end();
         }
 
         $total = $this->db->count_all_results('', false);
-        $this->db->order_by($sort, $order);
+        $this->db->order_by("CAST($sort AS SIGNED)", $order);
 
         if ($this->get('limit')) {
             $offset = $this->get('offset');
@@ -1471,7 +1469,7 @@ class Table extends REST_Controller
                 'exam_module_id' => $row->exam_module_id,
                 'user_id' => $row->user_id,
                 'u_name' => $row->u_name,
-                'rank' => $row->rank,
+                'rank' => $row->user_rank,
                 'obtained_marks' => $row->obtained_marks,
                 'total_duration' => $row->total_duration,
                 'statistics' => $row->statistics,
@@ -1851,16 +1849,17 @@ class Table extends REST_Controller
         $sort = $this->get('sort') ?? 'r.user_rank';
         $order = $this->get('order') ?? 'ASC';
 
-        $this->db->select('r.*, u.email, u.name,u.status');
-        $this->db->from("(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id, SUM(m.score) AS score,MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC,s.last_updated ASC) r", false);
-        $this->db->join('tbl_users u', 'u.id = r.user_id');
-        $this->db->where('u.status', 1);
+        $sub_query = "(SELECT s.*, @user_rank := @user_rank + 1 AS user_rank FROM (SELECT m.id, m.user_id,u.email, u.name, SUM(m.score) AS score,MAX(m.last_updated) as last_updated FROM tbl_leaderboard_monthly m JOIN tbl_users u ON u.id = m.user_id WHERE u.status = 1 GROUP BY m.user_id) s, (SELECT @user_rank := 0) init ORDER BY s.score DESC, s.last_updated ASC)";
+        $this->db->select('r.*');
+        $this->db->from("$sub_query r", false);
 
         if ($this->get('search')) {
             $search = $this->db->escape_like_str($this->get('search'));
-            $this->db->group_start()->like('score', $search)
-                ->or_like('u.name', $search)
-                ->or_like('u.email', $search)->group_end();
+            $this->db->group_start()
+                ->like('r.score', $search)
+                ->or_like('r.name', $search)
+                ->or_like('r.email', $search)
+                ->group_end();
         }
 
         $total = $this->db->count_all_results('', false);
@@ -1899,23 +1898,24 @@ class Table extends REST_Controller
         $sort = $this->get('sort') ?? 'r.user_rank';
         $order = $this->get('order') ?? 'ASC';
 
-        $this->db->select('id, user_id, score, date_created, @user_rank := @user_rank + 1 AS user_rank', false);
+        $this->db->select('d.id, user_id, u.email, u.name,score, date_created, @user_rank := @user_rank + 1 AS user_rank', false);
         $this->db->from("(SELECT @user_rank := 0) init, tbl_leaderboard_daily d");
+        $this->db->join('tbl_users u', 'u.id = d.user_id');
+        $this->db->where('u.status', 1);
         $this->db->where('DATE(date_created)', $this->toDate);
         $this->db->order_by('score', 'DESC');
+        $this->db->order_by('date_created', 'ASC');
         $subQuery = $this->db->get_compiled_select();
 
-        $this->db->select('r.*, u.email, u.name, u.profile');
+        $this->db->select('r.*');
         $this->db->from("($subQuery) r");
-        $this->db->join('tbl_users u', 'u.id = r.user_id');
-        $this->db->where('u.status', 1);
 
         if ($this->get('search')) {
             $search = $this->db->escape_like_str($this->get('search'));
             $this->db->group_start()->like('r.score', $search)
                 ->or_like('r.date_created', $search)
-                ->or_like('u.name', $search)
-                ->or_like('u.email', $search)->group_end();
+                ->or_like('r.name', $search)
+                ->or_like('r.email', $search)->group_end();
         }
 
         $total = $this->db->count_all_results('', false);
@@ -1958,11 +1958,10 @@ class Table extends REST_Controller
         $year = $this->get('year');
         $month = $this->get('month');
 
-        $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT m.id, user_id, SUM(score) as score,date_created, MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m join tbl_users u on u.id = m.user_id WHERE YEAR(last_updated)=$year AND MONTH(last_updated)=$month AND u.status=1 GROUP BY user_id) s, (SELECT @user_rank := 0) init ORDER BY score DESC, last_updated ASC";
+        $sub_query = "SELECT s.*, @user_rank := @user_rank + 1 user_rank FROM ( SELECT m.id, user_id,u.email, u.name, SUM(score) as score,date_created, MAX(last_updated) as last_updated FROM tbl_leaderboard_monthly m join tbl_users u on u.id = m.user_id WHERE u.status=1 AND YEAR(last_updated)=$year AND MONTH(last_updated)=$month AND u.status=1 GROUP BY user_id) s, (SELECT @user_rank := 0) init ORDER BY score DESC, last_updated ASC";
 
-        $this->db->select('r.*,u.email, u.name, u.profile');
+        $this->db->select('r.*,');
         $this->db->from("($sub_query) r");
-        $this->db->join('tbl_users u', 'u.id = r.user_id');
 
         if ($this->get('user_id') && $this->get('user_id') != '') {
             $user_id = $this->get('user_id');
@@ -1973,8 +1972,8 @@ class Table extends REST_Controller
             $search = $this->db->escape_like_str($this->get('search'));
             $this->db->group_start()->like('r.score', $search)
                 ->or_like('r.date_created', $search)
-                ->or_like('u.name', $search)
-                ->or_like('u.email', $search)->group_end();
+                ->or_like('r.name', $search)
+                ->or_like('r.email', $search)->group_end();
         }
 
         $total = $this->db->count_all_results('', false);
@@ -2479,6 +2478,122 @@ class Table extends REST_Controller
                 'description' => $row->description,
                 'title' => $row->title,
                 'image' => (!empty($image)) ? '<a href=' . base_url() . $image . '  data-lightbox="' . lang('slider_images') . '"><img src=' . base_url() . $image . ' height=50, width=50 ></a>' : '<img src=' . $this->NO_IMAGE . ' height=30 >',
+                'operate' => $operate,
+            ];
+        }
+
+        echo json_encode($bulkData, JSON_UNESCAPED_UNICODE);
+    }
+
+
+    public function ai_question_get()
+    {
+        $sort = $this->get('sort') ?? 'id';
+        $order = $this->get('order') ?? 'DESC';
+
+        $this->db->select('q.*, l.language,c.category_name,sc.subcategory_name,tc.name as contest_name,em.title as exam_name');
+        $this->db->from('tbl_ai_questions q');
+        $this->db->join('tbl_languages l', 'l.id = q.language_id', 'left');
+        $this->db->join('tbl_category c', 'c.id = q.category', 'left');
+        $this->db->join('tbl_subcategory sc', 'sc.id = q.subcategory', 'left');
+        $this->db->join('tbl_contest tc', 'tc.id = q.contest_id', 'left');
+        $this->db->join('tbl_exam_module em', 'em.id = q.exam_id', 'left');
+
+        if ($this->get('quiz_type') && $this->get('quiz_type') != '') {
+            $this->db->where('q.quiz_type', $this->get('quiz_type'));
+        }
+
+        if ($this->get('language') && $this->get('language') != '') {
+            $language_id = $this->get('language');
+            $this->db->where('q.language_id', $language_id);
+        }
+
+        if ($this->get('category') && $this->get('category') != '') {
+            $this->db->where('q.category', $this->get('category'));
+        }
+
+        if ($this->get('subcategory') && $this->get('subcategory') != '') {
+            $this->db->where('q.subcategory', $this->get('subcategory'));
+        }
+
+        if ($this->get('contest_id') && $this->get('contest_id') != '') {
+            $this->db->where('q.contest_id', $this->get('contest_id'));
+        } else if ($this->get('exam_id') && $this->get('exam_id') != '') {
+            $this->db->where('q.exam_id', $this->get('exam_id'));
+        }
+
+        if ($this->get('status') != '') {
+            $this->db->where('q.status', $this->get('status'));
+        }
+
+        if ($this->get('search')) {
+            $search = $this->db->escape_like_str($this->get('search'));
+            $this->db->group_start()->like('q.id', $search)
+                ->or_like('question', $search)
+                ->or_like('options', $search)
+                ->or_like('correct_answer', $search)
+                ->or_like('language', $search)
+                ->or_like('category_name', $search)
+                ->or_like('subcategory_name', $search)
+                ->or_like('name', $search)
+                ->or_like('title', $search)
+                ->or_like('note', $search)
+                ->group_end();
+        }
+
+        $total = $this->db->count_all_results('', false);
+        $this->db->order_by($sort, $order);
+        if ($this->get('limit')) {
+            $offset = $this->get('offset');
+            $limit = $this->get('limit');
+            $this->db->limit($limit, $offset);
+        }
+
+        $query = $this->db->get();
+        $res1 = $query->result();
+
+        $bulkData = [
+            'total' => $total,
+            'rows' => []
+        ];
+
+        foreach ($res1 as $row) {
+            $operate = '';
+            if ($row->status == 0) {
+                $operate .= '<a class="btn btn-icon btn-sm btn-primary moveQuestion" data-id=' . $row->id . ' title="' . lang('move_question') . '"><i class="fa fa-undo"></i></a>';
+            }
+            $operate .= '<a class="btn btn-icon btn-sm btn-primary edit-data" data-id=' . $row->id . ' data-toggle="modal" data-target="#editDataModal" title="' . lang('edit') . '"><i class="fa fa-edit"></i></a>';
+            $operate .= '<a class="btn btn-icon btn-sm btn-danger delete-data" data-id=' . $row->id . ' title="' . lang('delete') . '"><i class="fa fa-trash"></i></a>';
+
+
+            $question = $row->question;
+            $options = json_decode($row->options, true);
+            $optiona = $options['a'] ?? "-";
+            $optionb = $options['b'] ?? "-";
+            $optionc = $options['c'] ?? "-";
+            $optiond = $options['d'] ?? "-";
+            $optione = $options['e'] ?? "-";
+
+
+            $bulkData['rows'][] = [
+                'id' => $row->id,
+                'quiz_type' => $row->quiz_type,
+                'status' => $row->status,
+                'category' => $row->category,
+                'subcategory' => $row->subcategory,
+                'language_id' => $row->language_id,
+                'language' => $row->language,
+                'question_type' => $row->question_type,
+                'answer_type' => $row->answer_type,
+                'question' => $question ?? '',
+                'optiona' => $optiona,
+                'optionb' => $optionb,
+                'optionc' => $optionc,
+                'optiond' => $optiond,
+                'optione' => $optione,
+                'level' => $row->level,
+                'answer' => $row->correct_answer,
+                'note' => $row->note,
                 'operate' => $operate,
             ];
         }

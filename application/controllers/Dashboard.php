@@ -293,4 +293,39 @@ class Dashboard extends CI_Controller
             echo $data;
         }
     }
+
+
+    public function get_contest_of_language()
+    {
+        $options = '<option value="">' . lang('select_contest') . '</option>';
+        if ($this->input->post('language_id')) {
+            $language_id = $this->input->post('language_id');
+            $this->db->where('language_id', $language_id);
+        }
+        $data = $this->db->order_by('id', 'DESC')->get('tbl_contest')->result();
+
+        foreach ($data as $option) {
+            $optionName = $option->name;
+            $options .= "<option value=" . $option->id . ">" . $optionName . "</option>";
+        }
+
+        echo $options;
+    }
+
+    public function get_exam_of_language()
+    {
+        $options = '<option value="">' . lang('select_exam') . '</option>';
+        if ($this->input->post('language_id')) {
+            $language_id = $this->input->post('language_id');
+            $this->db->where('language_id', $language_id);
+        }
+        $data = $this->db->order_by('id', 'DESC')->get('tbl_exam_module')->result();
+
+        foreach ($data as $option) {
+            $optionName = $option->title;
+            $options .= "<option value=" . $option->id . ">" . $optionName . "</option>";
+        }
+
+        echo $options;
+    }
 }

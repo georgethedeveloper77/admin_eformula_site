@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 /* * ********* USER DEFINED ROUTES FOR ADMIN PANEL ****************** */
+$route['elite-cron-job'] = 'Elite_Cron_Job';
 $route['loginMe'] = 'Login/loginMe';
 
 $route['resetpassword'] = 'Login/resetpassword';
@@ -80,6 +81,8 @@ $route['delete_multiple'] = 'Dashboard/delete_multiple';
 $route['get_categories_of_language'] = 'Dashboard/get_categories_of_language';
 $route['get_subcategories_of_category'] = 'Dashboard/get_subcategories_of_category';
 $route['get_subcategories_of_language'] = 'Dashboard/get_subcategories_of_language';
+$route['get_contest_of_language'] = 'Dashboard/get_contest_of_language';
+$route['get_exam_of_language'] = 'Dashboard/get_exam_of_language';
 
 $route['user-accounts-rights'] = 'Dashboard/users_accounts_rights';
 $route['delete_accounts_rights'] = 'Dashboard/delete_accounts_rights';
@@ -224,3 +227,8 @@ $route['multi-match-question-reports'] = 'Multi_Match/question_reports';
 $route['multi-match-question-reports/(:num)'] = 'Multi_Match/edit_question_reports/$1';
 $route['delete_multi_match_report'] = 'Multi_Match/delete_question_report';
 $route['multi-match-import-questions'] = 'Multi_Match/import_questions';
+
+$route['create-ai-questions'] = 'AI_Questions';
+$route['delete-ai-questions'] = 'AI_Questions/delete_ai_questions';
+$route['moveQuestion'] = 'AI_Questions/moveQuestion';
+$route['ai-settings'] = 'Settings/ai_settings';

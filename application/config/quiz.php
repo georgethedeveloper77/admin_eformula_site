@@ -50,6 +50,8 @@ $config['system_modules'] = [
     'multi_match' => array('create', 'read', 'update', 'delete'),
     'multi_match_import_question' => array('read', 'update'),
     'multi_match_question_report' => array('read', 'update'),
+    'ai_question_bank' => array('create', 'read', 'update', 'delete'),
+    'ai_settings' => array('read', 'update'),
 ];
 
 $config['category_type'] = [

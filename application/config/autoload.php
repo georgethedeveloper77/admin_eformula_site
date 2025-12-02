@@ -152,5 +152,6 @@ $autoload['model'] = array(
   'Slider_model',
   'System_Languages_model',
   'Coin_Store_model',
-  'Multi_Match_model'
+  'Multi_Match_model',
+  'AI_Question_model'
 );

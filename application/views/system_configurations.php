@@ -53,19 +53,8 @@
                                                     <input type="url" id="app_link" name="app_link" class="form-control" value="<?php echo (!empty($app_link['message'])) ? $app_link['message'] : "" ?>">
                                                 </div>
                                                 <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('more_apps_link_your_google_ios_market_place_url'); ?></label>
-                                                    <input type="url" id="more_apps" name="more_apps" class="form-control" value="<?php echo (!empty($more_apps['message'])) ? $more_apps['message'] : "" ?>">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="form-group col-md-6 col-sm-12">
                                                     <label class="control-label"><?= lang('ios_app_link'); ?></label>
                                                     <input type="url" id="ios_app_link" name="ios_app_link" class="form-control" value="<?php echo (!empty($ios_app_link['message'])) ? $ios_app_link['message'] : "" ?>">
-                                                </div>
-                                                <div class="form-group col-md-6 col-sm-12">
-                                                    <label class="control-label"><?= lang('more_apps_link_your_ios_market_place_url'); ?></label>
-                                                    <input type="url" id="ios_more_apps" name="ios_more_apps" class="form-control" value="<?php echo (!empty($ios_more_apps['message'])) ? $ios_more_apps['message'] : "" ?>">
                                                 </div>
                                             </div>
 
